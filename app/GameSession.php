@@ -15,6 +15,12 @@ class GameSession extends Model
 
     protected $dates = ['deleted_at'];
 
+    public function getUserNames(){
+
+        return $this->hasOne('App\User', "id");
+
+    }
+
     public function getTurns()
     {
         return $this->hasMany('GameTurn', 'gamesession_id');
