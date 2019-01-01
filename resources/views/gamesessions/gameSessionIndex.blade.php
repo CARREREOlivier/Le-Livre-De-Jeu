@@ -8,7 +8,7 @@
 
                     <thead>
                     <tr>
-                        <th scopte="col"></th>
+                        <th scope="col"></th>
                         <th scope="col">Titre</th>
                         <th scope="col">Jeu</th>
                         <th scope="col">Par</th>
@@ -20,7 +20,7 @@
                     @foreach($gamesessions as $gamesession)
 
                         <tr>
-                            <td class="clickable" aria-expanded="false" aria-controls="group-of-rows-1" data-target="#gameDescription" data-toggle="collapse"><i class="fa fa-plus" aria-hidden="true">+</i></td>
+                            <td class="clickable" aria-expanded="false" aria-controls="gameDescription" data-target="#gameDescription-{{$gamesession->id}}" data-toggle="collapse"><i class="fa fa-plus" aria-hidden="true"></i></td>
                             <td>{{$gamesession->title}}</td>
                             <td>{{$gamesession->game}}</td>
                             <td>{{$gamesession->getUserNames->name}}</td>
@@ -30,7 +30,7 @@
                         </tr>
                         <tr>
                             <td colspan="5">
-                                <div id="gameDescription" class="collapse">{{$gamesession->description}}</div>
+                                <div id="gameDescription-{{$gamesession->id}}" class="collapse">{{$gamesession->description}}</div>
                             </td>
 
                         </tr>
