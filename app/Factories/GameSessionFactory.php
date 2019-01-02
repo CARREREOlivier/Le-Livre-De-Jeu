@@ -10,10 +10,12 @@ namespace App\Factories;
 
 
 use App\GameSession;
+use Illuminate\Http\Request;
+
 
 class GameSessionFactory
 {
-    public static function build($request)
+    public static function build(Request $request)
     {
 
         $gameSession = new GameSession();

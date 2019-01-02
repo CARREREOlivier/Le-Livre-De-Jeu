@@ -1,3 +1,16 @@
+@if ($errors->any())
+	<div class="alert alert-danger">
+		<ul>
+			@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+			@endforeach
+		</ul>
+	</div>
+@endif
+
+<!-- Create Post Form -->
+
+
 {!! Form::open(array('route' => 'gamesession.store', 'method' => 'POST')) !!}
 {!! csrf_field() !!}
 <ul>

@@ -48,6 +48,12 @@ class GameSessionController extends Controller
     {
 
         //Validation
+        $validatedData = $request->validate([
+            'title' => 'required|unique:gamesessions|max:125',
+            'game' => 'max:50',
+            'description' => 'max:1024',
+        ]);
+
 
         //Game Session Creation
         $gameSession = GameSessionFactory::build($request);
