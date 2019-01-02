@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Factories\GameRoleFactory;
+use App\Factories\GameSessionFactory;
 use App\GameSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,19 +50,12 @@ class GameSessionController extends Controller
         //Validation
 
         //Game Session Creation
-        $gameSession = new GameSession();
-
-        $gameSession->user_id = $request->user()->id;
-        $gameSession->title = $request->title;
-        $gameSession->game = $request->game;
-        $gameSession->description = $request->description;
-        $gameSession->slug = str_slug($gameSession->title);
-
+        $gameSession = GameSessionFactory::build($request);
         $gameSession->save();
 
         //Assigning GameMaster to gamesession
-        $gameRoleFactory = GameRoleFactory::build($gameSession->user_id,$gameSession->id,'GameMaster');
-        $gameRoleFactory->save();
+        $gameRole = GameRoleFactory::build($gameSession->user_id,$gameSession->id,'GameMaster');
+        $gameRole->save();
 
         //returning view
         return redirect()->route('gamesession.index');
