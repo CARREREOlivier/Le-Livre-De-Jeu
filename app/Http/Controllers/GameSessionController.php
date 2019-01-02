@@ -74,8 +74,13 @@ class GameSessionController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function show($id)
+    public function show($slug)
     {
+
+        $gameSession = GameSession::where('slug', $slug)->first();
+
+
+        return view('gamesessions.gameSessionShow')->with('gameSession', $gameSession);
 
     }
 

@@ -38,7 +38,7 @@
                             <td>{{$gamesession->getUserNames->name}}</td>
                             <td>{{$gamesession->created_at}}</td>
                             <td>
-                                <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                                <a href="{{url("gamesession/$gamesession->slug")}}" class="btn btn-primary btn-lg" role="button"><i class="fas fa-eye"></i></a>
 
                                 <button type="button" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>
                                 </button>
