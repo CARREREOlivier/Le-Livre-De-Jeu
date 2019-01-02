@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\GameRoleFactory;
 use App\GameSession;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class GameSessionController extends Controller
 {
@@ -47,6 +46,9 @@ class GameSessionController extends Controller
     public function store(Request $request)
     {
 
+        //Validation
+
+        //Game Session Creation
         $gameSession = new GameSession();
 
         $gameSession->user_id = $request->user()->id;
@@ -57,6 +59,11 @@ class GameSessionController extends Controller
 
         $gameSession->save();
 
+        //Assigning GameMaster to gamesession
+        $gameRoleFactory = GameRoleFactory::build($gameSession->user_id,$gameSession->id,'GameMaster');
+        $gameRoleFactory->save();
+
+        //returning view
         return redirect()->route('gamesession.index');
 
     }
