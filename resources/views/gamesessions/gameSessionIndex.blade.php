@@ -1,10 +1,17 @@
+
 @extends('layouts.app')
 
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <button type="button" class="btn btn-primary btn-lg">Créer une nouvelle partie</button>
+
+                @auth
+                    <a href="{{route('gamesession.create')}}" class="btn btn-primary btn-lg" role="button">
+                        Créer une nouvelle partie
+                    </a>
+                @endauth
+
                 <table class="table table-hover">
 
                     <thead>

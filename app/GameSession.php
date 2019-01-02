@@ -15,9 +15,11 @@ class GameSession extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $fillable = ['title', 'game', 'description'];
+
     public function getUserNames(){
 
-        return $this->hasOne('App\User', "id");
+        return $this->belongsTo('App\User', "user_id");
 
     }
 

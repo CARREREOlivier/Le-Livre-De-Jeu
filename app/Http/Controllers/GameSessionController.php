@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\GameSession;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class GameSessionController extends Controller
 {
@@ -20,7 +22,6 @@ class GameSessionController extends Controller
         $gameSessions = GameSession::with('getUserNames:id,name')->get();
 
 
-
         return view('gamesessions.gameSessionIndex')->with('gamesessions', $gameSessions);
     }
 
@@ -31,7 +32,11 @@ class GameSessionController extends Controller
      */
     public function create()
     {
-
+        if (isset (Auth::user()->id)) {
+            return view('gamesessions.gameSessionsNew');
+        } else {
+            return view('utils.authentificationRequired');
+        }
     }
 
     /**
@@ -41,6 +46,18 @@ class GameSessionController extends Controller
      */
     public function store(Request $request)
     {
+
+        $gameSession = new GameSession();
+
+        $gameSession->user_id = $request->user()->id;
+        $gameSession->title = $request->title;
+        $gameSession->game = $request->game;
+        $gameSession->description = $request->description;
+        $gameSession->slug = str_slug($gameSession->title);
+
+        $gameSession->save();
+
+        return redirect()->route('gamesession.index');
 
     }
 

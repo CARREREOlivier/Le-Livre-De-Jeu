@@ -1,9 +1,7 @@
-{!! Form::open(array('route' => 'route.name', 'method' => 'POST')) !!}
-	<ul>
-		<li>
-			{!! Form::label('user_id', 'User_id:') !!}
-			{!! Form::text('user_id') !!}
-		</li>
+{!! Form::open(array('route' => 'gamesession.store', 'method' => 'POST')) !!}
+{!! csrf_field() !!}
+<ul>
+
 		<li>
 			{!! Form::label('title', 'Title:') !!}
 			{!! Form::text('title') !!}
@@ -16,10 +14,7 @@
 			{!! Form::label('description', 'Description:') !!}
 			{!! Form::textarea('description') !!}
 		</li>
-		<li>
-			{!! Form::label('slug', 'Slug:') !!}
-			{!! Form::text('slug') !!}
-		</li>
+
 		<li>
 			{!! Form::submit() !!}
 		</li>
