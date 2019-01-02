@@ -69,11 +69,12 @@ class GameSessionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     *  Display the specified resource.
      *
-     * @param  int $id
-     * @return Response
+     * @param $slug
+     * @return $this
      */
+
     public function show($slug)
     {
 
@@ -109,11 +110,17 @@ class GameSessionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return Response
+     * @param $slug
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+
+    public function destroy($slug)
     {
+        //deleting entry
+        GameSession::where('slug', $slug)->first()->delete();
+
+        //returning view
+        return redirect()->route('gamesession.index');
 
     }
 

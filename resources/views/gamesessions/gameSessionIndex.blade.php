@@ -38,13 +38,21 @@
                             <td>{{$gamesession->getUserNames->name}}</td>
                             <td>{{$gamesession->created_at}}</td>
                             <td>
-                                <a href="{{url("gamesession/$gamesession->slug")}}" class="btn btn-primary btn-lg" role="button"><i class="fas fa-eye"></i></a>
-
+                                   <form action="{{ route('gamesession.show', $gamesession->slug) }}" method="GET">
+                                       @method('GET')
+                                       @csrf
+                                       <button><i class="fas fa-eye"></i></button>
+                                   </form>
+                                
                                 <button type="button" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>
                                 </button>
 
-                                <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i>
-                                </button>
+
+                                   <form action="{{ route('gamesession.destroy', $gamesession->slug) }}" method="POST">
+                                       @method('DELETE')
+                                       @csrf
+                                       <button><i class="fas fa-trash"></i></button>
+                                   </form>
                             </td>
 
                         </tr>
