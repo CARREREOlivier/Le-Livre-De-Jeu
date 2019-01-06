@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('Upload', 'user_id');
     }
+
+    public function getGameRoles()
+    {
+        return $this->hasMany('App\GameRole', 'user_id');
+    }
 }
