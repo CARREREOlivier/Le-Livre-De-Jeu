@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -38,21 +37,23 @@
                             <td>{{$gamesession->getUserNames->name}}</td>
                             <td>{{$gamesession->created_at}}</td>
                             <td>
-                                   <form action="{{ route('gamesession.show', $gamesession->slug) }}" method="GET">
-                                       @method('GET')
-                                       @csrf
-                                       <button><i class="fas fa-eye"></i></button>
-                                   </form>
-                                
-                                <button type="button" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i>
-                                </button>
+                                <form action="{{ route('gamesession.show', $gamesession->slug) }}" method="GET">
+                                    @method('GET')
+                                    @csrf
+                                    <button><i class="fas fa-eye"></i></button>
+                                </form>
 
+                                <form action="{{ route('gamesession.edit', $gamesession->slug) }}" method="GET">
+                                    @method('GET')
+                                    @csrf
+                                    <button><i class="fas fa-edit"></i></button>
+                                </form>
 
-                                   <form action="{{ route('gamesession.destroy', $gamesession->slug) }}" method="POST">
-                                       @method('DELETE')
-                                       @csrf
-                                       <button><i class="fas fa-trash"></i></button>
-                                   </form>
+                                <form action="{{ route('gamesession.destroy', $gamesession->slug) }}" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button><i class="fas fa-trash"></i></button>
+                                </form>
                             </td>
 
                         </tr>
