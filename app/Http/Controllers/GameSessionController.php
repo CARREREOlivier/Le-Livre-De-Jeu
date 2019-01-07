@@ -6,6 +6,7 @@ use App\Factories\GameRoleFactory;
 use App\Factories\GameSessionFactory;
 use App\GameRole;
 use App\GameSession;
+use App\GameTurn;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -100,7 +101,10 @@ class GameSessionController extends Controller
     {
 
         $gameSession = GameSession::where('slug', $slug)->first();
-        return view('gamesessions.gameSessionShow')->with('gameSession', $gameSession);
+        $gameTurns = GameTurn::where('gamesessions_id',$gameSession->id )->get();//TODO: correct column name
+        return view('gamesessions.gameSessionShow')
+            ->with('gameSession', $gameSession)
+            ->with('gameTurns', $gameTurns);
 
     }
 
