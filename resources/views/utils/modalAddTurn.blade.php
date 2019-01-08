@@ -5,7 +5,7 @@
 <div class="modal fade" id="modalAddTurn" style="display: none;">
     <div class="modal-dialog modal-confirm">
 
-        @include("gameturns")
+        @include("gameturns.form.gameturns")
 
     </div>
 </div>

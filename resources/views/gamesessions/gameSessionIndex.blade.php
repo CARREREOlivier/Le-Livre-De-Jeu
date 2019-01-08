@@ -42,18 +42,22 @@
                                     @csrf
                                     <button><i class="fas fa-eye"></i></button>
                                 </form>
+                                @auth
+                                    @if(Auth::User()->id == $gamesession->getUserNames->id )
+                                        <form action="{{ route('gamesession.edit', $gamesession->slug) }}" method="GET">
+                                            @method('GET')
+                                            @csrf
+                                            <button><i class="fas fa-edit"></i></button>
+                                        </form>
 
-                                <form action="{{ route('gamesession.edit', $gamesession->slug) }}" method="GET">
-                                    @method('GET')
-                                    @csrf
-                                    <button><i class="fas fa-edit"></i></button>
-                                </form>
-
-                                <form action="{{ route('gamesession.destroy', $gamesession->slug) }}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button><i class="fas fa-trash"></i></button>
-                                </form>
+                                        <form action="{{ route('gamesession.destroy', $gamesession->slug) }}"
+                                              method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    @endif
+                                @endauth
                             </td>
 
                         </tr>

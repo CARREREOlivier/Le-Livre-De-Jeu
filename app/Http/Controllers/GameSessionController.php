@@ -10,6 +10,7 @@ use App\GameTurn;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class GameSessionController extends Controller
@@ -25,16 +26,16 @@ class GameSessionController extends Controller
 
         $gameSessions = GameSession::with('getUserNames:id,name')->get();
 
-
-        return view('gamesessions.gameSessionIndex')->with('gamesessions', $gameSessions);
+        return view('gamesessions.gameSessionIndex')
+            ->with('gamesessions', $gameSessions);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+     public function create()
     {
 
         /**
@@ -118,7 +119,7 @@ class GameSessionController extends Controller
     {
         //getting concerned gamesession for sending its data back to user
         $gameSession = GameSession::where('slug', $slug)->first();
-
+        if (Gate::allows('gamesession.edit', $gameSession)) {
         $gameSessionId = $gameSession->id;
 
         $users = $this->getPotentialPlayers();
@@ -155,6 +156,7 @@ class GameSessionController extends Controller
             ->with('players', $players)
             ->with('gamemasters',$gameMasters);
 
+    }else return view('utils.authentificationRequired');
     }
 
 
@@ -168,7 +170,12 @@ class GameSessionController extends Controller
     public function update(Request $request, $id)
     {
 
+
         $gamesession = GameSession::findOrFail($id);//findorfail avoids to write a bit of code to launch a 404page if query fails.
+        if (Gate::allows('gamesession.update', $gamesession)) {
+            // The current user can update the gamesession...
+
+
         $gameSessionId = $id;//for clarity later in the code
 
         //update gamesession
@@ -204,6 +211,7 @@ class GameSessionController extends Controller
 
         //return to view to visually check the update
         return $this->show($gamesession->slug);
+        }else  return view('home');
     }
 
     /**
