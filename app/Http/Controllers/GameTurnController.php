@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Factories\GameTurnFactory;
+use App\GameSession;
 use App\GameTurn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -99,6 +100,12 @@ class GameTurnController extends Controller
      */
     public function destroy($id)
     {
+        $gameTurn=GameTurn::findOrFail($id);
+       // $gameSession = GameSession::findOrFail($gameTurn->gamesessions_id);
+
+        $gameTurn->delete();
+
+        return redirect()->back();
 
     }
 

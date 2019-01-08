@@ -18,12 +18,16 @@
             <div class="col-lg-6">
                 @foreach($gameTurns as $gameTurn)
 
-                        <div class="card">
+                    <div class="card">
                         <h5 class="card-title">{{$gameTurn->title}}</h5>
                         <p class="card-text"> {{$gameTurn->description}}</p>
-                        </div>
-
-            @endforeach
+                    </div>
+                    @auth
+                        @if(Auth::User()->id == $gameSession->user_id)
+                            @include("utils.modalDeleteTurn")
+                        @endif
+                    @endauth
+                @endforeach
             </div>
         </div>
         <div class="col-lg-2"></div>

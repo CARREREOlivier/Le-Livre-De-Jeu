@@ -13,11 +13,13 @@
                 <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
             </div>
             <div class="modal-body">
-                <p>Voulez-vous vraiment effacer ce tour? Cette opération est irréversible comme l'ablation d'un rein.</p>
+                <p>Voulez-vous vraiment effacer ce tour? Cette opération est <a href="https://www.larousse.fr/dictionnaires/francais/irréversible/44347">irréversible</a></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-info" type="button" data-dismiss="modal">Annuler</button>
-                <button class="btn btn-danger" type="button">Effacer</button>
+                {{ Form::open(['route' => ['gameturn.destroy', $gameTurn->id], 'method' => 'delete']) }}
+                <button type="submit" class="btn btn-danger">Effacer</button>
+                {{ Form::close() }}
             </div>
         </div>
     </div>
