@@ -9,7 +9,7 @@
                 <p class="card-text">{{$gameSession->description}}</p>
                 @auth
                     @if(Auth::User()->id == $gameSession->user_id)
-                        @include("utils.modalAddTurn")
+                        @include("gamesessions.modals.modalAddTurn")
                     @endif
                 @endauth
 
@@ -24,7 +24,8 @@
                     </div>
                     @auth
                         @if(Auth::User()->id == $gameSession->user_id)
-                            @include("utils.modalDeleteTurn")
+                            @include("gamesessions.modals.modalEditTurn")
+                            @include("gamesessions.modals.modalDeleteTurn")
                         @endif
                     @endauth
                 @endforeach

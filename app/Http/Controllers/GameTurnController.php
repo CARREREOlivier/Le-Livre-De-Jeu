@@ -87,8 +87,18 @@ class GameTurnController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
+
+        $gameTurn = GameTurn::findOrFail($id);
+
+        $gameTurn->title = $request->title;
+        $gameTurn->description = $request->description;
+
+
+        $gameTurn->save();
+
+        return redirect()->back();
 
     }
 
