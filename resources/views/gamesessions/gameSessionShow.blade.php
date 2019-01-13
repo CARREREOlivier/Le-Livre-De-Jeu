@@ -11,11 +11,6 @@
                 @auth
                     @if(Auth::User()->id == $gameSession->user_id)
                         @include("gamesessions.modals.modalAddTurn")
-                        <label class="switch" id="lockSwitch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                        <div id="lockText">1st text</div>
                     @endif
                 @endauth
 
@@ -73,14 +68,4 @@
         <div class="col-lg-2"></div>
     </div>
 
-    <script>
-        $('document').ready(function () {
-            //variables
-            var myDiv = document.getElementById("lockText");
-            myDiv.innerHTML = "Content To Show";
-
-        })
-
-
-    </script>
 @endsection
