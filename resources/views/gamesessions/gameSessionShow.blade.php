@@ -20,21 +20,34 @@
                 @foreach($gameTurns as $gameTurn)
 
                     <div class="card">
-                        <h5 class="card-title">{{$gameTurn->title}}</h5>
+                        <h5 class="card-title">{{$gameTurn->title}} </h5>
+                        <!-- turn lock management-->
+                        @if($gameTurn->locked == true and Auth::User()->id == $gameSession->user_id )
+                        <p>statut : <i class="fas fa-lock"></i></p>
+                            {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
+                            {!! Form::submit('Déverrouiller', array('class'=>'btn btn-primary')) !!}
+                            {{ Form::close() }}
+                        @elseif($gameTurn->locked == false and Auth::User()->id == $gameSession->user_id)
+                            <p>statut : <i class="fas fa-lock-open"></i></p>
+                        {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
+                        {!! Form::submit('Verrouiller', array('class'=>'btn btn-primary')) !!}
+                        {{ Form::close() }}
+                        @endif
                         <p class="card-text"> {{$gameTurn->description}}</p>
-                        <p class="card-text"> {{$gameTurn->id}}</p>
 
                     </div>
-                    @auth
-                        @if(Auth::User()->id == $gameSession->user_id)
+
+                        @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
+
                             @include("gamesessions.modals.modalEditTurn")
                             @include("gamesessions.modals.modalDeleteTurn")
+
                         @endif
-                    @endauth
+
 
                 <!--Order Modal and Button-->
                     @auth
-                        @if($gameTurn->id == $lastTurnId and $canSendOrder == true)
+                        @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
                             @include("gamesessions.modals.modalTurnOrders")
                         @endif
                     @endauth

@@ -39,7 +39,7 @@ class GameTurnController extends Controller
     public function store(Request $request)
     {
         //validation
-        $validatedData=Validator::make($request->all(),[
+        $validatedData = Validator::make($request->all(), [
             'title' => 'required|unique:gameturns|max:126',
             'description' => 'max:1024',
         ]);
@@ -110,10 +110,27 @@ class GameTurnController extends Controller
      */
     public function destroy($id)
     {
-        $gameTurn=GameTurn::findOrFail($id);
-       // $gameSession = GameSession::findOrFail($gameTurn->gamesessions_id);
+        $gameTurn = GameTurn::findOrFail($id);
+        // $gameSession = GameSession::findOrFail($gameTurn->gamesessions_id);
 
         $gameTurn->delete();
+
+        return redirect()->back();
+
+    }
+
+    public function lock($id)
+    {
+
+
+        $gameTurn = GameTurn::findOrFail($id);
+        if ($gameTurn->locked == false) {
+            $gameTurn->locked = true;
+
+        } else {
+            $gameTurn->locked = false;
+        }
+        $gameTurn->save();
 
         return redirect()->back();
 

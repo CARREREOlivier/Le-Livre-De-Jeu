@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('user', 'UserController');
 Route::resource('gamesession', 'GameSessionController');
+Route::post('gameturn/lock-{id}', 'GameTurnController@lock')->name('gameturn.lock');
 Route::resource('gameturn', 'GameTurnController');
 Route::resource('gamerole', 'GameRoleController');
 Route::resource('story', 'StoryController');
@@ -41,3 +42,4 @@ Route::resource('tutorialpost', 'TutorialPostController');
 Route::resource('tutorialcomment', 'TutorialCommentController');
 Route::resource('upload', 'UploadController');
 Route::resource('turnorder', 'TurnOrderController');
+
