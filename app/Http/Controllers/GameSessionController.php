@@ -107,7 +107,13 @@ class GameSessionController extends Controller
 
         $gameTurns = GameTurn::where('gamesessions_id', $gameSession->id)->get();//TODO: correct column nam//$turnOrders = TurnOrder::where('gameTurn_id',$gameSession->id)->get();
         $lastTurn = $gameTurns->last();
-        $last = $lastTurn->id;
+
+        if (isset($lastTurn)) {
+            $last = $lastTurn->id;
+        }else{
+            $last=-1;
+
+        }
 
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
             ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
