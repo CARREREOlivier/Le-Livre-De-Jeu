@@ -14,6 +14,7 @@ class CreateGameturnsTable extends Migration {
 			$table->integer('user_id')->unsigned();
 			$table->integer('gamesessions_id')->unsigned();
 			$table->string('title');
+			$table->boolean('locked')->default(false);
 			$table->text('description')->nullable();
 		});
 	}
