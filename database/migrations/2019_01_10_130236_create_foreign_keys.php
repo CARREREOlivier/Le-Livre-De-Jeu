@@ -133,6 +133,26 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
+		Schema::table('turnorders', function(Blueprint $table) {
+			$table->foreign('gameturn_id')->references('id')->on('gameturns')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
+		Schema::table('turnorders', function(Blueprint $table) {
+			$table->foreign('user_id')->references('id')->on('users')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
+		Schema::table('turncomments', function(Blueprint $table) {
+			$table->foreign('user_id')->references('id')->on('users')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
+		Schema::table('turncomments', function(Blueprint $table) {
+			$table->foreign('gameturn_id')->references('id')->on('gameturns')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
 	}
 
 	public function down()
@@ -211,6 +231,18 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('uploads', function(Blueprint $table) {
 			$table->dropForeign('uploads_user_id_foreign');
+		});
+		Schema::table('turnorders', function(Blueprint $table) {
+			$table->dropForeign('turnorders_gameturn_id_foreign');
+		});
+		Schema::table('turnorders', function(Blueprint $table) {
+			$table->dropForeign('turnorders_user_id_foreign');
+		});
+		Schema::table('turncomments', function(Blueprint $table) {
+			$table->dropForeign('turncomments_user_id_foreign');
+		});
+		Schema::table('turncomments', function(Blueprint $table) {
+			$table->dropForeign('turncomments_gameturn_id_foreign');
 		});
 	}
 }

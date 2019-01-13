@@ -25,6 +25,7 @@
     <div class="modal-footer">
         <button class="btn btn-info" type="button" data-dismiss="modal">Annuler</button>
         {!! Form::submit('Mettre à jour', array('class'=>'btn btn-primary')) !!}
-        {!! Form::close() !!}
+
     </div>
+    {!! Form::close() !!}
 </div>

@@ -5,21 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GameTurn extends Model 
+class TurnOrder extends Model 
 {
 
-    protected $table = 'gameturns';
+    protected $table = 'turnorders';
     public $timestamps = true;
-
+    protected $fillable = ['message'];
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-
-
-    function getOrders(){
-
-        return $this->hasMany('TurnOrder','user_id');
-
-    }
 
 }

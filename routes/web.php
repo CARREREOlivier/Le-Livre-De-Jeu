@@ -40,3 +40,4 @@ Route::resource('tutorial', 'TutorialController');
 Route::resource('tutorialpost', 'TutorialPostController');
 Route::resource('tutorialcomment', 'TutorialCommentController');
 Route::resource('upload', 'UploadController');
+Route::resource('turnorder', 'TurnOrderController');
