@@ -1,5 +1,5 @@
 <!-- Button HTML (to Trigger Modal) -->
-<a class="trigger-btn" href="#modalDeleteTurn" data-toggle="modal"><i class="fas fa-trash"></i>Effacer le tour</a>
+<a class="btn btn-danger" href="#modalDeleteTurn" data-toggle="modal" role="button"><i class="fas fa-trash"></i>Effacer le tour</a>
 
 <!-- Modal HTML -->
 <div class="modal fade" id="modalDeleteTurn" style="display: none;">

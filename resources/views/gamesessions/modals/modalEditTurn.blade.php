@@ -1,5 +1,5 @@
 <!-- Button HTML (to Trigger Modal) -->
-<a class="trigger-btn" href="#modalEditTurn" data-toggle="modal"><i class="fas fa-edit"></i>Editer un tour</a>
+<a class="btn btn-warning" href="#modalEditTurn" data-toggle="modal" role="button"><i class="fas fa-edit"></i>Editer le tour</a>
 
 <!-- Modal HTML -->
 <div class="modal fade" id="modalEditTurn" style="display: none;">

@@ -2,84 +2,72 @@
 
 @section('content')
 
-    <div class="container-fluid">
-        <div class="col-lg-12">
-            <div class="card">
-                <h5 class="card-title">{{$gameSession->title}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{$gameSession->game}}</h6>
-                <p class="card-text">{{$gameSession->description}}</p>
+    <div class="container mt-5 mb-5">
+        <div class="jumbotron">
+            <h1 class="display-4">{{$gameSession->title}}</h1>
+            <p class="lead">{{$gameSession->description}}
+            <hr class="my-4">
+
+            <p class="lead">
                 @auth
                     @if(Auth::User()->id == $gameSession->user_id)
                         @include("gamesessions.modals.modalAddTurn")
                     @endif
                 @endauth
-
-            </div>
-            <div class="col-lg-4"></div>
-            <div class="col-lg-6">
-                @foreach($gameTurns as $gameTurn)
-
-                    <div class="card">
-                        <h5 class="card-title">{{$gameTurn->title}} </h5>
-                        <!-- turn lock management-->
-                        @auth
-                            @if($gameTurn->locked == true and Auth::User()->id == $gameSession->user_id )
-                                <p>statut : <i class="fas fa-lock"></i></p>
-                                {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
-                                {!! Form::submit('Déverrouiller', array('class'=>'btn btn-primary')) !!}
-                                {{ Form::close() }}
-                            @elseif($gameTurn->locked == false and Auth::User()->id == $gameSession->user_id)
-                                <p>statut : <i class="fas fa-lock-open"></i></p>
-                                {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
-                                {!! Form::submit('Verrouiller', array('class'=>'btn btn-primary')) !!}
-                                {{ Form::close() }}
-                            @endif
-                            <p class="card-text"> {{$gameTurn->description}}</p>
-                        @endauth
-                    </div>
-                    @auth
-                        @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
-
-                            @include("gamesessions.modals.modalEditTurn")
-                            @include("gamesessions.modals.modalDeleteTurn")
-
-                        @endif
-                    @endauth
-
-                <!--Order Modal and Button-->
-                    @auth
-                        @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
-                            @include("gamesessions.modals.modalTurnOrders")
-                        @endif
-                    @endauth
-                    <div>
-                        <table>
-                            <thead>
-                            <th scope="col">Joueur</th>
-                            <th scope="col">Message</th>
-                            <th>actions</th>
-                            </thead>
-                            <tbody>
-
-
-                            @foreach($orders as $order)
-                                @if($order->gameturn_id == $gameTurn->id)
-                                    <tr>
-                                        <td>{{$order->name}}</td>
-                                        <td>
-                                            {{$order->message}}</td>
-                                        <td>Editer - Supprimer.</td>
-                                    </tr>
-
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endforeach
-            </div>
+            </p>
         </div>
-        <div class="col-lg-2"></div>
-    </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
 
+                @foreach($gameTurns as $gameTurn)
+                    <p class="float-right">{{$gameTurn->created_at}}</p>
+                    <h4>{{$gameTurn->title}}</h4>
+
+                    @if($gameTurn->locked == true)
+                        <p class="text-left">statut : <i class="fas fa-lock"></i></p>
+                    @elseif($gameTurn->locked == false)
+                        <p class="text-left">statut : <i class="fas fa-lock-open"></i></p>
+                    @endif
+
+
+                    <p class="text-left">{{$gameTurn->description}}</p>
+
+                    <ul class="timeline">
+                        @auth
+                            @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
+                                @include("gamesessions.modals.modalTurnOrders")
+                            @endif
+                        @endauth
+                        @foreach($orders as $order)
+                            @if($order->gameturn_id == $gameTurn->id)
+                                <li> {{$order->name}} : {{$order->message}}Editer - Supprimer
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                    @auth
+                        <div class="row"> @if($gameTurn->locked == true and Auth::User()->id == $gameSession->user_id )
+                                <p>{{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
+                                    {!! Form::submit('Déverrouiller', array('class'=>'btn btn-primary')) !!}
+                                    {{ Form::close() }}</p>
+                            @elseif($gameTurn->locked == false and Auth::User()->id == $gameSession->user_id)
+                                <p>{{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
+                                    {!! Form::submit('Verrouiller', array('class'=>'btn btn-primary')) !!}
+                                    {{ Form::close() }}</p>
+                            @endif
+                            @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
+
+                                @include("gamesessions.modals.modalEditTurn")
+                                @include("gamesessions.modals.modalDeleteTurn")
+
+                            @endif</div>
+                    @endauth
+                    <br/>
+                @endforeach
+
+
+            </div>
+
+        </div>
+    </div>
 @endsection
