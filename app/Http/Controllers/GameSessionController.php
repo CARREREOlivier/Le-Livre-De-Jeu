@@ -110,8 +110,8 @@ class GameSessionController extends Controller
 
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
-        }else{
-            $last=-1;
+        } else {
+            $last = -1;
 
         }
 
@@ -121,7 +121,7 @@ class GameSessionController extends Controller
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
-        $canSendOrder = $this->canSendOrder($gameTurns, $last);
+        $canSendOrder = $this->canSendOrder($last);
 
 
         return view('gamesessions.gameSessionShow')
@@ -293,25 +293,30 @@ class GameSessionController extends Controller
     }
 
 
-    function canSendOrder($gameTurns, $last)
+    function canSendOrder($last)
     {
 
+            //if the user is logged in, (s)he must have an id then:
+        if (isset(Auth::user()->id)) {//If N1
 
-        $userId = Auth::user()->id;
-
-
-        //checking if user last order has the last turn id
-        $userOrders = TurnOrder::where('user_id', $userId)->where('gameturn_id', $last)->get();
-        // var_dump($userOrders);
+            $userId = Auth::user()->id;
 
 
-        //if Yes, it means the user has posted an order corresponding to the last turn.
-        // Hence it does not have to post a new order.
-        //If No, it means the user is either new to the gamesession or has not posted order on the last turn.
-        if (isset($userOrders[0])) {
+            //checking if user last order has the last turn id
+            $userOrders = TurnOrder::where('user_id', $userId)->where('gameturn_id', $last)->get();
+            // var_dump($userOrders);
+
+
+            //if Yes, it means the user has posted an order corresponding to the last turn.
+            // Hence it does not have to post a new order.
+            //If No, it means the user is either new to the gamesession or has not posted order on the last turn.
+            if (isset($userOrders[0])) {//if N2
+                return $canSendOrder = false;
+            } else {
+                return $canSendOrder = true;
+            }//If N2
+        } else { //if the user is not logged in:
             return $canSendOrder = false;
-        } else {
-            return $canSendOrder = true;
         }
     }
 }
