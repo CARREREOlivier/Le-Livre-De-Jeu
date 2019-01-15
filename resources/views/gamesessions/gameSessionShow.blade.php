@@ -40,7 +40,7 @@
                         @endauth
                         @foreach($orders as $order)
                             @if($order->gameturn_id == $gameTurn->id)
-                                <li> {{$order->name}} : {{$order->message}}Editer - Supprimer
+                                <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}} : {{$order->message}} Editer - Supprimer
                                 </li>
                             @endif
                         @endforeach

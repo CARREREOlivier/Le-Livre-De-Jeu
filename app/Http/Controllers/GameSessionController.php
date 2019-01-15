@@ -115,9 +115,16 @@ class GameSessionController extends Controller
 
         }
 
+       /*$orders = GameTurn::where('gamesessions_id', $gameSession->id)
+            ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
+            ->join('users', 'turnorders.user_id', '=', 'users.id')
+            ->get()
+            ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);*/
+
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
             ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
             ->join('users', 'turnorders.user_id', '=', 'users.id')
+            ->select('gameturns.*','users.*','turnorders.*','turnorders.created_at as orderDate')
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
