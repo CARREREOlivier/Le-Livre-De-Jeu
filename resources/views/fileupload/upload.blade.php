@@ -1,37 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('head')
     <link rel="stylesheet" href="{{ url('/css/dropzone.css') }}">
     <link rel="stylesheet" href="{{ url('/css/custom.css') }}">
 @endsection
+
 @section('js')
     <script src="{{ url('/js/jquery.js') }}"></script>
     <script src="{{ url('/js/dropzone.js') }}"></script>
     <script src="{{ url('/js/dropzone-config.js') }}"></script>
 @endsection
-@section('content')
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url('/files-create') }}">Upload</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/files-create') }}">Upload Images</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/files-show') }}">View Uploaded Files</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
-    <!--dropzone section-->
+@section('content')
+
     <div class="row">
         <div class="col-sm-10 offset-sm-1">
-            <h2 class="page-heading">Upload your Images <span id="counter"></span></h2>
+            <h2 class="page-heading">Uploader vos fichiers <span id="counter"></span></h2>
             <form method="post" action="{{ url('/files-save') }}"
                   enctype="multipart/form-data" class="dropzone" id="my-dropzone">
                 {{ csrf_field() }}
@@ -94,76 +78,4 @@
         </div>
     </div>
     {{--End of Dropzone Preview Template--}}
-    <!--end dropzone section-->
-
-    <div class="container mt-5 mb-5">
-        <div class="jumbotron">
-            <h1 class="display-4">{{$gameSession->title}}</h1>
-            <p class="lead">{{$gameSession->description}}
-            <hr class="my-4">
-
-            <p class="lead">
-                @auth
-                    @if(Auth::User()->id == $gameSession->user_id)
-                        @include("gamesessions.modals.modalAddTurn")
-                    @endif
-                @endauth
-            </p>
-        </div>
-        <div class="row">
-            <div class="col-md-10 offset-md-1">
-
-                @foreach($gameTurns as $gameTurn)
-                    <p class="float-right">{{$gameTurn->created_at}}</p>
-                    <h4>{{$gameTurn->title}}</h4>
-
-                    @if($gameTurn->locked == true)
-                        <p class="text-left">statut : <i class="fas fa-lock"></i></p>
-                    @elseif($gameTurn->locked == false)
-                        <p class="text-left">statut : <i class="fas fa-lock-open"></i></p>
-                    @endif
-
-
-                    <p class="text-left">{{$gameTurn->description}}</p>
-
-                    <ul class="timeline">
-                        @auth
-                            @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
-                                @include("gamesessions.modals.modalTurnOrders")
-                            @endif
-                        @endauth
-                        @foreach($orders as $order)
-                            @if($order->gameturn_id == $gameTurn->id)
-                                <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}}
-                                    : {{$order->message}} Editer - Supprimer
-                                </li>
-                            @endif
-                        @endforeach
-                    </ul>
-                    @auth
-                        <div class="row"> @if($gameTurn->locked == true and Auth::User()->id == $gameSession->user_id )
-                                <p>{{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
-                                    {!! Form::submit('Déverrouiller', array('class'=>'btn btn-primary')) !!}
-                                    {{ Form::close() }}</p>
-                            @elseif($gameTurn->locked == false and Auth::User()->id == $gameSession->user_id)
-                                <p>{{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
-                                    {!! Form::submit('Verrouiller', array('class'=>'btn btn-primary')) !!}
-                                    {{ Form::close() }}</p>
-                            @endif
-                            @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
-
-                                @include("gamesessions.modals.modalEditTurn")
-                                @include("gamesessions.modals.modalDeleteTurn")
-
-                            @endif</div>
-                    @endauth
-                    <br/>
-                @endforeach
-
-
-            </div>
-
-        </div>
-    </div>
 @endsection
-
