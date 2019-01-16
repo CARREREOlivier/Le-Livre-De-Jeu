@@ -40,6 +40,15 @@ Route::resource('infopost', 'InfoPostController');
 Route::resource('tutorial', 'TutorialController');
 Route::resource('tutorialpost', 'TutorialPostController');
 Route::resource('tutorialcomment', 'TutorialCommentController');
-Route::resource('upload', 'UploadController');
 Route::resource('turnorder', 'TurnOrderController');
 
+
+/**
+ * upload and dowload routes
+ *
+ **/
+
+Route::get('/files-create', 'UploadController@create');
+Route::post('/files-save', 'UploadController@store');
+Route::post('/files-delete', 'UploadController@destroy');
+Route::get('/files-show', 'UploadController@index');
