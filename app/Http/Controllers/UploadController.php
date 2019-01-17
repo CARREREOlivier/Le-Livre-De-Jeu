@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\GameTurn;
 use \App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -84,11 +85,14 @@ class UploadController extends Controller
             $upload->category = $request->category;
             $upload->entity_id = $request->entity_id;
 
+
             $upload->save();
+            error_log("category: $upload->category ");
+            error_log("entity_id : $upload->entity_id");
 
             switch ($upload->category) {
                 case 'gameturns':
-                    error_log("gameturns user_id:" . $request->user()->id);
+                    $this->rewriteGameTurn($upload->entity_id, $upload->filename);
                     break;
                 case 'story_post':
                     error_log("story_post user_id: $request->user_id ");
@@ -141,6 +145,22 @@ class UploadController extends Controller
 
         return Response::json(['message' => 'File successfully delete'], 200);
     }
+
+
+    function rewriteGameTurn($gameTurnId,$filename){
+
+        $gameTurn = GameTurn::where('id',$gameTurnId)->firstOrFail();
+        $file = Upload::where('filename',$filename)->firstOrFail();
+
+        $description = $gameTurn->description;
+
+        $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
+
+        $gameTurn->description = $description." ".$downloadLink;
+        $gameTurn->save();
+
+    }
+
 }
 
 ?>

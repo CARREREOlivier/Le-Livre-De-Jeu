@@ -45,7 +45,7 @@
                     @endif
 
 
-                    <p class="text-left">{{$gameTurn->description}}</p>
+                    <p class="text-left">{!! $gameTurn->description!!}</p>
 
                     <ul class="timeline">
                         @auth

@@ -12,22 +12,20 @@
 
 {!! Form::open(array('route' => 'gamesession.store', 'method' => 'POST')) !!}
 {!! csrf_field() !!}
-<ul>
+<table>
+<tbody>
+        <tr><td>{!! Form::label('title', 'Titre de la partie (obligatoire):') !!}</td>
+            <td> {!! Form::text('title') !!}</td></tr>
 
-    <li>
-        {!! Form::label('title', 'Title:') !!}
-        {!! Form::text('title') !!}
-    </li>
-    <li>
-        {!! Form::label('game', 'Game:') !!}
-        {!! Form::text('game') !!}
-    </li>
-    <li>
-        {!! Form::label('description', 'Description:') !!}
-        {!! Form::textarea('description') !!}
-    </li>
+        <tr><td>{!! Form::label('game', 'Jeu (optionnel):') !!}</td>
+            <td> {!! Form::text('game') !!}</td></tr>
 
-</ul>
+        <tr><td>{!! Form::label('description', 'Description (optionnel):') !!}</td>
+            <td>{!! Form::textarea('description') !!}</td></tr>
+</tbody>
+
+
+</table>
 <!--this button allows to expand the users' list tyhrough a collpasible-->
 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUserList"
         aria-expanded="false" aria-controls="collapseUserList">
@@ -59,7 +57,7 @@
         </table>
     </div>
 </div>
-{!! Form::submit() !!}
+{!! Form::submit('Créer', array('class'=>'btn btn-primary')) !!}
 {!! Form::close() !!}
 <div id="ecriture"></div>
 <!--script for search bar-->
