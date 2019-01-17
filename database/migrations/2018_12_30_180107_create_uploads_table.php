@@ -15,7 +15,7 @@ class CreateUploadsTable extends Migration {
 			$table->text('resized_name');
 			$table->text('original_name');
 			$table->integer('user_id')->unsigned();
-			$table->enum('category', array('gameturns', 'story_post', 'info_post', 'uncategorized', 'tutorial_post'));
+			$table->enum('category', array('turnorders','gameturns', 'story_post', 'info_post', 'uncategorized', 'tutorial_post'));
 			$table->integer('entity_id')->nullable();
 		});
 	}
