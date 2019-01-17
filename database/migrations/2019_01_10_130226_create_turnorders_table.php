@@ -10,10 +10,9 @@ class CreateTurnordersTable extends Migration {
 		Schema::create('turnorders', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('gameturn_id')->unsigned();
 			$table->integer('user_id')->unsigned();
-			$table->string('message');
+			$table->string('message')->nullable;
 		});
 	}
 
