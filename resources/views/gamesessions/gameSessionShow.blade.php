@@ -57,7 +57,8 @@
                                     : {{$order->message}}
                                     @auth
                                         @if($order->user_id == Auth::User()->id)
-                                            ajouter fichier - Editer - Supprimer
+                                            ajouter fichier - Editer -
+                                            @include('gamesessions.modals.modalDeleteOrder')
                                         @endif
                                     @endauth
                                 </li>

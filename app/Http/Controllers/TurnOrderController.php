@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\GameTurn;
-use App\TurnOrder;
+use \App\TurnOrder;
 use Illuminate\Http\Request;
 
-class TurnOrderController extends Controller 
+class TurnOrderController extends Controller
 {
 
   /**
@@ -16,7 +16,7 @@ class TurnOrderController extends Controller
    */
   public function index()
   {
-    
+
   }
 
   /**
@@ -26,7 +26,7 @@ class TurnOrderController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -57,7 +57,7 @@ class TurnOrderController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -68,7 +68,7 @@ class TurnOrderController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -79,7 +79,7 @@ class TurnOrderController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -90,7 +90,13 @@ class TurnOrderController extends Controller
    */
   public function destroy($id)
   {
-    
+      error_log("entrée dans le controleur! ordre: $id");
+    $turnOrder = TurnOrder::where('id',$id)->get()->each->delete(); //FIXME: strange... it seems to not recognize the id as primary key.
+      error_log("ai trouvé l'ordre");
+
+      error_log("deleté!");
+    return redirect()->back();
+
   }
   
 }
