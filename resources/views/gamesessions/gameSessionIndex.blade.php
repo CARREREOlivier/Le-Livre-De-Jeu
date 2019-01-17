@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-
+                <h2>liste des parties</h2>
                 @auth
                     <a href="{{route('gamesession.create')}}" class="btn btn-primary btn-lg" role="button">
                         Créer une nouvelle partie
