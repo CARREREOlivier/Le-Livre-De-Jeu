@@ -17,7 +17,7 @@
                 @include('gamesessions._partials.dropzoneTurn')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" value="Refresh Page" onClick="history.go(0)">Fermer</button>
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@
     <div class="container mt-5 mb-5">
         <div class="jumbotron">
             <h1 class="display-4">{{$gameSession->title}}</h1>
-            <p class="lead">{{$gameSession->description}}
+            <p class="lead">{!! $gameSession->description!!}
             <hr class="my-4">
 
             <p class="lead">
@@ -56,7 +56,7 @@
                         @foreach($orders as $order)
                             @if($order->gameturn_id == $gameTurn->id)
                                 <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}}
-                                    : {{$order->message}} Editer - Supprimer
+                                    : {{$order->message}} ajouter fichier - Editer - Supprimer
                                 </li>
                             @endif
                         @endforeach
