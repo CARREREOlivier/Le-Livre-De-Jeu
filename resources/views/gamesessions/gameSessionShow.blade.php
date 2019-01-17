@@ -11,8 +11,6 @@
 @endsection
 @section('content')
 
-
-
     <div class="container mt-5 mb-5">
         <div class="jumbotron">
             <h1 class="display-4">{{$gameSession->title}}</h1>
@@ -56,7 +54,12 @@
                         @foreach($orders as $order)
                             @if($order->gameturn_id == $gameTurn->id)
                                 <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}}
-                                    : {{$order->message}} ajouter fichier - Editer - Supprimer
+                                    : {{$order->message}}
+                                    @auth
+                                        @if($order->user_id == Auth::User()->id)
+                                            ajouter fichier - Editer - Supprimer
+                                        @endif
+                                    @endauth
                                 </li>
                             @endif
                         @endforeach
