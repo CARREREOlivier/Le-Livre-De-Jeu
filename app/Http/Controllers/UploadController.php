@@ -81,7 +81,28 @@ class UploadController extends Controller
             $upload->resized_name = $resize_name;
             $upload->original_name = basename($photo->getClientOriginalName());
             $upload->user_id = $request->user()->id;
+            $upload->category = $request->category;
+            $upload->entity_id = $request->entity_id;
+
             $upload->save();
+
+            switch ($upload->category) {
+                case 'gameturns':
+                    error_log("gameturns user_id:" . $request->user()->id);
+                    break;
+                case 'story_post':
+                    error_log("story_post user_id: $request->user_id ");
+                    break;
+                case 'info_post':
+                    error_log("info_post user_id: $request->user_id ");
+                    break;
+                case 'uncategorized':
+                    error_log("uncategorized user_id: $request->user_id ");
+                    break;
+                case 'tutorial_post':
+                    error_log("uncategorized user_id: $request->user_id ");
+                    break;
+            }
 
         }
         return Response::json([
