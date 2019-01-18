@@ -80,6 +80,8 @@ class TurnOrderController extends Controller
   public function update($id)
   {
 
+
+
   }
 
   /**
@@ -90,11 +92,8 @@ class TurnOrderController extends Controller
    */
   public function destroy($id)
   {
-      error_log("entrée dans le controleur! ordre: $id");
-    $turnOrder = TurnOrder::where('id',$id)->get()->each->delete(); //FIXME: strange... it seems to not recognize the id as primary key.
-      error_log("ai trouvé l'ordre");
+    TurnOrder::where('id',$id)->get()->each->delete(); //FIXME: strange... it seems to not recognize the id as primary key.
 
-      error_log("deleté!");
     return redirect()->back();
 
   }
