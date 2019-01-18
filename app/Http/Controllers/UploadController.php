@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\GameTurn;
+use \App\TurnOrder;
 use \App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -66,9 +67,9 @@ class UploadController extends Controller
             $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
 
             $extension = $photo->getClientOriginalExtension();
-            $allowedImagesFormat = array('jpeg','jpg', 'gif', 'png', 'bmp');
+            $allowedImagesFormat = array('jpeg', 'jpg', 'gif', 'png', 'bmp');
 
-            if (in_array($extension, $allowedImagesFormat)){
+            if (in_array($extension, $allowedImagesFormat)) {
                 Image::make($photo)
                     ->resize(48, null, function ($constraints) {
                         $constraints->aspectRatio();
@@ -93,6 +94,10 @@ class UploadController extends Controller
             switch ($upload->category) {
                 case 'gameturns':
                     $this->rewriteGameTurn($upload->entity_id, $upload->filename);
+                    break;
+                case 'turnorders':
+                    error_log('in case of turnorders');
+                    $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
                     break;
                 case 'story_post':
                     error_log("story_post user_id: $request->user_id ");
@@ -147,19 +152,43 @@ class UploadController extends Controller
     }
 
 
-    function rewriteGameTurn($gameTurnId,$filename){
+    function rewriteGameTurn($gameTurnId, $filename)
+    {
 
-        $gameTurn = GameTurn::where('id',$gameTurnId)->firstOrFail();
-        $file = Upload::where('filename',$filename)->firstOrFail();
+        $gameTurn = GameTurn::where('id', $gameTurnId)->firstOrFail();
+        $file = Upload::where('filename', $filename)->firstOrFail();
 
         $description = $gameTurn->description;
 
         $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
 
-        $gameTurn->description = $description." ".$downloadLink;
+        $gameTurn->description = $description . " " . $downloadLink;
         $gameTurn->save();
 
     }
+
+    function rewriteTurnOrder($TurnOrderId, $filename)
+    {
+        error_log('rewriteTurnOrder');
+        error_log("TurnOrder $TurnOrderId");
+        error_log("filemane $filename");
+
+        $turnorder = TurnOrder::where('id', $TurnOrderId)->firstOrFail();
+        if (isset($turnorder)) {
+            error_log("turnorder is not null");
+        }else{error_log("turnorder is null" );}
+        $file = Upload::where('filename', $filename)->firstOrFail();
+        error_log('1');
+        $message = $turnorder->message;
+        error_log("message: $message");
+        $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
+        error_log('3');
+        $turnorder->message = $message . " " . $downloadLink;
+        error_log("nouveau: $turnorder->message");
+        $turnorder->save();
+        error_log('yo man');
+    }
+
 
 }
 
