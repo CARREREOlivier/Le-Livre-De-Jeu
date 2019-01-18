@@ -54,10 +54,10 @@
                         @foreach($orders as $order)
                             @if($order->gameturn_id == $gameTurn->id)
                                 <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}}
-                                    : {{$order->message}}
+                                    : {!! $order->message!!}
                                     @auth
                                         @if($order->user_id == Auth::User()->id)
-                                            ajouter fichier -
+                                            @include('gamesessions.modals.modalDropzoneOrder')
                                             @include('gamesessions.modals.modalEditOrder')
                                             @include('gamesessions.modals.modalDeleteOrder')
                                         @endif
