@@ -12,7 +12,7 @@ class CreateTurnordersTable extends Migration {
 			$table->timestamps();
 			$table->integer('gameturn_id')->unsigned();
 			$table->integer('user_id')->unsigned();
-			$table->string('message')->nullable();
+			$table->text('message')->nullable();
 		});
 	}
 
