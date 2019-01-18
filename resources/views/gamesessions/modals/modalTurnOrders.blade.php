@@ -1,18 +1,18 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal"
-        data-target="#modalAddTurn{{$gameTurn->id}}">
+        data-target="#modalAddOrder{{$gameTurn->id}}">
     Ajouter mon ordre
 </button>
 
 <!-- Order Modal -->
-<div class="modal fade" id="modalAddTurn{{$gameTurn->id}}" tabindex="-1" role="dialog"
-     aria-labelledby="modalAddTurn{{$gameTurn->id}}" aria-hidden="true">
+<div class="modal fade" id="modalAddOrder{{$gameTurn->id}}" tabindex="-1" role="dialog"
+     aria-labelledby="modalAddOrder{{$gameTurn->id}}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         {!! Form::open(array('route' => 'turnorder.store', 'method' => 'POST')) !!}
         {!! csrf_field() !!}
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAddTurn{{$gameTurn->id}}"><i class="fas fa-signature"></i>Enregistrer mes ordres</h5>
+                <h5 class="modal-title" id="modalAddOrder{{$gameTurn->id}}"><i class="fas fa-signature"></i>Enregistrer mes ordres</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
