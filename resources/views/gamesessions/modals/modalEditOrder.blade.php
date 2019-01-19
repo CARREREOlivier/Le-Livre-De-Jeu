@@ -10,9 +10,11 @@
     <div class="modal-dialog" role="document">
         {!! Form::model($orders, array('route' => array('turnorder.update', $order->id),'method' => 'PUT')) !!}
         {!! csrf_field() !!}
+        {!! Form::hidden('gameturn_id',$gameTurn->id) !!}
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modaleditOrder{{$order->id}}"><i class="fas fa-signature"></i>Enregistrer mes ordres</h5>
+                <h5 class="modal-title" id="modaleditOrder{{$order->id}}"><i class="fas fa-signature"></i>Enregistrer
+                    mes ordres</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -22,7 +24,7 @@
 
                 <table>
                     <tbody>
-                    {!! Form::hidden('gameturn_id',$gameTurn->id) !!}
+
 
                     <tr>
                         <td> {!! Form::label('message', 'Message:') !!}</td>

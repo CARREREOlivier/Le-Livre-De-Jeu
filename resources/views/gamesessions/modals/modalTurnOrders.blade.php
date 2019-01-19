@@ -10,6 +10,7 @@
     <div class="modal-dialog" role="document">
         {!! Form::open(array('route' => 'turnorder.store', 'method' => 'POST')) !!}
         {!! csrf_field() !!}
+        {!! Form::hidden('gameturn_id',$gameTurn->id) !!}
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalAddOrder{{$gameTurn->id}}"><i class="fas fa-signature"></i>Enregistrer mes ordres</h5>
@@ -22,7 +23,7 @@
 
                 <table>
                     <tbody>
-                    {!! Form::hidden('gameturn_id',$gameTurn->id) !!}
+
 
                     <tr>
                         <td> {!! Form::label('message', 'Message:') !!}</td>

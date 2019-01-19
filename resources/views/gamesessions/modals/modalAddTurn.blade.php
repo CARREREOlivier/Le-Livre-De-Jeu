@@ -1,7 +1,7 @@
 <!-- Button HTML (to Trigger Modal) -->
 <a class="btn btn-primary" href="#modalAddTurn" data-toggle="modal" role="button"><i class="fas fa-pen-alt"></i>Ajouter un tour</a>
 
-<!-- Modal HTML -->
+<!-- modalAddTurn -->
 <div class="modal fade" id="modalAddTurn" style="display: none;">
     <div class="modal-dialog modal-confirm">
 
@@ -9,3 +9,4 @@
 
     </div>
 </div>
+<!--end modalAddTurn-->

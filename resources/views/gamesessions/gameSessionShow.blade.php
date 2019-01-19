@@ -14,16 +14,14 @@
     <div class="container mt-5 mb-5">
         <div class="jumbotron">
             <h1 class="display-4">{{$gameSession->title}}</h1>
-            <p class="lead">{!! $gameSession->description!!}
+            <p class="lead">{!! $gameSession->description!!}</p>
             <hr class="my-4">
 
-            <p class="lead">
                 @auth
                     @if(Auth::User()->id == $gameSession->user_id)
                         @include("gamesessions.modals.modalAddTurn")
                     @endif
                 @endauth
-            </p>
         </div>
 
         <div class="row">
@@ -68,13 +66,13 @@
                     </ul>
                     @auth
                         <div class="row"> @if($gameTurn->locked == true and Auth::User()->id == $gameSession->user_id )
-                                <p>{{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
+                                {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
                                     {!! Form::submit('Déverrouiller', array('class'=>'btn btn-primary')) !!}
-                                    {{ Form::close() }}</p>
+                                    {{ Form::close() }}
                             @elseif($gameTurn->locked == false and Auth::User()->id == $gameSession->user_id)
-                                <p>{{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
+                                {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
                                     {!! Form::submit('Verrouiller', array('class'=>'btn btn-primary')) !!}
-                                    {{ Form::close() }}</p>
+                                    {{ Form::close() }}
 
                             @endif
                             @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
@@ -89,8 +87,6 @@
 
             </div>
         </div>
-    </div>
-
     </div>
 
 @endsection
