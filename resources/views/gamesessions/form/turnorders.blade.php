@@ -7,7 +7,7 @@
 	</li>
 	<li>
 		{!! Form::label('message', 'Message:') !!}
-		{!! Form::text('message') !!}
+		{!! Form::textarea('message') !!}
 	</li>
 
 </ul>
