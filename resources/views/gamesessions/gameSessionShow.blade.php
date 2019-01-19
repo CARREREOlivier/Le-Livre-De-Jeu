@@ -54,7 +54,7 @@
                                 <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}}
                                     : {!! $order->message!!}
                                     @auth
-                                        @if($order->user_id == Auth::User()->id)
+                                        @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
                                             @include('gamesessions.modals.modalDropzoneOrder')
                                             @include('gamesessions.modals.modalEditOrder')
                                             @include('gamesessions.modals.modalDeleteOrder')
