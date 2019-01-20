@@ -17,19 +17,19 @@
             <p class="lead">{!! $gameSession->description!!}</p>
             <hr class="my-4">
 
-                @auth
-                    @if(Auth::User()->id == $gameSession->user_id)
-                        @include("gamesessions.modals.modalAddTurn")
-                    @endif
-                @endauth
+            @auth
+                @if(Auth::User()->id == $gameSession->user_id)
+                    @include("gamesessions.modals.modalAddTurn")
+                @endif
+            @endauth
         </div>
 
         <div class="row">
             <div class="col-md-10 offset-md-1">
 
                 @foreach($gameTurns as $gameTurn)
-                    <p class="float-right">{{$gameTurn->created_at}}</p>
-                    <h4>{{$gameTurn->title}}</h4>
+                    <p class="float-right">{{date('H:i:s d-M-Y', strtotime($gameTurn->created_at))}}</p>
+                    <h4>@include("gamesessions._partials.menuTurnActions"){{$gameTurn->title}}</h4>
 
                     @if($gameTurn->locked == true)
                         <p class="text-left">statut : <i class="fas fa-lock"></i></p>
@@ -51,10 +51,11 @@
                         @endauth
                         @foreach($orders as $order)
                             @if($order->gameturn_id == $gameTurn->id)
-                                <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}}{{$order->name}}
+                                <li> {{date('H:i:s d-M-Y', strtotime($order->orderDate))}} {{$order->name}}
                                     : {!! $order->message!!}
                                     @auth
                                         @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                            @include('gamesessions._partials.menuOrderActions')
                                             @include('gamesessions.modals.modalDropzoneOrder')
                                             @include('gamesessions.modals.modalEditOrder')
                                             @include('gamesessions.modals.modalDeleteOrder')
@@ -65,28 +66,18 @@
                         @endforeach
                     </ul>
                     @auth
-                        <div class="row"> @if($gameTurn->locked == true and Auth::User()->id == $gameSession->user_id )
-                                {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
-                                    {!! Form::submit('Déverrouiller', array('class'=>'btn btn-primary')) !!}
-                                    {{ Form::close() }}
-                            @elseif($gameTurn->locked == false and Auth::User()->id == $gameSession->user_id)
-                                {{ Form::open(['route' => ['gameturn.lock', $gameTurn->id], 'method' => 'post']) }}
-                                    {!! Form::submit('Verrouiller', array('class'=>'btn btn-primary')) !!}
-                                    {{ Form::close() }}
+                        @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
+                            @include('gamesessions.modals.modalDropzone')
+                            @include("gamesessions.modals.modalEditTurn")
+                            @include("gamesessions.modals.modalDeleteTurn")
 
-                            @endif
-                            @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
-                                @include('gamesessions.modals.modalDropzone')
-                                @include("gamesessions.modals.modalEditTurn")
-                                @include("gamesessions.modals.modalDeleteTurn")
+                        @endif</div>
+            @endauth
+            <br/>
+            @endforeach
 
-                            @endif</div>
-                    @endauth
-                    <br/>
-                @endforeach
-
-            </div>
         </div>
+    </div>
     </div>
 
 @endsection

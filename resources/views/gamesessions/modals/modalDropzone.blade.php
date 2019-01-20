@@ -1,9 +1,4 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDropzone">
-    <i class="fas fa-file-upload"></i> Ajouter Fichiers
-</button>
-
-<!-- Modal -->
+<!--Turn Dropzone Modal -->
 <div class="modal fade" id="modalDropzone" tabindex="-1" role="dialog" aria-labelledby="modalDropzoneLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

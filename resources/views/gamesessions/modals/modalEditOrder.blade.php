@@ -1,10 +1,4 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal"
-        data-target="#modalEditOrder{{$gameTurn->id}}">
-    Editer mon ordre
-</button>
-
-<!-- Order Modal -->
+<!-- Edit Order Modal -->
 <div class="modal fade" id="modalEditOrder{{$gameTurn->id}}" tabindex="-1" role="dialog"
      aria-labelledby="modalEditOrder{{$gameTurn->id}}" aria-hidden="true">
     <div class="modal-dialog" role="document">
