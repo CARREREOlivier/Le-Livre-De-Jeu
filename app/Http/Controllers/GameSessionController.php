@@ -105,6 +105,19 @@ class GameSessionController extends Controller
 
         $gameSession = GameSession::where('slug', $slug)->first();
 
+        //getting players with game role
+        $players = GameRole::with('getUsers:id,name')
+            ->where("gamesession_id", "=", $gameSession->id)
+            ->where('gamerole', '=', 'GameParticipant')
+            ->get();
+
+        $gameMaster = GameRole::with('getUsers:id,name')
+            ->where("gamesession_id", "=",  $gameSession->id)
+            ->where("gamerole", '=', 'GameMaster')
+            ->get();
+
+
+
         $gameTurns = GameTurn::where('gamesessions_id', $gameSession->id)->get();//TODO: correct column nam//$turnOrders = TurnOrder::where('gameTurn_id',$gameSession->id)->get();
         $lastTurn = $gameTurns->last();
 
@@ -112,7 +125,6 @@ class GameSessionController extends Controller
             $last = $lastTurn->id;
         } else {
             $last = -1;
-
         }
 
        /*$orders = GameTurn::where('gamesessions_id', $gameSession->id)
@@ -120,6 +132,7 @@ class GameSessionController extends Controller
             ->join('users', 'turnorders.user_id', '=', 'users.id')
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);*/
+
 
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
             ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
@@ -136,7 +149,9 @@ class GameSessionController extends Controller
             ->with('gameTurns', $gameTurns)
             ->with('orders', $orders)
             ->with('canSendOrder', $canSendOrder)
-            ->with('lastTurnId', $last);
+            ->with('lastTurnId', $last)
+            ->with('players',$players)
+            ->with('gamemaster',$gameMaster);
 
 
     }
@@ -174,11 +189,8 @@ class GameSessionController extends Controller
                     if ($player->user_id == $user->id) {
 
                         $user->checked = 'true';
-
                     }
-
                 };
-
             }
 
             //returning the view with gamesession
