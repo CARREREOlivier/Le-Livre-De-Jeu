@@ -57,7 +57,7 @@ class UploadController extends Controller
         }
 
         if (!is_dir($this->photos_path)) {
-            mkdir($this->photos_path, 0777);
+            mkdir($this->photos_path, 0755);
         }
 
         for ($i = 0; $i < count($photos); $i++) {
@@ -83,8 +83,14 @@ class UploadController extends Controller
             $upload->resized_name = $resize_name;
             $upload->original_name = basename($photo->getClientOriginalName());
             $upload->user_id = $request->user()->id;
-            $upload->category = $request->category;
+            if (isset($request->category)) {
+                $upload->category = $request->category;
+            } else {
+                $upload->category = 'uncategorized';
+            }
+
             $upload->entity_id = $request->entity_id;
+
 
 
             $upload->save();
@@ -169,24 +175,19 @@ class UploadController extends Controller
 
     function rewriteTurnOrder($TurnOrderId, $filename)
     {
-        error_log('rewriteTurnOrder');
-        error_log("TurnOrder $TurnOrderId");
-        error_log("filemane $filename");
 
         $turnorder = TurnOrder::where('id', $TurnOrderId)->firstOrFail();
-        if (isset($turnorder)) {
-            error_log("turnorder is not null");
-        }else{error_log("turnorder is null" );}
+
         $file = Upload::where('filename', $filename)->firstOrFail();
-        error_log('1');
+
         $message = $turnorder->message;
-        error_log("message: $message");
+
         $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
-        error_log('3');
+
         $turnorder->message = $message . " " . $downloadLink;
-        error_log("nouveau: $turnorder->message");
+
         $turnorder->save();
-        error_log('yo man');
+
     }
 
 
