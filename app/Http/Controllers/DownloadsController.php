@@ -28,7 +28,7 @@ class DownloadsController extends Controller
     public function zipMultipleFiles($gameTurnId)
     {
 
-        $gameTurn = GameTurn::find(3);
+        $gameTurn = GameTurn::find($gameTurnId);
         $gameSession = GameSession::find($gameTurn->gamesessions_id);
         $orders = TurnOrder::where("gameturn_id", $gameTurnId)->get();
 
