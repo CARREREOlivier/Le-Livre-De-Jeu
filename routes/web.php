@@ -53,3 +53,6 @@ Route::post('/files-save', 'UploadController@store');
 Route::post('/files-delete', 'UploadController@destroy');
 Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');
+
+
+Route::get('/downloadZip/{id}','DownloadsController@zipMultipleFiles');

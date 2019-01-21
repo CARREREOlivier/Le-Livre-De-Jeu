@@ -26,7 +26,7 @@
         <a class="dropdown-item" data-toggle="modal" data-target="#modalDropzone">
             <i class="fas fa-file-upload"></i> Ajouter Fichiers
         </a>
-        <a class="dropdown-item"><i class="fas fa-file-download"></i> Télécharger les fichiers du tour</a>
+        <a class="dropdown-item" href="/downloadZip/{{$gameTurn->id}}"><i class="fas fa-file-download"></i> Télécharger les fichiers du tour</a>
     </div>
 </div>
 
