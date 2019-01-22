@@ -26,31 +26,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($gamesessions as $gamesession)
+                    @foreach($gamesessions as $gameSession)
 
                         <tr>
                             <td class="clickable" aria-expanded="false" aria-controls="gameDescription"
-                                data-target="#gameDescription-{{$gamesession->id}}" data-toggle="collapse"><i
+                                data-target="#gameDescription-{{$gameSession->id}}" data-toggle="collapse"><i
                                         class="fa fa-plus" aria-hidden="true"></i></td>
-                            <td>{{$gamesession->title}}</td>
-                            <td>{{$gamesession->game}}</td>
-                            <td>{{$gamesession->getUserNames->name}}</td>
-                            <td>{{$gamesession->created_at}}</td>
+                            <td>{{$gameSession->title}}</td>
+                            <td>{{$gameSession->game}}</td>
+                            <td>{{$gameSession->getUserNames->name}}</td>
+                            <td>{{$gameSession->created_at}}</td>
                             <td>
-                                <form action="{{ route('gamesession.show', $gamesession->slug) }}" method="GET">
+                                <form action="{{ route('gamesession.show', $gameSession->slug) }}" method="GET">
                                     @method('GET')
                                     @csrf
                                     <button><i class="fas fa-eye"></i></button>
                                 </form>
                                 @auth
-                                    @if(Auth::User()->id == $gamesession->getUserNames->id )
-                                        <form action="{{ route('gamesession.edit', $gamesession->slug) }}" method="GET">
+                                    @if(Auth::User()->id == $gameSession->getUserNames->id )
+                                        <form action="{{ route('gamesession.edit', $gameSession->slug) }}" method="GET">
                                             @method('GET')
                                             @csrf
                                             <button><i class="fas fa-edit"></i></button>
                                         </form>
 
-                                        <form action="{{ route('gamesession.destroy', $gamesession->slug) }}"
+                                        <form action="{{ route('gamesession.destroy', $gameSession->slug) }}"
                                               method="POST">
                                             @method('DELETE')
                                             @csrf
@@ -63,8 +63,8 @@
                         </tr>
                         <tr>
                             <td colspan="5">
-                                <div id="gameDescription-{{$gamesession->id}}"
-                                     class="collapse">{{$gamesession->description}}</div>
+                                <div id="gameDescription-{{$gameSession->id}}"
+                                     class="collapse">{{$gameSession->description}}</div>
                             </td>
 
                         </tr>

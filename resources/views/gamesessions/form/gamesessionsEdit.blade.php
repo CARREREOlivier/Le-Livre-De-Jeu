@@ -1,31 +1,20 @@
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
-<!-- Edit GameSession Form -->
 
-{!! Form::model($gamesession, array('route' => array('gamesession.update', $gamesession->id),'method' => 'PUT')) !!}
-{!! csrf_field() !!}
+
 
 <ul>
 
     <li>
         {!! Form::label('title', 'Title:') !!}
-        {!! Form::text('title', $gamesession->title) !!}
+        {!! Form::text('title', $gameSession->title) !!}
     </li>
     <li>
         {!! Form::label('game', 'Game:') !!}
-        {!! Form::text('game',  $gamesession->game) !!}
+        {!! Form::text('game',  $gameSession->game) !!}
     </li>
     <li>
         {!! Form::label('description', 'Description:') !!}
-        {!! Form::textarea('description',  $gamesession->description) !!}
+        {!! Form::textarea('description',  $gameSession->description) !!}
     </li>
 
 </ul>
@@ -36,9 +25,9 @@
     <th>Role</th>
     </thead>
 <tr>
-    @foreach($gamemasters as $gamemaster)
+    @foreach($gamemaster as $gm)
 
-        <td>{{$gamemaster->getusers->name}}</td>
+        <td>{{$gm->getusers->name}}</td>
         <td>Maitre de jeu</td>
 
     @endforeach
@@ -87,5 +76,3 @@
     </div>
 </div>
 
-{!! Form::submit() !!}
-{!! Form::close() !!}

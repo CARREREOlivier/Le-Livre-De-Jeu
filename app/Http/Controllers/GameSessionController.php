@@ -104,7 +104,7 @@ class GameSessionController extends Controller
 
 
         $gameSession = GameSession::where('slug', $slug)->first();
-
+        $users = $this->getPotentialPlayers();
         //getting players with game role
         $players = GameRole::with('getUsers:id,name')
             ->where("gamesession_id", "=", $gameSession->id)
@@ -115,7 +115,17 @@ class GameSessionController extends Controller
             ->where("gamesession_id", "=",  $gameSession->id)
             ->where("gamerole", '=', 'GameMaster')
             ->get();
+        
+        foreach ($players as $player) {
 
+            foreach ($users as $user) {
+
+                if ($player->user_id == $user->id) {
+
+                    $user->checked = 'true';
+                }
+            };
+        }
 
 
         $gameTurns = GameTurn::where('gamesessions_id', $gameSession->id)->get();//TODO: correct column nam//$turnOrders = TurnOrder::where('gameTurn_id',$gameSession->id)->get();
@@ -151,7 +161,8 @@ class GameSessionController extends Controller
             ->with('canSendOrder', $canSendOrder)
             ->with('lastTurnId', $last)
             ->with('players',$players)
-            ->with('gamemaster',$gameMaster);
+            ->with('gamemaster',$gameMaster)
+            ->with('users',$users);
 
 
     }
@@ -195,7 +206,7 @@ class GameSessionController extends Controller
 
             //returning the view with gamesession
             return view('gamesessions.gameSessionEdit')
-                ->with('gamesession', $gameSession)
+                ->with('gameSession', $gameSession)
                 ->with('users', $users)
                 ->with('players', $players)
                 ->with('gamemasters', $gameMasters);

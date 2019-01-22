@@ -4,14 +4,27 @@
     <link rel="stylesheet" href="{{ url('/css/dropzone.css') }}">
     <link rel="stylesheet" href="{{ url('/css/custom.css') }}">
 @endsection
+
 @section('js')
     <!--<script src="{{ url('/js/jquery.js') }}"></script>-->
     <script src="{{ url('/js/dropzone.js') }}"></script>
     <script src="{{ url('/js/dropzone-config.js') }}"></script>
 @endsection
+
 @section('content')
 
+
+    <!-- Edit GameSession Form -->
     <div class="container mt-5 mb-5">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="row">
             <div class="col-lg-9"><h2>{{$gameSession->title}}</h2>{!! $gameSession->description!!}</div>
             <div class="col-lg-3"><strong>Maitre de jeu :</strong>
@@ -33,6 +46,8 @@
                     @if(Auth::User()->id == $gameSession->user_id)
 
                         @include("gamesessions.modals.modalAddTurn")
+                        @include("gamesessions.modals.modalGameSessionEdit")
+
                     @endif
                 @endauth
             </div>
@@ -55,9 +70,6 @@
                         <p class="text-left">statut : <i class="fas fa-lock"></i></p>
                     @elseif($gameTurn->locked == false)
                         <p class="text-left">statut : <i class="fas fa-lock-open"></i></p>
-
-
-
                     @endif
 
 
@@ -72,7 +84,8 @@
                         @foreach($orders->reverse() as $order)
                             @if($order->gameturn_id == $gameTurn->id)
                                 <li>
-                                    <div class="text-left">@if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                    <div class="text-left">
+                                        @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
                                             @include('gamesessions._partials.menuOrderActions')
                                         @endif
                                         {{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}
@@ -83,7 +96,8 @@
                                                 @include('gamesessions.modals.modalEditOrder')
                                                 @include('gamesessions.modals.modalDeleteOrder')
                                             @endif
-                                        @endauth</div>
+                                        @endauth
+                                    </div>
                                 </li>
                             @endif
                         @endforeach
