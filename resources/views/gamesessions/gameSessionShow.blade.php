@@ -34,7 +34,12 @@
                 <hr>
                 <strong>Joueurs :</strong>
                 @foreach($players as $player)
+                    @if($loop->last)
+                        {{$player->getusers->name}}
+                    @else
                     {{$player->getusers->name}} -
+                    
+                    @endif
                 @endforeach
             </div>
             <hr>
