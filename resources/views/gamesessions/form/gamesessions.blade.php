@@ -10,7 +10,7 @@
 
 <!-- Create GameSession Form -->
 
-{!! Form::open(array('route' => 'gameSession.store', 'method' => 'POST')) !!}
+{!! Form::open(array('route' => 'gamesession.store', 'method' => 'POST')) !!}
 {!! csrf_field() !!}
 <table>
 <tbody>
