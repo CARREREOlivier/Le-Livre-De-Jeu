@@ -104,7 +104,7 @@ class GameSessionController extends Controller
 
 
         $gameSession = GameSession::where('slug', $slug)->first();
-        $users = $this->getPotentialPlayers();
+
         //getting players with game role
         $players = GameRole::with('getUsers:id,name')
             ->where("gamesession_id", "=", $gameSession->id)
@@ -112,22 +112,24 @@ class GameSessionController extends Controller
             ->get();
 
         $gameMaster = GameRole::with('getUsers:id,name')
-            ->where("gamesession_id", "=",  $gameSession->id)
+            ->where("gamesession_id", "=", $gameSession->id)
             ->where("gamerole", '=', 'GameMaster')
             ->get();
-        
-        foreach ($players as $player) {
 
-            foreach ($users as $user) {
+        if (Auth::check()) {
+            $users = $this->getPotentialPlayers();
+            foreach ($players as $player) {
 
-                if ($player->user_id == $user->id) {
+                foreach ($users as $user) {
 
-                    $user->checked = 'true';
-                }
-            };
+                    if ($player->user_id == $user->id) {
+
+                        $user->checked = 'true';
+                    }
+                };
+            }
+
         }
-
-
         $gameTurns = GameTurn::where('gamesessions_id', $gameSession->id)->get();//TODO: correct column nam//$turnOrders = TurnOrder::where('gameTurn_id',$gameSession->id)->get();
         $lastTurn = $gameTurns->last();
 
@@ -137,34 +139,36 @@ class GameSessionController extends Controller
             $last = -1;
         }
 
-       /*$orders = GameTurn::where('gamesessions_id', $gameSession->id)
-            ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
-            ->join('users', 'turnorders.user_id', '=', 'users.id')
-            ->get()
-            ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);*/
-
-
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
             ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
             ->join('users', 'turnorders.user_id', '=', 'users.id')
-            ->select('gameturns.*','users.*','turnorders.*','turnorders.created_at as orderDate')
+            ->select('gameturns.*', 'users.*', 'turnorders.*', 'turnorders.created_at as orderDate')
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
         $canSendOrder = $this->canSendOrder($last);
 
+        if (Auth::check()) {
+            return view('gamesessions.gameSessionShow')
+                ->with('gameSession', $gameSession)
+                ->with('gameTurns', $gameTurns)
+                ->with('orders', $orders)
+                ->with('canSendOrder', $canSendOrder)
+                ->with('lastTurnId', $last)
+                ->with('players', $players)
+                ->with('gamemaster', $gameMaster)
+                ->with('users', $users);
 
-        return view('gamesessions.gameSessionShow')
-            ->with('gameSession', $gameSession)
-            ->with('gameTurns', $gameTurns)
-            ->with('orders', $orders)
-            ->with('canSendOrder', $canSendOrder)
-            ->with('lastTurnId', $last)
-            ->with('players',$players)
-            ->with('gamemaster',$gameMaster)
-            ->with('users',$users);
-
-
+        } else {
+            return view('gamesessions.gameSessionShow')
+                ->with('gameSession', $gameSession)
+                ->with('gameTurns', $gameTurns)
+                ->with('orders', $orders)
+                ->with('canSendOrder', $canSendOrder)
+                ->with('lastTurnId', $last)
+                ->with('players', $players)
+                ->with('gamemaster', $gameMaster);
+        }
     }
 
     /**
@@ -308,8 +312,6 @@ class GameSessionController extends Controller
                 ->where('id', '!=', $gameMaster->user_id)
                 ->get();
 
-            error_log("$gameMaster->user_id , $gameMaster->name");
-
 
         } else {
             //getting users to populate list
@@ -326,7 +328,7 @@ class GameSessionController extends Controller
     function canSendOrder($last)
     {
 
-            //if the user is logged in, (s)he must have an id then:
+        //if the user is logged in, (s)he must have an id then:
         if (isset(Auth::user()->id)) {//If N1
 
             $userId = Auth::user()->id;

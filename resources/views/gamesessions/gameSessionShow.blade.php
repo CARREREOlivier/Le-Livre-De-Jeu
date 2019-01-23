@@ -37,8 +37,8 @@
                     @if($loop->last)
                         {{$player->getusers->name}}
                     @else
-                    {{$player->getusers->name}} -
-                    
+                        {{$player->getusers->name}} -
+
                     @endif
                 @endforeach
             </div>
@@ -90,9 +90,11 @@
                             @if($order->gameturn_id == $gameTurn->id)
                                 <li>
                                     <div class="text-left">
-                                        @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
-                                            @include('gamesessions._partials.menuOrderActions')
-                                        @endif
+                                        @auth
+                                            @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                                @include('gamesessions._partials.menuOrderActions')
+                                            @endif
+                                        @endauth
                                         {{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}
                                         : {!! $order->message!!}
                                         @auth
