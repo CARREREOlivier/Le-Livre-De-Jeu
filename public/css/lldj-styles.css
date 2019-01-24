@@ -1,4 +1,78 @@
 table td {word-wrap:break-word;}
+html, body {
+    min-height: 100%;
+}
+
+body {
+    color: #404040;
+    background: #282537;
+    background-image: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+    background-image: -moz-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+    background-image: -o-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+    background-image: radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+}
+
+.container {
+    margin:0px;
+    color: #ffffff;
+}
+.full-height {
+    height: 100vh;
+}
+
+.flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.position-ref {
+    position: relative;
+}
+
+.top-right {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+
+.content {
+    text-align: center;
+}
+
+.title {
+    font-size: 84px;
+    font-family: Indie Flower;
+}
+
+.links > a {
+    color: #636b6f;
+    padding: 0 25px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.m-b-md {
+    margin-bottom: 30px;
+}
+
+.btn{ color: #f4f3ff;
+    border: #f4f3ff;
+}
+
+#parties{ color : #4e555b;
+    border: 2px solid #1b1b1b
+}
+#partiesLink{ color : #4e555b;
+    border: 2px solid #f4f3ff
+}
+
+.inPage{
+    color: #404040;
+    font-family: Indie Flower;}
 
 .modal-dialog{
     position: relative;
