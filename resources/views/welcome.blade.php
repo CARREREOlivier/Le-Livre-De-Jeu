@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ config('app.name', 'Le livre de jeu') }}</title>
+
+    <!-- Scripts-->
+    <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Indie+Flower"/>
 
     <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Indie+Flower" />
-    <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/demo.css"/>
-    <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/book.css"/>
-    <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/book2.css"/>
-    <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
+
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
+
     <style>
 
         html, body {
@@ -31,9 +33,10 @@
         }
 
         .container {
-            margin:0px;
+            margin: 0px;
             color: #ffffff;
         }
+
         .full-height {
             height: 100vh;
         }
@@ -77,20 +80,25 @@
             margin-bottom: 30px;
         }
 
-        .btn{ color: #f4f3ff;
+        .btn {
+            color: #f4f3ff;
             border: #f4f3ff;
         }
 
-        #parties{ color : #4e555b;
+        #parties {
+            color: #4e555b;
             border: 2px solid #1b1b1b
         }
-        #partiesLink{ color : #4e555b;
+
+        #partiesLink {
+            color: #4e555b;
             border: 2px solid #f4f3ff
         }
 
-        .inPage{
+        .inPage {
             color: #404040;
-            font-family: Indie Flower;}
+            font-family: Indie Flower;
+        }
 
     </style>
 </head>
@@ -139,7 +147,9 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><br/><br/><br/><br/><p class="inPage">Créez, gérez et lisez les parties tour par tour.</p></li>
+                                            <li><br/><br/><br/><br/>
+                                                <p class="inPage">Créez, gérez et lisez les parties tour par tour.</p>
+                                            </li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
@@ -156,7 +166,8 @@
                                             <li></li>
                                         </ul>
                                         <figcaption>
-                                            <h2><a class="btn" href="{{route('gamesession.index')}}" id="partieslink">Parties</a></h2>
+                                            <h2><a class="btn" href="{{route('gamesession.index')}}" id="partieslink">Parties</a>
+                                            </h2>
                                             <span></span>
 
                                         </figcaption>
@@ -177,7 +188,8 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><br/><br/><br/><br/><p class="inPage">Ecrire et lire les AARs</p></li>
+                                            <li><br/><br/><br/><br/>
+                                                <p class="inPage">Ecrire et lire les AARs</p></li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
@@ -217,7 +229,8 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><br/><br/><br/><br/><p class="inPage">Voir/cloner le repo du projet sur github</p></li>
+                                            <li><br/><br/><br/><br/>
+                                                <p class="inPage">Voir/cloner le repo du projet sur github</p></li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
@@ -234,7 +247,8 @@
                                             <li></li>
                                         </ul>
                                         <figcaption>
-                                            <h2><a class="btn" href="https://github.com/Flefounet/Le-Livre-De-Jeu">Github</a></h2>
+                                            <h2><a class="btn" href="https://github.com/Flefounet/Le-Livre-De-Jeu">Github</a>
+                                            </h2>
                                             <span></span>
 
                                         </figcaption>
@@ -244,7 +258,8 @@
                                         <!-- Front -->
                                         <ul class='hardcover_front'>
                                             <li>
-                                                <img src="http://www.lyricama.com/wp-content/uploads/2015/09/3-reclamation-img-220x165.jpg"  alt="" width="100%" height="100%">
+                                                <img src="http://www.lyricama.com/wp-content/uploads/2015/09/3-reclamation-img-220x165.jpg"
+                                                     alt="" width="100%" height="100%">
                                             </li>
                                             <li></li>
 
@@ -254,7 +269,8 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><br/><br/><br/><br/><p class="inPage">Contacter l'administrateur du site</p></li>
+                                            <li><br/><br/><br/><br/>
+                                                <p class="inPage">Contacter l'administrateur du site</p></li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
