@@ -14,6 +14,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
+    <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
+
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=65zbam7degsr85vzz2nh3i6bou6evi4sopf9en2j8n8ndm0y"></script>
     <script>tinymce.init({
             selector:'textarea',
@@ -42,7 +45,9 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <!--site's defined css-->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/lldj-styles.css') }}" rel="stylesheet">
+
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
     @yield('head')
