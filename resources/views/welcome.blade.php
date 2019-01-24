@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ config('app.name', 'Le livre de jeu') }}</title>
-
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Indie+Flower" />
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/demo.css"/>
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/book.css"/>
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/AnimatedBooks/css/book2.css"/>
     <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
     <style>
+
         html, body {
             min-height: 100%;
         }
@@ -59,6 +60,7 @@
 
         .title {
             font-size: 84px;
+            font-family: Indie Flower;
         }
 
         .links > a {
@@ -86,6 +88,9 @@
             border: 2px solid #f4f3ff
         }
 
+        .inPage{
+            color: #404040;
+            font-family: Indie Flower;}
 
     </style>
 </head>
@@ -134,7 +139,7 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><a class="btn" href="{{route('gamesession.index')}}" id="parties">Lire</a></li>
+                                            <li><br/><br/><br/><br/><p class="inPage">Créez, gérez et lisez les parties tour par tour.</p></li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
@@ -153,7 +158,45 @@
                                         <figcaption>
                                             <h2><a class="btn" href="{{route('gamesession.index')}}" id="partieslink">Parties</a></h2>
                                             <span></span>
-                                            <p>Créez, gérez et lisez les parties tour par tour.</p>
+
+                                        </figcaption>
+                                    </figure>
+                                </li>
+                                <li>
+                                    <figure class='book'>
+                                        <!-- Front -->
+                                        <ul class='hardcover_front'>
+                                            <li>
+                                                <img src="https://static.fnac-static.com/multimedia/Images/FR/NR/b3/d9/40/4250035/1507-0/tsp20150813011121/After-Action-Report-on-the-Actions-of-the-20th-Maine-at-Gettysburg.jpg"
+                                                     alt="" width="100%" height="100%">
+                                            </li>
+                                            <li></li>
+                                        </ul>
+
+                                        <!-- Pages -->
+
+                                        <ul class='page'>
+                                            <li></li>
+                                            <li><br/><br/><br/><br/><p class="inPage">Ecrire et lire les AARs</p></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+
+                                        <!-- Back -->
+
+                                        <ul class='hardcover_back'>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+                                        <ul class='book_spine'>
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+                                        <figcaption>
+                                            <h2><a class="btn" href="#">Récits</a></h2>
+                                            <span></span>
+
                                         </figcaption>
                                     </figure>
                                 </li>
@@ -174,7 +217,7 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><a class="btn btn-primary" href="https://github.com/Flefounet/Le-Livre-De-Jeu">Lire</a></li>
+                                            <li><br/><br/><br/><br/><p class="inPage">Voir/cloner le repo du projet sur github</p></li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
@@ -193,7 +236,7 @@
                                         <figcaption>
                                             <h2><a class="btn" href="https://github.com/Flefounet/Le-Livre-De-Jeu">Github</a></h2>
                                             <span></span>
-                                            <p>Voir/cloner le repo du projet sur github</p>
+
                                         </figcaption>
                                     </figure>
                                 <li>
@@ -201,8 +244,7 @@
                                         <!-- Front -->
                                         <ul class='hardcover_front'>
                                             <li>
-                                                <img src="https://image.flaticon.com/icons/svg/321/321817.svg"
-                                                     alt="" width="100%" height="100%">
+                                                <img src="http://www.lyricama.com/wp-content/uploads/2015/09/3-reclamation-img-220x165.jpg"  alt="" width="100%" height="100%">
                                             </li>
                                             <li></li>
 
@@ -212,7 +254,7 @@
 
                                         <ul class='page'>
                                             <li></li>
-                                            <li><a class="btn" href="#">Aller à</a></li>
+                                            <li><br/><br/><br/><br/><p class="inPage">Contacter l'administrateur du site</p></li>
                                             <li></li>
                                             <li></li>
                                             <li></li>
@@ -235,48 +277,10 @@
                                         <figcaption>
                                             <h2><a class="btn" href="#">Contact</a></h2>
                                             <span></span>
-                                            <p>Contacter l'administrateur du site</p>
+
                                         </figcaption>
                                     </figure>
-                                </li>
-                                <li>
-                                    <figure class='book'>
-                                        <!-- Front -->
-                                        <ul class='hardcover_front'>
-                                            <li>
-                                                <img src="https://static.fnac-static.com/multimedia/Images/FR/NR/b3/d9/40/4250035/1507-0/tsp20150813011121/After-Action-Report-on-the-Actions-of-the-20th-Maine-at-Gettysburg.jpg"
-                                                     alt="" width="100%" height="100%">
-                                            </li>
-                                            <li></li>
-                                        </ul>
 
-                                        <!-- Pages -->
-
-                                        <ul class='page'>
-                                            <li></li>
-                                            <li><a class="btn" href="#">Lire</a></li>
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-
-                                        <!-- Back -->
-
-                                        <ul class='hardcover_back'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <ul class='book_spine'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <figcaption>
-                                            <h2><a class="btn" href="#">Récits</a></h2>
-                                            <span></span>
-                                            <p>Ecrire et lire les AARs... Si vous pouvez!</p>
-                                        </figcaption>
-                                    </figure>
-                                </li>
                             </ul>
 
                         </div>
