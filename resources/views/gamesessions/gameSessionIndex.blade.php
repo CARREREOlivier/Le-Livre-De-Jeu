@@ -10,6 +10,52 @@
                         Créer une nouvelle partie
                     </a>
                 @endauth
+                <div class="component">
+                    <ul class="align">
+                        <li>
+                            <figure class='book'>
+
+                                <!-- Front -->
+
+                                <ul class='paperback_front'>
+                                    <li>
+                                        <span class="ribbon">Nº1</span>
+
+                                        <img src="" alt="" width="100%" height="100%">
+                                    </li>
+                                    <li></li>
+                                </ul>
+
+                                <!-- Pages -->
+
+                                <ul class='ruled_paper'>
+                                    <li></li>
+                                    <li>
+                                        <a class="btn" href="#">Download</a>
+                                    </li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+
+                                <!-- Back -->
+
+                                <ul class='paperback_back'>
+                                    <li>
+
+                                        <img src="" alt="" width="100%" height="100%">
+                                    </li>
+                                    <li></li>
+                                </ul>
+                                <figcaption>
+                                    <h1>Sketches</h1>
+                                    <span>By Marco Barría for Codrops</span>
+                                    <p>Avocado bell pepper earthnut pea garlic chickpea seakale lotus root salad broccoli zucchini okra scallion daikon. Celtuce salad burdock wattle seed.</p>
+                                </figcaption>
+                            </figure>
+                        </li>
+                    </ul>
+                </div>
 
                 <table class="table table-hover">
 
