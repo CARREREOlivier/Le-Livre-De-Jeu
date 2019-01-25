@@ -1,23 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
 
-table td {word-wrap:break-word;}
-
 html, body {
     min-height: 100%;
 }
-
 body {
     color: #404040;
     background: #282537;
-    background-image: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-    background-image: -moz-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-    background-image: -o-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-    background-image: radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
+    background-image: -webkit-radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
+    background-image: -moz-radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
+    background-image: -o-radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
+    background-image: radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
 }
 
+table td {word-wrap:break-word;}
 .container {
     margin:0px;
-    color: #ffffff;
+    color: #1b1b1b;
 }
 .full-height {
     height: 100vh;
@@ -92,7 +90,7 @@ ul.timeline {
 }
 ul.timeline:before {
     content: ' ';
-    background: #d4d9df;
+    background: #404040;
     display: inline-block;
     position: absolute;
     left: 29px;
@@ -122,3 +120,4 @@ ul.timeline > li:before {
 
     width : 100%;
 }
+

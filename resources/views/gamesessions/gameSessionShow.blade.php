@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('head')
-    <link rel="stylesheet" href="{{ url('/css/dropzone.css') }}">
-    <link rel="stylesheet" href="{{ url('/css/custom.css') }}">
+
 @endsection
 
 @section('js')

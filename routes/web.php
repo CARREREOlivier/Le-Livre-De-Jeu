@@ -23,7 +23,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-
 Route::resource('user', 'UserController');
 Route::resource('gamesession', 'GameSessionController');
 Route::post('gameturn/lock-{id}', 'GameTurnController@lock')->name('gameturn.lock');
@@ -55,4 +54,9 @@ Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');
 
 
-Route::get('/downloadZip/{id}','DownloadsController@zipMultipleFiles');
+Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');
+
+
+Route::get('/dumper', function () {
+    return View('dumper');
+});

@@ -12,113 +12,54 @@
                 @endauth
                 <div class="component">
                     <ul class="align">
-                        <li>
-                            <figure class='book'>
+                        @foreach($gamesessions->reverse() as $gameSession)
+                            <li>
+                                <figure class='book'>
 
-                                <!-- Front -->
+                                    <!-- Front -->
 
-                                <ul class='paperback_front'>
-                                    <li>
-                                        <span class="ribbon">Nº1</span>
+                                    <ul class='paperback_front blue'>
+                                        <li>
+                                            <br/><br/><br/><br/>{{$gameSession->game}}
+                                            <img src="" alt="" width="100%" height="100%">
+                                        </li>
+                                        <li></li>
+                                    </ul>
 
-                                        <img src="" alt="" width="100%" height="100%">
-                                    </li>
-                                    <li></li>
-                                </ul>
+                                    <!-- Pages -->
 
-                                <!-- Pages -->
+                                    <ul class='ruled_paper'>
+                                        <li></li>
+                                        <li>
+                                            Avec :<br/>{{$gameSession->getUserNames->name}}
+                                        </li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
 
-                                <ul class='ruled_paper'>
-                                    <li></li>
-                                    <li>
-                                        <a class="btn" href="#">Download</a>
-                                    </li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                </ul>
+                                    <!-- Back -->
 
-                                <!-- Back -->
+                                    <ul class='paperback_back'>
+                                        <li>
 
-                                <ul class='paperback_back'>
-                                    <li>
+                                            <img src="" alt="" width="100%" height="100%">
+                                        </li>
+                                        <li></li>
+                                    </ul>
+                                    <figcaption>
+                                        <a href="{{route('gamesession.show', $gameSession->slug)}}">
+                                            <h2>{{$gameSession->title}}</h2></a>
 
-                                        <img src="" alt="" width="100%" height="100%">
-                                    </li>
-                                    <li></li>
-                                </ul>
-                                <figcaption>
-                                    <h1>Sketches</h1>
-                                    <span>By Marco Barría for Codrops</span>
-                                    <p>Avocado bell pepper earthnut pea garlic chickpea seakale lotus root salad broccoli zucchini okra scallion daikon. Celtuce salad burdock wattle seed.</p>
-                                </figcaption>
-                            </figure>
-                        </li>
+                                        <span>Créé le: {{$gameSession->created_at}}</span>
+                                        <p>{!! $gameSession->description!!}</p>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
-                <table class="table table-hover">
-
-                    <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Jeu</th>
-                        <th scope="col">Par</th>
-                        <th scope="col">Créé le</th>
-
-                        <th scope="col">Actions</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($gamesessions as $gameSession)
-
-                        <tr>
-                            <td class="clickable" aria-expanded="false" aria-controls="gameDescription"
-                                data-target="#gameDescription-{{$gameSession->id}}" data-toggle="collapse"><i
-                                        class="fa fa-plus" aria-hidden="true"></i></td>
-                            <td>{{$gameSession->title}}</td>
-                            <td>{{$gameSession->game}}</td>
-                            <td>{{$gameSession->getUserNames->name}}</td>
-                            <td>{{$gameSession->created_at}}</td>
-                            <td>
-                                <form action="{{ route('gamesession.show', $gameSession->slug) }}" method="GET">
-                                    @method('GET')
-                                    @csrf
-                                    <button><i class="fas fa-eye"></i></button>
-                                </form>
-                                @auth
-                                    @if(Auth::User()->id == $gameSession->getUserNames->id )
-                                        <form action="{{ route('gamesession.edit', $gameSession->slug) }}" method="GET">
-                                            @method('GET')
-                                            @csrf
-                                            <button><i class="fas fa-edit"></i></button>
-                                        </form>
-
-                                        <form action="{{ route('gamesession.destroy', $gameSession->slug) }}"
-                                              method="POST">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    @endif
-                                @endauth
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td colspan="5">
-                                <div id="gameDescription-{{$gameSession->id}}"
-                                     class="collapse">{{$gameSession->description}}</div>
-                            </td>
-
-                        </tr>
-
-
-                    @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
