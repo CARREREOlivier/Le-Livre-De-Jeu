@@ -1,22 +1,79 @@
 @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url(//fonts.googleapis.com/css?family=Patrick+Hand+SC|Bangers|Happy+Monkey);
 
 html, body {
     min-height: 100%;
-}
-body {
-    color: #404040;
-    background: #282537;
-    background-image: -webkit-radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
-    background-image: -moz-radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
-    background-image: -o-radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
-    background-image: radial-gradient(circle at top, #3c3b52 0%, #252233 80%);
+    
+    background-image: radial-gradient(ellipse farthest-corner,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #acacac 0, #dadada 30%, #f2f2f2 50%, #dadada 70%, #acacac 100%);
+    background-size: 4px 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
 }
 
-table td {word-wrap:break-word;}
-.container {
-    margin:0px;
-    color: #1b1b1b;
+
+
+
+h2, h4, h5, .players, .navbar, .datetime, .statut, .card {
+    font-family: Indie Flower, serif;
+    color: #4e555b;
 }
+
+table td {
+    word-wrap: break-word;
+}
+
+.form-control {
+
+    border: solid #404040;
+    /*top droite bottom gauche*/
+    border-width: 1px 2px 1px 3px;
+    border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+
+    background-image: radial-gradient(ellipse farthest-corner,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #ffce55 0, #fffc83 30%, #ffffb1 50%, #fffc83 70%, #ffce55 100%);
+    background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+
+}
+
+.card {
+    background-image: radial-gradient(ellipse farthest-corner,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #acacac 0, #dadada 30%, #f2f2f2 50%, #dadada 70%, #acacac 100%);
+    background-size: 4px 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+}
+
+.container {
+    color: #000000;
+}
+
 .full-height {
     height: 100vh;
 }
@@ -41,10 +98,6 @@ table td {word-wrap:break-word;}
     text-align: center;
 }
 
-.title {
-    font-size: 84px;
-    font-family: Indie Flower;
-}
 
 .links > a {
     color: #636b6f;
@@ -60,22 +113,27 @@ table td {word-wrap:break-word;}
     margin-bottom: 30px;
 }
 
-.btn{ color: #f4f3ff;
+.btn {
+    color: #f4f3ff;
     border: #f4f3ff;
 }
 
-#parties{ color : #4e555b;
+#parties {
+    color: #4e555b;
     border: 2px solid #1b1b1b
 }
-#partiesLink{ color : #4e555b;
+
+#partiesLink {
+    color: #4e555b;
     border: 2px solid #f4f3ff
 }
 
-.inPage{
+.inPage {
     color: #404040;
-    font-family: Indie Flower;}
+    font-family: Indie Flower;
+}
 
-.modal-dialog{
+.modal-dialog {
     position: relative;
     display: table; /* This is important */
     overflow-y: auto;
@@ -84,10 +142,13 @@ table td {word-wrap:break-word;}
     min-width: 300px;
 }
 
+/*Specific to gamesessions view*/
+
 ul.timeline {
     list-style-type: none;
     position: relative;
 }
+
 ul.timeline:before {
     content: ' ';
     background: #404040;
@@ -98,10 +159,12 @@ ul.timeline:before {
     height: 100%;
     z-index: 400;
 }
+
 ul.timeline > li {
     margin: 20px 0;
-    padding-left: 20px;
+    padding-left: 5%;
 }
+
 ul.timeline > li:before {
     content: ' ';
     background: white;
@@ -115,9 +178,62 @@ ul.timeline > li:before {
     z-index: 400;
 }
 
-
-.gameSessionTitleInput{
-
-    width : 100%;
+.gameSessionTitleInput {
+    width: 100%;
 }
 
+#showgamesession h2 {
+    color: #000000;
+
+}
+
+.card {
+    background-color: #F9F5D7;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border: solid 2px #41403E;
+}
+
+#buttonsrow {
+    background-color: #F9F5D7;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border: solid 2px #41403E;
+}
+
+#orderdisplay {
+    background-color: #F9F5D7;
+
+}
+
+#showgamesession {
+
+    background-color: #F9F5D7;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    border: solid 2px #41403E;
+}
+
+/* Gradient color1 - color2 - color1 */
+
+hr {
+    border: 0;
+    height: 2px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+.big {
+    font-size: 84px;
+    margin-bottom: -.75em;
+}
+.title {
+    font-family: "Bangers";
+    margin: 0 0 -1em 0;
+    text-shadow: -1px -1px yellow, 1px 1px orange,  2px 2px orange;
+    padding-bottom: 50px;
+    float: left;
+    width: 100%;
+}
+
+.yellow{
+
+
+}

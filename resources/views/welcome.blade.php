@@ -18,23 +18,17 @@
 
 
     <style>
-
+        @import url(//fonts.googleapis.com/css?family=Patrick+Hand+SC|Bangers|Happy+Monkey);
         html, body {
             min-height: 100%;
         }
 
-        body {
-            color: #404040;
-            background: #282537;
-            background-image: -webkit-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-            background-image: -moz-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-            background-image: -o-radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-            background-image: radial-gradient(top, circle cover, #3c3b52 0%, #252233 80%);
-        }
+
+
 
         .container {
             margin: 0px;
-            color: #ffffff;
+            color: #404040;
         }
 
         .full-height {
@@ -61,28 +55,39 @@
             text-align: center;
         }
 
-        .title {
+        .big {
             font-size: 84px;
-            font-family: Indie Flower;
+            margin-bottom: -.75em;
+        }
+        .title {
+
+
+            font-family: "Bangers";
+            margin: 0 0 -1em 0;
+            text-shadow: -1px -1px yellow, 1px 1px orange,  2px 2px orange;
+            padding-bottom: 50px;
+            float: left;
+            width: 100%;
         }
 
         .links > a {
-            color: #636b6f;
+            color: #404040;
             padding: 0 25px;
             font-size: 13px;
             font-weight: 600;
             letter-spacing: .1rem;
             text-decoration: none;
             text-transform: uppercase;
+            font-family: Indie Flower;
         }
-
         .m-b-md {
             margin-bottom: 30px;
         }
 
         .btn {
-            color: #f4f3ff;
-            border: #f4f3ff;
+            color: #404040;
+            border: #404040;
+            font-family: Indie Flower;
         }
 
         #parties {
@@ -92,12 +97,13 @@
 
         #partiesLink {
             color: #4e555b;
-            border: 2px solid #f4f3ff
+            border: 2px solid #404040
         }
 
         .inPage {
             color: #404040;
             font-family: Indie Flower;
+
         }
 
     </style>
@@ -129,7 +135,7 @@
                         <div class="component">
 
                             <ul class="align">
-                                <div class="title m-b-md">
+                                <div class="title m-b-md big">
                                     Le Livre De Jeu
                                 </div>
                                 <li>

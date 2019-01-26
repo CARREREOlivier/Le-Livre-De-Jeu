@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <h2>liste des parties</h2>
+                <h1 class="title big">Liste des parties</h1>
                 @auth
                     <a href="{{route('gamesession.create')}}" class="btn btn-primary btn-lg" role="button">
                         Créer une nouvelle partie
@@ -31,7 +31,7 @@
                                     <ul class='ruled_paper'>
                                         <li></li>
                                         <li>
-                                            Avec :<br/>{{$gameSession->getUserNames->name}}
+                                           <p class="players"> Avec :<br/>{{$gameSession->getUserNames->name}} </p>
                                         </li>
                                         <li></li>
                                         <li></li>

@@ -56,7 +56,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a id="accueil" class="navbar-brand" href="{{ url('/') }}">
                 Accueil
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -110,7 +110,9 @@
     </nav>
 
     <main class="py-4">
+        <div class="container-fluid">
         @yield('content')
+        </div>
     </main>
 </div>
 @yield('js')
