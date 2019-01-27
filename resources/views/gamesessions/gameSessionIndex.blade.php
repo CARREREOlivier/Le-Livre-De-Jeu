@@ -2,36 +2,48 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center row-title">
+        <div class="row justify-content-center">
             <div class="col-lg-10 offset-1">
-                <h1 class="title big">Liste des parties</h1>
+                <div class="row row-title">
+                    <h1 class="title big">Liste des parties</h1>
+                </div>
                 @auth
-                    <a href="{{route('gamesession.create')}}" class="btn btn-primary lined thin" role="button">
-                        Créer une nouvelle partie
-                    </a>
+                    <div class="row">
+                        <a href="{{route('gamesession.create')}}" class="btn btn-primary lined thin"
+                                        role="button">Créer une nouvelle partie</a>
+                    </div>
                 @endauth
             </div>
         </div>
+        <div class="row">
         @foreach($gamesessions->reverse() as $gameSession)
-            <div class="row justify-content-center">
-                <div class="col-lg-10 offset-1">
-                    <div class="card w-75">
-                        <div class="card-header">{{$gameSession->title}}</div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{$gameSession->game}} </h5>
-                            <p class="card-text"> Créé le: {{$gameSession->created_at}}</p>
-                            <p class="card-text">Avec : {{$gameSession->getUserNames->name}}</p>
+            <div class="col-md-6">
+
+                <div id="card_container_large">
+                    <div class="evenboxinner">{{$gameSession->game}}</div>
+                    <div id="card">
+
+                        <div class="shine"></div>
+                        <div class="text-block">
+
+                            <h3 class="welcome-card-title yellow">{{$gameSession->title}}
+                            </h3>
+                            <p>Créée le: {{$gameSession->created_at}}</p>
+                            <p>Avec : {{$gameSession->getUserNames->name}}</p>
                             <a href="{{route('gamesession.show', $gameSession->slug)}}"
                                class="btn btn-primary lined thin">Lire</a>
                         </div>
                     </div>
-                    <br/>
+
                 </div>
-
             </div>
+                @if ($loop->iteration % 2 == 0)
+        </div>
+        <div class="row">
+            @endif
         @endforeach
+        </div>
     </div>
-
-
+    
 
 @endsection
