@@ -1,316 +1,487 @@
 <!doctype html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
+
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'Le livre de jeu') }}</title>
 
-    <!-- Scripts-->
-    <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
+    <title>Laravel</title>
+
+
     <!-- Fonts -->
+
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Indie+Flower"/>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
     <!-- Styles -->
-
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         @import url(//fonts.googleapis.com/css?family=Patrick+Hand+SC|Bangers|Happy+Monkey);
+        @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+
         html, body {
-            min-height: 100%;
-        }
 
+            background-color: #fff;
 
-
-
-        .container {
-            margin: 0px;
             color: #404040;
+            font-family: Indie Flower;
+            font-weight: 200;
+            height: 100vh;
+            margin: 0;
+
         }
 
         .full-height {
+
             height: 100vh;
+
         }
 
         .flex-center {
+
             align-items: center;
+
             display: flex;
+
             justify-content: center;
+
         }
 
         .position-ref {
+
             position: relative;
+
         }
 
         .top-right {
+
             position: absolute;
+
             right: 10px;
+
             top: 18px;
+
         }
 
         .content {
+            height: 80%;
             text-align: center;
+
+        }
+
+        .title {
+
+            font-size: 100px;
+
+        }
+
+        .row-title {
+
+            height: 150px;
+        }
+
+        .row-buttons {
+
+            height: 150px;
+        }
+
+        .links > a {
+
+            color: #636b6f;
+
+            padding: 0 25px;
+
+            font-size: 25px;
+
+            font-weight: 600;
+
+            letter-spacing: .1rem;
+
+            text-decoration: none;
+
+            text-transform: uppercase;
+
+        }
+
+        .m-b-md {
+
+            margin-bottom: 30px;
+
         }
 
         .big {
-            font-size: 84px;
-            margin-bottom: -.75em;
-        }
-        .title {
-
-
-            font-family: "Bangers";
+            font-family: Bangers;
             margin: 0 0 -1em 0;
-            text-shadow: -1px -1px yellow, 1px 1px orange,  2px 2px orange;
+            text-shadow: -1px -1px yellow, 1px 1px orange, 2px 2px orange;
             padding-bottom: 50px;
             float: left;
             width: 100%;
         }
 
-        .links > a {
-            color: #404040;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
+        .main {
+            margin: 0;
+            width: 100%;
+            display: block;
+            min-height: 400px;
+            border-top: none;
+
+        }
+
+        .panel {
+            padding: 1em;
+            background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+            border-top: 3px solid #444;
+            margin-bottom: -4px;
+
+        }
+
+        .red-bg {
+            background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+            radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+            radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            linear-gradient(40deg, #bd2d10 0, #f4502f 30%, #ff6e51 50%, #f4502f 70%, #bd2d10 100%);
+        }
+
+        .btn.btn-primary {
+            align-self: center;
+            padding: 1rem 1rem;
+            transition: all .5s ease;
+            color: #41403E;
+            font-size: 20px;
+            letter-spacing: 1px;
+            outline: none;
+            box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .4);
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+
+            background-image: radial-gradient(ellipse farthest-corner,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+            radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+                    #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
+                    rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+                    #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+            radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+                    #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            linear-gradient(40deg, #ffce55 0, #fffc83 30%, #ffffb1 50%, #fffc83 70%, #ffce55 100%);
+            background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+
+        }
+
+        .btn.btn-primary:hover {
+            box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
+        }
+
+        .lined.thin {
+            border: solid 2px #41403E;
+        }
+
+        .lined.thick {
+            border: solid 7px #41403E;
+        }
+
+        /*cards*/
+
+        .map-background {
+            background-image: url(http://wrap.mytopo.com/wrap/netmapwrapper_mytopo.aspx?VERSION=1.1.1&REQUEST=GetMap&layers=drg,hillshade&map=\Mapserver\mapfiles\zone18.map&width=500&height=500&bbox=357614,4110192.07523,360114,4112692.07523&srs=EPSG:26918&format=image/jpeg);
+            background-size: cover;
+        }
+
+        #card_container {
+            border: 10px solid #ffffff;
+            box-sizing: border-box;
+            width: 250px;
+            height: 250px;
+            position: relative;
+            margin: 50px
+        }
+
+        #card {
+            border: solid 4px #41403E;
+
+            color: #fff;
+            padding: 30px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            /*box-shadow:0px 45px 100px rgba(0, 0, 0, 0.4), inset 0 0 0 1000px rgba(156, 27, 27, 0.6);*/
+            box-shadow: 0px 45px 100px rgba(0, 0, 0, 0.4), inset 0 0 0 1000px rgba(0, 76, 86, 0.6);
+        }
+
+        #card .text-block {
+
+            position: relative;
+            z-index: 2;
+
+        }
+
+        #card .text-block h1 {
+
+            font-size: 3em;
+            margin: 0;
             text-transform: uppercase;
-            font-family: Indie Flower;
-        }
-        .m-b-md {
-            margin-bottom: 30px;
+            font-weight: 700;
         }
 
-        .btn {
-            color: #404040;
-            border: #404040;
-            font-family: Indie Flower;
+        #card .text-block h1 small {
+            font-size: .4em;
+            color: #ccc;
+            position: relative;
+            bottom: 10px;
         }
 
-        #parties {
-            color: #4e555b;
-            border: 2px solid #1b1b1b
+        #card .text-block h3 {
+            margin: 0;
+            font-weight: 700;
         }
 
-        #partiesLink {
-            color: #4e555b;
-            border: 2px solid #404040
+        #card .text-block p {
+            font-weight: 300;
+            width: 60%;
         }
 
-        .inPage {
-            color: #404040;
-            font-family: Indie Flower;
+        #card .text-block button {
+            transition: all 0.35s cubic-bezier(0.37, 0.26, 0.35, 1);
+            border: 4px solid #fff;
+            padding: 10px;
+            background: transparent;
+            text-transform: uppercase;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        #card .text-block button:hover {
+            background: #004c56;
+        }
+
+        #card_container .pg {
+            position: absolute;
+            height: 450px;
+            width: 40%;
+            right: -10px;
+            bottom: 0px;
+            z-index: 2;
+        }
+
+        #card_container .pg > img {
+            height: 450px;
+        }
+
+        .shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 60%);
+            z-index: 1;
+        }
+
+        button {
+            color: #fff;
+        }
+
+        .welcome-card-title {
+            font-family: Bangers;
+            margin: 0 0 -1em 0;
+            text-shadow: -1px -1px #404040, 1px 1px #000000, 2px 2px #000000;
+            padding-bottom: 50px;
+            float: left;
+            width: 100%;
+            font-size: 50px;
 
         }
+
+        .yellow {
+            color: #ffce55;
+        }
+
+        .green {
+            color: #9dc705;
+        }
+
+        .orange {
+            color: #fa9939;
+        }
+
+        .red {
+            color: #f3655d;
+        }
+
+        .blue {
+            color: #51cbf1;
+        }
+
+        .violet {
+            color: rgb(255, 111, 193);
+        }
+
 
     </style>
+
 </head>
+
 <body>
-<div class="container-fluid">
+
+<div class="flex-center position-ref full-height">
+
     @if (Route::has('login'))
+
         <div class="top-right links">
+
             @auth
+
                 <a href="{{ url('/home') }}">Home</a>
+
                 @else
+
                     <a href="{{ route('login') }}">Login</a>
 
+
+
                     @if (Route::has('register'))
+
                         <a href="{{ route('register') }}">Register</a>
+
                     @endif
+
                     @endauth
+
         </div>
+
     @endif
 
 
-    <div class="row">
-        <div class="'col-lg">
+    <div class="content main panel red-bg">
+        <div class="container">
+            <div class="row row-title">
+                <div class="title m-b-md big">
+                    Le Livre De Jeu
+                </div>
 
+            </div>
+            <div class="row row-buttons">
+                <div class="row">
+                    <div class="col-lg-9 offset-1">
+                        <div class="row">
+                            <div class="col-lg-4">
 
-            <div class="row">
-                <div class="links">
-                    <div class="container">
-                        <div class="component">
+                                <div id="card_container">
 
-                            <ul class="align">
-                                <div class="title m-b-md big">
-                                    Le Livre De Jeu
+                                    <div id="card">
+                                        <div class="shine"></div>
+                                        <div class="text-block">
+                                            <h2 class="welcome-card-title yellow">Parties
+                                            </h2>
+                                            <a href="{{route('gamesession.index')}}" class="btn btn-primary lined thin" role="button"><strong>Aller à l'Index</strong></a>
+                                            </div>
+                                    </div>
                                 </div>
-                                <li>
-                                    <figure class='book'>
-                                        <!-- Front -->
-                                        <ul class='hardcover_front'>
-                                            <li>
-                                                <img src="https://cliophage.files.wordpress.com/2014/12/tuniques-bleues-capitaine-stark.jpg?w=640"
-                                                     alt="" width="100%" height="100%">
-                                            </li>
-                                            <li></li>
-                                        </ul>
+                                <div id="card_container">
 
-                                        <!-- Pages -->
-
-                                        <ul class='page'>
-                                            <li></li>
-                                            <li><br/><br/><br/><br/>
-                                                <p class="inPage">Créez, gérez et lisez les parties tour par tour.</p>
-                                            </li>
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-
-                                        <!-- Back -->
-
-                                        <ul class='hardcover_back'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <ul class='book_spine'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <figcaption>
-                                            <h2><a class="btn" href="{{route('gamesession.index')}}" id="partieslink">Parties</a>
+                                    <div id="card">
+                                        <div class="shine"></div>
+                                        <div class="text-block">
+                                            <h2 class="welcome-card-title green">News
                                             </h2>
-                                            <span></span>
 
-                                        </figcaption>
-                                    </figure>
-                                </li>
-                                <li>
-                                    <figure class='book'>
-                                        <!-- Front -->
-                                        <ul class='hardcover_front'>
-                                            <li>
-                                                <img src="https://static.fnac-static.com/multimedia/Images/FR/NR/b3/d9/40/4250035/1507-0/tsp20150813011121/After-Action-Report-on-the-Actions-of-the-20th-Maine-at-Gettysburg.jpg"
-                                                     alt="" width="100%" height="100%">
-                                            </li>
-                                            <li></li>
-                                        </ul>
+                                            <button>En construction</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div id="card_container">
 
-                                        <!-- Pages -->
-
-                                        <ul class='page'>
-                                            <li></li>
-                                            <li><br/><br/><br/><br/>
-                                                <p class="inPage">Ecrire et lire les AARs</p></li>
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-
-                                        <!-- Back -->
-
-                                        <ul class='hardcover_back'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <ul class='book_spine'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <figcaption>
-                                            <h2><a class="btn" href="#">Récits</a></h2>
-                                            <span></span>
-
-                                        </figcaption>
-                                    </figure>
-                                </li>
-                                <li>
-                                    <figure class='book'>
-
-                                        <!-- Front -->
-
-                                        <ul class='hardcover_front'>
-                                            <li>
-                                                <img src="https://s3-us-west-2.amazonaws.com/cosmicjs/e7ce1f70-27c7-11e7-9631-b17e7278f329-github.svg"
-                                                     alt="" width="100%" height="100%">
-                                            </li>
-                                            <li></li>
-                                        </ul>
-
-                                        <!-- Pages -->
-
-                                        <ul class='page'>
-                                            <li></li>
-                                            <li><br/><br/><br/><br/>
-                                                <p class="inPage">Voir/cloner le repo du projet sur github</p></li>
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-
-                                        <!-- Back -->
-
-                                        <ul class='hardcover_back'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <ul class='book_spine'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <figcaption>
-                                            <h2><a class="btn" href="https://github.com/Flefounet/Le-Livre-De-Jeu">Github</a>
+                                    <div id="card">
+                                        <div class="shine"></div>
+                                        <div class="text-block">
+                                            <h2 class="welcome-card-title orange">AARs
                                             </h2>
-                                            <span></span>
+                                            <button>En construction</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="card_container" data-offset="2">
 
-                                        </figcaption>
-                                    </figure>
-                                <li>
-                                    <figure class='book'>
-                                        <!-- Front -->
-                                        <ul class='hardcover_front'>
-                                            <li>
-                                                <img src="http://www.lyricama.com/wp-content/uploads/2015/09/3-reclamation-img-220x165.jpg"
-                                                     alt="" width="100%" height="100%">
-                                            </li>
-                                            <li></li>
+                                    <div id="card">
+                                        <div class="shine"></div>
+                                        <div class="text-block">
+                                            <h2 class="welcome-card-title blue">Github
+                                                </h2>
+                                            <a href="https://github.com/Flefounet/Le-Livre-De-Jeu" class="btn btn-primary lined thin" role="button"><strong>Voir le repo</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div id="card_container" data-offset="2">
 
-                                        </ul>
+                                    <div id="card">
+                                        <div class="shine"></div>
+                                        <div class="text-block">
+                                            <h2 class="welcome-card-title red">Tutoriels
+                                            </h2>
 
-                                        <!-- Pages -->
+                                            <button>En construction</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="card_container" data-offset="2">
 
-                                        <ul class='page'>
-                                            <li></li>
-                                            <li><br/><br/><br/><br/>
-                                                <p class="inPage">Contacter l'administrateur du site</p></li>
-                                            <li></li>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-
-                                        <!-- Back -->
-
-                                        <ul class='hardcover_back'>
-
-                                            <li>
-
-                                            </li>
-                                            <li></li>
-
-                                        </ul>
-                                        <ul class='book_spine'>
-                                            <li></li>
-                                            <li></li>
-                                        </ul>
-                                        <figcaption>
-                                            <h2><a class="btn" href="#">Contact</a></h2>
-                                            <span></span>
-
-                                        </figcaption>
-                                    </figure>
-
-                            </ul>
-
+                                    <div id="card">
+                                        <div class="shine"></div>
+                                        <div class="text-block">
+                                            <h2 class="welcome-card-title violet">Contact
+                                            </h2>
+                                            <button>En construction</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            <!--   <div class="col">
+                    <a href="{{route('gamesession.index')}}" class="btn btn-primary lined thin" role="button"
+                       aria-pressed="true">Parties</a>
+                </div>
+                <div class="col">
+                    <a href="https://laravel.com/docs" class="btn btn-primary lined thin" role="button"
+                       aria-pressed="true">AARs</a>
+                </div>
+                <div class="col">
+                    <a href="https://laravel.com/docs" class="btn btn-primary lined thin" role="button"
+                       aria-pressed="true">News</a>
+                </div>-->
+
             </div>
         </div>
+
+
     </div>
+
+
 </div>
+
 </body>
+
 </html>

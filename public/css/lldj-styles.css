@@ -3,7 +3,7 @@
 
 html, body {
     min-height: 100%;
-    
+
     background-image: radial-gradient(ellipse farthest-corner,
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
@@ -16,11 +16,8 @@ html, body {
     radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
             #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
     linear-gradient(40deg, #acacac 0, #dadada 30%, #f2f2f2 50%, #dadada 70%, #acacac 100%);
-    background-size: 4px 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
 }
-
-
-
 
 h2, h4, h5, .players, .navbar, .datetime, .statut, .card {
     font-family: Indie Flower, serif;
@@ -29,6 +26,11 @@ h2, h4, h5, .players, .navbar, .datetime, .statut, .card {
 
 table td {
     word-wrap: break-word;
+}
+
+.row-title {
+
+    height: 150px;
 }
 
 .form-control {
@@ -50,24 +52,35 @@ table td {
     radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
             #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
     linear-gradient(40deg, #ffce55 0, #fffc83 30%, #ffffb1 50%, #fffc83 70%, #ffce55 100%);
-    background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+    background-size: 8px, 8px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
 
 }
 
 .card {
-    background-image: radial-gradient(ellipse farthest-corner,
-    rgba(0, 0, 0, 0) 0%,
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
-    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
-            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
-            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
-            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
-    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
-            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-    linear-gradient(40deg, #acacac 0, #dadada 30%, #f2f2f2 50%, #dadada 70%, #acacac 100%);
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #038ecf 0, #51cbf1 30%, #7ff9ff 50%, #51cbf1 70%, #038ecf 100%);
     background-size: 4px 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+}
+
+.card-body {
+
+    font-size: 25px;
+}
+
+.card-header {
+
+    font-family: Bangers;
+    color: yellow;
+    font-size: 3em;
+    margin-bottom: 0;
+    text-shadow: -1px -1px black, 1px 1px black, 2px 2px black;
+    font-weight: 400;
+
 }
 
 .container {
@@ -97,7 +110,6 @@ table td {
 .content {
     text-align: center;
 }
-
 
 .links > a {
     color: #636b6f;
@@ -224,16 +236,48 @@ hr {
     font-size: 84px;
     margin-bottom: -.75em;
 }
+
 .title {
     font-family: "Bangers";
     margin: 0 0 -1em 0;
-    text-shadow: -1px -1px yellow, 1px 1px orange,  2px 2px orange;
+    text-shadow: -1px -1px yellow, 1px 1px orange, 2px 2px orange;
     padding-bottom: 50px;
     float: left;
     width: 100%;
 }
 
-.yellow{
+.btn.btn-primary {
+    align-self: center;
+    padding: 1rem 1rem;
+    margin: 0 1rem;
+    transition: all .5s ease;
+    color: #41403E;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    outline: none;
+    box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .4);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
 
+    background-image: radial-gradient(ellipse farthest-corner,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #ffce55 0, #fffc83 30%, #ffffb1 50%, #fffc83 70%, #ffce55 100%);
+    background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
 
+}
+
+.btn.btn-primary:hover {
+    box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
+}
+
+.lined.thin {
+    border: solid 2px #41403E;
 }
