@@ -495,3 +495,18 @@ button {
     font-size: 25px;
 }
 
+/*modals*/
+
+.modal-title {
+    font-family: Bangers;
+
+}
+.modal-content  {
+
+    border-width: 2px 3px 3px 5px;
+    border-radius:4% 0% 6% 0%/0% 4% 0% 5%;
+
+    font-family: "Patrick Hand SC";
+    font-style: italic;
+}
+

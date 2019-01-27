@@ -1,5 +1,5 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddPlayers">
-    Ajouter des joueurs
+<button type="button" class="btn btn-primary lined thin" data-toggle="modal" data-target="#modalAddPlayers">
+    Joueurs
 </button>
 
 <!-- Modal -->
@@ -7,7 +7,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAddPlayersLabel">Modal title</h5>
+                <h5 class="modal-title" id="modalAddPlayersLabel"><i class="fas fa-address-card"></i> Joueurs</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -34,7 +34,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-secondary lined thin" data-dismiss="modal">Ok</button>
 
             </div>
         </div>
