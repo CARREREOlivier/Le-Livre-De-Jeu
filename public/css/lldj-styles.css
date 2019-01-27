@@ -247,8 +247,9 @@ hr {
 }
 
 .btn.btn-primary {
+    font-family: "Patrick Hand SC";
+    font-style: italic;
     align-self: center;
-    padding: 1rem 1rem;
     transition: all .5s ease;
     color: #41403E;
     font-size: 20px;
@@ -273,7 +274,35 @@ hr {
 
 }
 
+.btn.btn-secondary{
+    font-family: "Patrick Hand SC";
+    font-style: italic;
+    align-self: center;
+    transition: all .5s ease;
+    color: #41403E;
+    font-size: 20px;
+    letter-spacing: 1px;
+    outline: none;
+    box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .4);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+
+    background-image:
+            radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+            radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+            radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #038ecf 0, #51cbf1 30%, #7ff9ff 50%, #51cbf1 70%, #038ecf 100%);
+
+    background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+
+}
+
 .btn.btn-primary:hover {
+    box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
+}
+
+.btn.btn-secondary:hover {
     box-shadow: 2px 8px 4px -6px hsla(0, 0%, 0%, .3);
 }
 

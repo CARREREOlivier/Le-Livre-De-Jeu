@@ -9,7 +9,7 @@
                 </div>
                 @auth
                     <div class="row">
-                        <a href="{{route('gamesession.create')}}" class="btn btn-primary lined thin"
+                        <a href="{{route('gamesession.create')}}" class="btn btn-secondary lined thin"
                                         role="button">Créer une nouvelle partie</a>
                     </div>
                 @endauth
@@ -28,7 +28,7 @@
 
                             <h3 class="welcome-card-title yellow">{{$gameSession->title}}
                             </h3>
-                            <p>Créée le: {{$gameSession->created_at}}</p>
+                            <p>Créée le:{{date('d-M-Y à h:i', strtotime($gameSession->created_at))}}</p>
                             <p>Avec : {{$gameSession->getUserNames->name}}</p>
                             <a href="{{route('gamesession.show', $gameSession->slug)}}"
                                class="btn btn-primary lined thin">Lire</a>
@@ -44,6 +44,6 @@
         @endforeach
         </div>
     </div>
-    
+
 
 @endsection
