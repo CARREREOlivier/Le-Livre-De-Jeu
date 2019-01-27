@@ -35,13 +35,22 @@
 
         html, body {
 
-            background-color: #fff;
 
             color: #404040;
-            font-family: Indie Flower;
+            font-family: "Patrick Hand SC";
             font-weight: 200;
             height: 100vh;
             margin: 0;
+
+            background-image:
+                    radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+            radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+            radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+            linear-gradient(40deg, #bd2d10 0, #f4502f 30%, #ff6e51 50%, #f4502f 70%, #bd2d10 100%);
+            background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+
 
         }
 
@@ -101,11 +110,11 @@
 
         .links > a {
 
-            color: #636b6f;
-
+            color: #1b1b1b;
+            font-style: italic;
             padding: 0 25px;
 
-            font-size: 25px;
+            font-size: 20px;
 
             font-weight: 600;
 
@@ -144,7 +153,6 @@
         .panel {
             padding: 1em;
             background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
-            border-top: 3px solid #444;
             margin-bottom: -4px;
 
         }
@@ -334,18 +342,26 @@
             color: rgb(255, 111, 193);
         }
 
+        .padding10pc{
+            padding-left: 10%
+        }
+
+        .brand-text{
+
+            font-family: Bangers;
+        }
+
 
     </style>
 
 </head>
 
 <body>
-
-<div class="flex-center position-ref full-height">
-
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand brand-text padding10pc " href="#">Le Livre de Jeu</a>
     @if (Route::has('login'))
 
-        <div class="top-right links">
+        <div class="top-right plop links">
 
             @auth
 
@@ -369,8 +385,13 @@
 
     @endif
 
+</nav>
 
-    <div class="content main panel red-bg">
+<div class="flex-center position-ref full-height">
+
+
+
+    <div class="content main panel">
         <div class="container">
             <div class="row row-title">
                 <div class="title m-b-md big">
@@ -460,18 +481,6 @@
                         </div>
                     </div>
                 </div>
-            <!--   <div class="col">
-                    <a href="{{route('gamesession.index')}}" class="btn btn-primary lined thin" role="button"
-                       aria-pressed="true">Parties</a>
-                </div>
-                <div class="col">
-                    <a href="https://laravel.com/docs" class="btn btn-primary lined thin" role="button"
-                       aria-pressed="true">AARs</a>
-                </div>
-                <div class="col">
-                    <a href="https://laravel.com/docs" class="btn btn-primary lined thin" role="button"
-                       aria-pressed="true">News</a>
-                </div>-->
 
             </div>
         </div>
