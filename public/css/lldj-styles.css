@@ -4,23 +4,18 @@
 html, body {
     min-height: 100%;
 
-    background-image: radial-gradient(ellipse farthest-corner,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
-    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
-            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
-            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
-            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
-    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
-            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-    linear-gradient(40deg, #acacac 0, #dadada 30%, #f2f2f2 50%, #dadada 70%, #acacac 100%);
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #484848 0, #959595 30%, #acacac 50%, #959595 70%, #484848 100%);
     background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
 }
 
 h2, h4, h5, .players, .navbar, .datetime, .statut, .card {
-    font-family: Indie Flower, serif;
+    font-family: "Patrick Hand SC";
+    font-style: italic;
     color: #4e555b;
 }
 
@@ -33,12 +28,27 @@ table td {
     height: 150px;
 }
 
-.form-control {
+.btn.btn-link{
+    font-family: "Patrick Hand SC" ;
+    font-style: italic;
+    color: #4e555b
+}
 
+label {
+    margin: 5px;
+    padding: 5px;
+    background: #fcffb3;
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+}
+.form-control, .gameSessionTitleInput, .gameInput {
+
+    margin-top: 5px;
+    padding: 5px;
     border: solid #404040;
     /*top droite bottom gauche*/
     border-width: 1px 2px 1px 3px;
-    border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+    border-radius: 0% 4% 5% 5%/4% 0% 6% 5%;
 
     background-image: radial-gradient(ellipse farthest-corner,
     rgba(0, 0, 0, 0) 0%,
@@ -52,7 +62,7 @@ table td {
     radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
             #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
     linear-gradient(40deg, #ffce55 0, #fffc83 30%, #ffffb1 50%, #fffc83 70%, #ffce55 100%);
-    background-size: 8px, 8px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
+    background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
 
 }
 
@@ -69,7 +79,7 @@ table td {
 
 .card-body {
 
-    font-size: 25px;
+    font-size: 18px;
 }
 
 .card-header {
@@ -274,7 +284,7 @@ hr {
 
 }
 
-.btn.btn-secondary{
+.btn.btn-secondary {
     font-family: "Patrick Hand SC";
     font-style: italic;
     align-self: center;
@@ -286,12 +296,11 @@ hr {
     box-shadow: 20px 38px 34px -26px hsla(0, 0%, 0%, .4);
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
 
-    background-image:
-            radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
-            radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-            radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
-            radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
-            radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
     linear-gradient(40deg, #038ecf 0, #51cbf1 30%, #7ff9ff 50%, #51cbf1 70%, #038ecf 100%);
 
     background-size: 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px, 4px 4px, 100% 100%;
@@ -440,19 +449,19 @@ button {
     font-size: 50px;
 }
 
-.evenboxinner{
+.evenboxinner {
     font-family: "Patrick Hand SC";
     font-style: italic;
     font-size: 20px;
     z-index: 2;
-    margin:2px;
-    padding:0 5px;
+    margin: 2px;
+    padding: 0 5px;
     position: relative;
-    float:right;
+    float: right;
     background: #fcffb3;
-    border:1px solid #222;
-    box-shadow:3px 3px 0 #222;}
-
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+}
 
 /*colors*/
 
@@ -480,7 +489,7 @@ button {
     color: rgb(255, 111, 193);
 }
 
-.white{
+.white {
     color: #ffffff;
 }
 
@@ -495,18 +504,100 @@ button {
     font-size: 25px;
 }
 
+/*backgrounds*/
+.green-bg {
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #9dc705 0, #cbf533 30%, #f9ff61 50%, #cbf533 70%, #9dc705 100%);
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+}
+
+.red-bg {
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #bd2d10 0, #f4502f 30%, #ff6e51 50%, #f4502f 70%, #bd2d10 100%);
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+}
+
+.blue-bg {
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #038ecf 0, #51cbf1 30%, #7ff9ff 50%, #51cbf1 70%, #038ecf 100%);
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+}
+
+.orange-bg{
+    background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #fa9939 0, #ffc767 30%, #fff595 50%, #ffc767 70%, #fa9939 100%);
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+}
+
 /*modals*/
 
 .modal-title {
     font-family: Bangers;
 
 }
-.modal-content  {
+
+.modal-content {
 
     border-width: 2px 3px 3px 5px;
-    border-radius:4% 0% 6% 0%/0% 4% 0% 5%;
+    border-radius: 4% 0% 6% 0%/0% 4% 0% 5%;
 
     font-family: "Patrick Hand SC";
     font-style: italic;
+}
+
+/*gamesessionNew styles */
+
+.create-game {
+
+    color: #4e555b;
+    font-family: "Patrick Hand SC";
+    font-size: 20px;
+    font-style: italic;
+
+}
+
+.h2-black {
+    color: #000000;
+}
+
+.strip {
+    border: 20px solid #ffffff;
+
+}
+
+.vignette {
+    border: 2px solid #1b1b1b;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 4% 0% 6% 0%/0% 4% 0% 5%;
+    width: 100%;
+
+}
+#description-label, #title-label, #game-label{
+    margin: 5px;
+    padding: 5px;
+    background: #fcffb3;
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+}
+
+#title-label{
+    width : 105%;
 }
 
