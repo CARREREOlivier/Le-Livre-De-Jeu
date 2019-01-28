@@ -64,7 +64,8 @@ class GameSessionController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|unique:gamesessions|max:125',
             'game' => 'max:50',
-            'description' => 'max:1024',
+            'description' => 'max:21844', // text is 65535 bytes. utf8 take 3 bytes per character. Hence the maximum character number is 65535/3=21845.
+            // And I take one character off to make the string will fit into the text field
         ]);
 
 
