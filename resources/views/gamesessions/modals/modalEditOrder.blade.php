@@ -34,7 +34,7 @@
 
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler
                 </button>
-                {!! Form::submit('Editer', array('class'=>'btn btn-primary')) !!}
+                {!! Form::submit('Editer', array('class'=>'btn btn-secondary lined thin')) !!}
             </div>
 
         </div>

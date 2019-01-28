@@ -40,7 +40,7 @@
     @endforeach
 </table>
 <!--this button allows to expand the users' list through a collapsible-->
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUserList"
+<button class="btn btn-secondary lined thin" type="button" data-toggle="collapse" data-target="#collapseUserList"
         aria-expanded="false" aria-controls="collapseUserList">
     Ajouter des joueurs
 </button>

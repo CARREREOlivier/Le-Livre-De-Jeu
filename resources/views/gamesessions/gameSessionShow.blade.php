@@ -24,43 +24,72 @@
                 </ul>
             </div>
         @endif
-        <div class="row" id="showgamesession">
-            <div class="col-lg-9"><h2>{{$gameSession->title}}</h2>{!! $gameSession->description!!}</div>
-            <div class="col-lg-3" ><h5><strong>Maitre de jeu :</strong></h5>
-                @foreach($gamemaster as $gm)
-                    <h5> {{$gm->getusers->name}}</h5>
-                @endforeach
-                <hr>
-                <h5><strong>Joueurs :</strong></h5>
-                <h5>@foreach($players as $player)
-                    @if($loop->last)
-                        {{$player->getusers->name}}
-                    @else
-                        {{$player->getusers->name}} -
+        <div class="row">
+            <div class="col-md-9 nopadding">
+                <div id="card_container_auto">
+                    <div id="card">
 
-                    @endif
-                @endforeach</h5>
+                        <div class="shine"></div>
+                        <div class="text-block">
+
+                            <h3 class="welcome-card-title yellow">{{$gameSession->title}}
+                            </h3>
+                            <p>Créée le:{{date('d-M-Y à H:i', strtotime($gameSession->created_at))}}</p>
+                            <p>{!! $gameSession->description !!}</p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <hr>
-        </div>
+            <div class="col-md-3 nopadding">
+                <div id="card_container_auto">
+                    <div class="evenboxinner">{{$gameSession->game}}</div>
+                    <div id="card">
 
-        <div class="row" id="buttonsrow">
-            <div class="col-lg-9 offset-lg-1">
-                @auth
-                    @if(Auth::User()->id == $gameSession->user_id)
-                        @include("gamesessions.modals.modalAddTurn")
-                        @include("gamesessions.modals.modalGameSessionEdit")
-                    @endif
-                @endauth
+                        <div class="shine"></div>
+                        <div class="text-block">
+
+                            <p><strong>Maitre de jeu :</strong>
+                                @foreach($gamemaster as $gm)
+                                    {{$gm->getusers->name}}
+                                @endforeach
+                                <br/>
+                                <strong>Joueurs :</strong>
+                                @foreach($players as $player)
+                                    @if($loop->last)
+                                        {{$player->getusers->name}}
+                                    @else
+                                        {{$player->getusers->name}} -
+
+                                    @endif
+                                @endforeach</p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
+        @auth
+            @if(Auth::User()->id == $gameSession->user_id)
+                <div class="row strip">
+                    <div class="vignette green-bg">
+                        <div class="col-lg-9 offset-lg-1">
 
-        <div class="row" id="orderdisplay">
+                            @include("gamesessions.modals.modalAddTurn")
+                            @include("gamesessions.modals.modalGameSessionEdit")
+                            @include("gamesessions.modals.modalDeleteGameSession")
 
-            <div class="col-lg-10 offset-md-1">
-                <hr>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endauth
+
+        <div class="row strip" id="orderdisplay">
+
+            <div class="col-lg-6 vignette padding-5px-left blue-bg">
                 @foreach($gameTurns->reverse() as $gameTurn)
-                    <p class="float-right datetime">{{date('H:i d-M-Y', strtotime($gameTurn->created_at))}}</p>
+                    <div class="evenboxinner">Le {{date('d-M-Y à H:i', strtotime($gameTurn->created_at))}}</div>
                     <h4>
                         @auth
                             @if( Auth::User()->id == $gameSession->user_id)
@@ -81,31 +110,6 @@
                             @include("gamesessions.modals.modalTurnOrders")
                         @endif
                     @endauth
-                    <ul class="timeline">
-
-                        @foreach($orders->reverse() as $order)
-                            @if($order->gameturn_id == $gameTurn->id)
-                                <li>
-                                    <div class="text-left">
-                                        @auth
-                                            @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
-                                                @include('gamesessions._partials.menuOrderActions')
-                                            @endif
-                                        @endauth
-                                        {{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}
-                                        : {!! $order->message!!}
-                                        @auth
-                                            @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
-                                                @include('gamesessions.modals.modalDropzoneOrder')
-                                                @include('gamesessions.modals.modalEditOrder')
-                                                @include('gamesessions.modals.modalDeleteOrder')
-                                            @endif
-                                        @endauth
-                                    </div>
-                                </li>
-                            @endif
-                        @endforeach
-                    </ul>
                     @auth
                         @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
                             @include('gamesessions.modals.modalDropzone')
@@ -114,10 +118,37 @@
 
                         @endif
                     @endauth
+            </div>
+            <div class="col-lg-6 strip-left white-bg ">
+                <div class="col-12 vignette orange-bg all-auto float-right">
+                    @foreach($orders->reverse() as $order)
+                        @if($order->gameturn_id == $gameTurn->id)
+
+                            <div class="text-orders">  @auth
+                                    @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                        @include('gamesessions._partials.menuOrderActions')
+                                    @endif
+                                @endauth<p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p></div>
+                                    <div class="text-orders">{!!$order->message!!}</div>
+                                @auth
+                                    @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                        @include('gamesessions.modals.modalDropzoneOrder')
+                                        @include('gamesessions.modals.modalEditOrder')
+                                        @include('gamesessions.modals.modalDeleteOrder')
+                                    @endif
+                                @endauth
+
+
+                        @endif
+                    @endforeach
+
+
                     <br/>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
+    </div>
     </div>
 
 

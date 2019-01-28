@@ -15,7 +15,7 @@
         <div class="modal-footer">
             <button class="btn btn-info" type="button" data-dismiss="modal">Annuler</button>
             {{ Form::open(['route' => ['gameturn.destroy', $gameTurn->id], 'method' => 'delete']) }}
-            <button type="submit" class="btn btn-danger">Effacer</button>
+            <button type="submit" class="btn btn-danger lined thin">Effacer</button>
             {{ Form::close() }}
         </div>
     </div>

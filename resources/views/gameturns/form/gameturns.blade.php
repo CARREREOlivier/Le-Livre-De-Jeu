@@ -6,24 +6,21 @@
     </div>
     <div class="modal-body">
 
-        <ul>
-            {!! Form::hidden('gamesessions_id',$gameSession->id) !!}
 
-            <li>
-                {!! Form::label('title', 'Title:') !!}
-                {!! Form::text('title') !!}
-            </li>
-            <li>
-                {!! Form::label('description', 'Description:') !!}
-                {!! Form::textarea('description') !!}
-            </li>
-        </ul>
+        {!! Form::hidden('gamesessions_id',$gameSession->id) !!}
+
+
+        {!! Form::label('title', 'Title:') !!}
+        {!! Form::text('title') !!}
+        <br/>
+        {!! Form::label('description', 'Description:') !!}
+        {!! Form::textarea('description') !!}
 
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-info" type="button" data-dismiss="modal">Annuler</button>
-        {!! Form::submit('Ajouter', array('class'=>'btn btn-primary')) !!}
+        <button class="btn btn-primary lined thin" type="button" data-dismiss="modal">Annuler</button>
+        {!! Form::submit('Ajouter', array('class'=>'btn btn-secondary lined thin')) !!}
 
     </div>
     {!! Form::close() !!}
