@@ -1,7 +1,3 @@
-
-
-
-
 <ul>
 
     <li>
@@ -21,23 +17,27 @@
 <p>Joueurs actuels</p>
 <table>
     <thead>
-    <th>Pseudo</th>
-    <th>Role</th>
+    <tr>
+        <th scope="col">Pseudo</th>
+        <th scope="col">Role</th>
+    </tr>
     </thead>
-<tr>
-    @foreach($gamemaster as $gm)
+    <tbody>
+    <tr>
+        @foreach($gamemaster as $gm)
 
-        <td>{{$gm->getusers->name}}</td>
-        <td>Maitre de jeu</td>
+            <td>{{$gm->getusers->name}}</td>
+            <td>Maitre de jeu</td>
 
-    @endforeach
-</tr>
+        @endforeach
+    </tr>
     @foreach($players as $player)
         <tr>
             <td>{{$player->getusers->name}}</td>
             <td><p>Joueur</p></td>
         </tr>
     @endforeach
+    </tbody>
 </table>
 <!--this button allows to expand the users' list through a collapsible-->
 <button class="btn btn-secondary lined thin" type="button" data-toggle="collapse" data-target="#collapseUserList"
@@ -54,9 +54,11 @@
         <table>
 
             <thead>
-            <th>Sélectionner</th>
-            <th scope="col">pseudo</th>
-            <th scope="col">email</th>
+            <tr>
+                <th>Sélectionner</th>
+                <th scope="col">pseudo</th>
+                <th scope="col">email</th>
+            </tr>
             </thead>
             <tbody id="usersLists">
 

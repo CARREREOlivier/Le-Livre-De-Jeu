@@ -35,7 +35,7 @@
                             <h3 class="welcome-card-title yellow">{{$gameSession->title}}
                             </h3>
                             <p>Créée le:{{date('d-M-Y à H:i', strtotime($gameSession->created_at))}}</p>
-                            <p>{!! $gameSession->description !!}</p>
+                            {!!  $gameSession->description !!}
                         </div>
                     </div>
 
@@ -88,7 +88,7 @@
         <div class="row strip" id="orderdisplay">
 
 
-                @foreach($gameTurns->reverse() as $gameTurn)
+            @foreach($gameTurns->reverse() as $gameTurn)
                 <div class="col-lg-6 vignette padding-5px-left blue-bg">
                     <div class="evenboxinner">Le {{date('d-M-Y à H:i', strtotime($gameTurn->created_at))}}</div>
                     <h4>
@@ -119,18 +119,19 @@
 
                         @endif
                     @endauth
-            </div>
-            <div class="col-lg-6 strip-left white-bg ">
-                <div class="col-12 vignette orange-bg all-auto float-right">
-                    @foreach($orders->reverse() as $order)
-                        @if($order->gameturn_id == $gameTurn->id)
+                </div>
+                <div class="col-lg-6 strip-left white-bg ">
+                    <div class="col-12 vignette orange-bg all-auto float-right">
+                        @foreach($orders->reverse() as $order)
+                            @if($order->gameturn_id == $gameTurn->id)
 
-                            <div class="text-orders">  @auth
-                                    @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
-                                        @include('gamesessions._partials.menuOrderActions')
-                                    @endif
-                                @endauth<p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p></div>
-                                    <div class="text-orders">{!!$order->message!!}</div>
+                                <div class="text-orders">  @auth
+                                        @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                            @include('gamesessions._partials.menuOrderActions')
+                                        @endif
+                                    @endauth<p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p>
+                                </div>
+                                <div class="text-orders">{!!$order->message!!}</div>
                                 @auth
                                     @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
                                         @include('gamesessions.modals.modalDropzoneOrder')
@@ -140,17 +141,17 @@
                                 @endauth
 
 
-                        @endif
-                    @endforeach
+                            @endif
+                        @endforeach
 
 
-                    <br/>
-                    @endforeach
+                        <br/>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
-    </div>
+
 
 
 @endsection

@@ -20,7 +20,6 @@
                 {!! Form::submit('Mettre à jour', array('class'=>'btn btn-secondary lined thin')) !!}
             </div>
         </div>
+        {!! Form::close() !!}
     </div>
-
-    {!! Form::close() !!}
 </div>
