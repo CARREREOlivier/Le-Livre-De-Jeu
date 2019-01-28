@@ -11,7 +11,6 @@ class InfoComment extends Model
     protected $table = 'infos_comments';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

@@ -10,7 +10,6 @@ class CreateGamesessionsCommentsTable extends Migration {
 		Schema::create('gamesessions_comments', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('gamesessions_id')->unsigned();
 			$table->text('text');

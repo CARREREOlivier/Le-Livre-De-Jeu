@@ -11,7 +11,6 @@ class GameTurn extends Model
     protected $table = 'gameturns';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

@@ -11,8 +11,6 @@ class StoryPost extends Model
     protected $table = 'story_posts';
     public $timestamps = true;
 
-    use SoftDeletes;
-
     protected $dates = ['deleted_at'];
 
     public function getComments()

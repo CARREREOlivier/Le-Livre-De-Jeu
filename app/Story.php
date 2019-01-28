@@ -11,7 +11,6 @@ class Story extends Model
     protected $table = 'stories';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

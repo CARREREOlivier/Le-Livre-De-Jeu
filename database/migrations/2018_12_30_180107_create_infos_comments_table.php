@@ -10,7 +10,6 @@ class CreateInfosCommentsTable extends Migration {
 		Schema::create('infos_comments', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('info_post_id')->unsigned();
 			$table->string('text');

@@ -10,7 +10,6 @@ class CreateInfoPostTable extends Migration {
 		Schema::create('info_post', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('info_id')->unsigned();
 			$table->text('text');

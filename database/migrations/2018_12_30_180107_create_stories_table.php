@@ -10,7 +10,6 @@ class CreateStoriesTable extends Migration {
 		Schema::create('stories', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->string('title');
 			$table->text('description');

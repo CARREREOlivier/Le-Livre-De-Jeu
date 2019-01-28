@@ -10,7 +10,6 @@ class CreateStoriesroleTable extends Migration {
 		Schema::create('storiesrole', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('story_id')->unsigned();
 			$table->enum('storyrole', array('author', 'co_author', 'authorized', 'forbidden'));

@@ -13,7 +13,6 @@ class User extends Authenticatable
     protected $table = 'users';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     /**

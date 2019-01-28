@@ -11,7 +11,6 @@ class InfoPost extends Model
     protected $table = 'info_post';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

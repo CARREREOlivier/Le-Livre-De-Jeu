@@ -10,7 +10,6 @@ class CreateStoriesCommentsTable extends Migration {
 		Schema::create('stories_comments', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('story_post_id')->unsigned();
 			$table->text('text')->nullable();

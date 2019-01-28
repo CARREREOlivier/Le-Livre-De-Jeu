@@ -10,7 +10,6 @@ class CreateTutorialPostTable extends Migration {
 		Schema::create('tutorial_post', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('tutorial_id')->unsigned();
 			$table->integer('user_id')->unsigned();
 			$table->longText('text');

@@ -11,7 +11,6 @@ class GameSessionComment extends Model
     protected $table = 'gamesessions_comments';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

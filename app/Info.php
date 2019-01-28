@@ -11,7 +11,6 @@ class Info extends Model
     protected $table = 'infos';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

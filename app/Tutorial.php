@@ -11,7 +11,6 @@ class Tutorial extends Model
     protected $table = 'tutorials';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

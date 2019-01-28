@@ -11,7 +11,6 @@ class TutorialComment extends Model
     protected $table = 'tutorials_comments';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

@@ -11,7 +11,6 @@ class StoryComment extends Model
     protected $table = 'stories_comments';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 

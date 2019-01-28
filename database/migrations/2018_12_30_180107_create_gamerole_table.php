@@ -10,7 +10,6 @@ class CreateGameroleTable extends Migration {
 		Schema::create('gamerole', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('gamesession_id')->unsigned();
 			$table->enum('gamerole', array('GameMaster', 'GameParticipant', 'Spectator'));

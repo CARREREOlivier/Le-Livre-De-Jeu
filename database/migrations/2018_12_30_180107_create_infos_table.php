@@ -10,7 +10,6 @@ class CreateInfosTable extends Migration {
 		Schema::create('infos', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->string('title');
 			$table->string('summary')->nullable();

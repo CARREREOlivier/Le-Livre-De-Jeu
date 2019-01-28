@@ -10,7 +10,6 @@ class CreateGameturnsTable extends Migration {
 		Schema::create('gameturns', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('gamesessions_id')->unsigned();
 			$table->string('title');

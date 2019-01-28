@@ -10,7 +10,6 @@ class CreateStoryPostsTable extends Migration {
 		Schema::create('story_posts', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('user_id')->unsigned();
 			$table->integer('story_id')->unsigned();
 			$table->longText('text');
