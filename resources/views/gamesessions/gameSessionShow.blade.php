@@ -87,8 +87,9 @@
 
         <div class="row strip" id="orderdisplay">
 
-            <div class="col-lg-6 vignette padding-5px-left blue-bg">
+
                 @foreach($gameTurns->reverse() as $gameTurn)
+                <div class="col-lg-6 vignette padding-5px-left blue-bg">
                     <div class="evenboxinner">Le {{date('d-M-Y à H:i', strtotime($gameTurn->created_at))}}</div>
                     <h4>
                         @auth
