@@ -1,5 +1,5 @@
 <div class="dropdown d-inline-block">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+    <button class="btn btn-warning dropdown-toggle lined thin" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bars"></i>
     </button>

@@ -454,7 +454,7 @@ hr {
 
 #card .text-block p {
     font-weight: 300;
-    width: 60%;
+    width: 100%;
     font-family: "Patrick Hand SC";
     font-style: italic;
 }
@@ -522,6 +522,23 @@ button {
     border: 1px solid #222;
     box-shadow: 3px 3px 0 #222;
 }
+
+.evenboxinner-turn {
+    font-family: "Patrick Hand SC";
+    font-style: italic;
+    font-size: 20px;
+    z-index: 2;
+    margin: 2px;
+    padding: 0 5px;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    float: left;
+    background: #fcffb3;
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+}
+
 
 /*colors*/
 
@@ -678,10 +695,13 @@ button {
 }
 
 .padding-5px-right {
-    padding-left: 5px;
+    padding-right: 5px;
 
 }
+.padding-10px-top {
+    padding-top: 10px;
 
+}
 .white-bg {
     background-color: #ffffff;
 

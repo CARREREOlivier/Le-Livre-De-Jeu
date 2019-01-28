@@ -13,7 +13,7 @@
 @section('content')
 
 
-    <!-- Edit GameSession Form -->
+    <!-- Top strip -->
     <div class="container mt-5 mb-5" id="showgamessesionMain">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -48,7 +48,7 @@
 
                         <div class="shine"></div>
                         <div class="text-block">
-
+                            <br/>
                             <p><strong>Maitre de jeu :</strong>
                                 @foreach($gamemaster as $gm)
                                     {{$gm->getusers->name}}
@@ -69,6 +69,8 @@
                 </div>
             </div>
         </div>
+            <!--End top strip-->
+            <!-- game master actions strip -->
         @auth
             @if(Auth::User()->id == $gameSession->user_id)
                 <div class="row strip">
@@ -85,13 +87,14 @@
             @endif
         @endauth
 
-        <div class="row strip" id="orderdisplay">
+        <!--end game master acctions strip
 
-
-            @foreach($gameTurns->reverse() as $gameTurn)
+        <!--turn strip left pane is turn, left pane are associated orders-->
+        @foreach($gameTurns->reverse() as $gameTurn)
+            <div class="row strip" id="orderdisplay">
                 <div class="col-lg-6 vignette padding-5px-left blue-bg">
-                    <div class="evenboxinner">Le {{date('d-M-Y à H:i', strtotime($gameTurn->created_at))}}</div>
-                    <h4>
+                    <div class="evenboxinner-turn">Le {{date('d-M-Y à H:i', strtotime($gameTurn->created_at))}}</div>
+                    <h4 class="padding-10px-top">
                         @auth
                             @if( Auth::User()->id == $gameSession->user_id)
                                 @include("gamesessions._partials.menuTurnActions")
@@ -143,14 +146,15 @@
 
                             @endif
                         @endforeach
-
-
-                        <br/>
-                        @endforeach
                     </div>
                 </div>
-        </div>
+                <br/>
+            </div>
+        @endforeach
+        <!--end turn strip-->
+
     </div>
+
 
 
 

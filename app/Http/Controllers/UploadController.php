@@ -166,7 +166,7 @@ class UploadController extends Controller
 
         $description = $gameTurn->description;
 
-        $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
+        $downloadLink = "<a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
 
         $gameTurn->description = $description . " " . $downloadLink;
         $gameTurn->save();

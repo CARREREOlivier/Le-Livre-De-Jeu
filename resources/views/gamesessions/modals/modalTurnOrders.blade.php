@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal"
+<button type="button" class="btn btn-primary lined thin" data-toggle="modal"
         data-target="#modalAddOrder{{$gameTurn->id}}">
     Ajouter mon ordre
 </button>
@@ -13,8 +13,9 @@
         {!! Form::hidden('gameturn_id',$gameTurn->id) !!}
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAddOrder{{$gameTurn->id}}"><i class="fas fa-signature"></i>Enregistrer mes ordres</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="modalAddOrder{{$gameTurn->id}}"><i class="fas fa-signature"></i>Enregistrer
+                    mes ordres</h5>
+                <button type="button" class="btn btn-primary lined thin" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
 
@@ -23,10 +24,11 @@
 
                 <table>
                     <tbody>
-
-
                     <tr>
                         <td> {!! Form::label('message', 'Message:') !!}</td>
+                    </tr>
+                    <tr>
+
                         <td> {!! Form::textarea('message') !!}</td>
                     </tr>
                     </tbody>
@@ -37,9 +39,9 @@
 
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler
+                <button type="button" class="btn btn-primary lined thin" data-dismiss="modal">Annuler
                 </button>
-                {!! Form::submit('Ajouter', array('class'=>'btn btn-primary')) !!}
+                {!! Form::submit('Ajouter', array('class'=>'btn btn-secondary lined thin')) !!}
             </div>
 
         </div>
