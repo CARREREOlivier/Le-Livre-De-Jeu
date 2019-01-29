@@ -1,5 +1,5 @@
 <!-- Delete Order Modal HTML -->
-<div class="modal fade" id="modalDeleteTurn" style="display: none;">
+<div class="modal fade" id="modalDeleteOrder{{$order->id}}" style="display: none;">
     <div class="modal-dialog modal-confirm">
         <div class="modal-content">
             <div class="modal-header">

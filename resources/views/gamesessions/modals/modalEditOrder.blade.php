@@ -1,6 +1,6 @@
 <!-- Edit Order Modal -->
-<div class="modal fade" id="modalEditOrder{{$gameTurn->id}}" tabindex="-1" role="dialog"
-     aria-labelledby="modalEditOrder{{$gameTurn->id}}" aria-hidden="true">
+<div class="modal fade" id="modalEditOrder{{$order->id}}" tabindex="-1" role="dialog"
+     aria-labelledby="modalEditOrder{{$order->id}}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         {!! Form::model($orders, array('route' => array('turnorder.update', $order->id),'method' => 'PUT')) !!}
         {!! csrf_field() !!}
@@ -32,7 +32,7 @@
 
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler
+                <button type="button" class="btn btn-primary lined thin" data-dismiss="modal">Annuler
                 </button>
                 {!! Form::submit('Editer', array('class'=>'btn btn-secondary lined thin')) !!}
             </div>

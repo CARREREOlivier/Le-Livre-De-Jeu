@@ -72,9 +72,9 @@
             <!--End top strip-->
             <!-- game master actions strip -->
         @auth
-            @if(Auth::User()->id == $gameSession->user_id)
+            @if(Auth::User()->id == $gameSession->user_id or Auth::User()->status == 'Admin' )
                 <div class="row strip">
-                    <div class="vignette green-bg">
+                    <div class="vignette blue-bg">
                         <div class="col-lg-9 offset-lg-1">
 
                             @include("gamesessions.modals.modalAddTurn")
@@ -92,7 +92,7 @@
         <!--turn strip left pane is turn, left pane are associated orders-->
         @foreach($gameTurns->reverse() as $gameTurn)
             <div class="row strip" id="orderdisplay">
-                <div class="col-lg-6 vignette padding-5px-left blue-bg">
+                <div class="col-lg-6 vignette padding-5px-left green-bg">
                     <div class="evenboxinner-turn">Le {{date('d-M-Y à H:i', strtotime($gameTurn->created_at))}}</div>
                     <h4 class="padding-10px-top">
                         @auth
@@ -127,16 +127,18 @@
                     <div class="col-12 vignette orange-bg all-auto float-right">
                         @foreach($orders->reverse() as $order)
                             @if($order->gameturn_id == $gameTurn->id)
+                                <div class="text-orders"><p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p>
 
-                                <div class="text-orders">  @auth
-                                        @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+
+                                </div>
+                                <div class="text-orders">{!!$order->message!!}     @auth
+                                        @if(($gameTurn->locked == false and $order->user_id == Auth::User()->id) or Auth::User()->status == 'Admin')
                                             @include('gamesessions._partials.menuOrderActions')
                                         @endif
-                                    @endauth<p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p>
-                                </div>
-                                <div class="text-orders">{!!$order->message!!}</div>
+                                    @endauth</div>
                                 @auth
-                                    @if($gameTurn->locked == false and $order->user_id == Auth::User()->id)
+                                   @if( ($gameTurn->locked == false and $order->user_id == Auth::User()->id) or Auth::User()->status == 'Admin')
+
                                         @include('gamesessions.modals.modalDropzoneOrder')
                                         @include('gamesessions.modals.modalEditOrder')
                                         @include('gamesessions.modals.modalDeleteOrder')
@@ -145,6 +147,7 @@
 
 
                             @endif
+
                         @endforeach
                     </div>
                 </div>
