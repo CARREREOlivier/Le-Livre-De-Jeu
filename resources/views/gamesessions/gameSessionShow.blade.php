@@ -87,7 +87,7 @@
             @endif
         @endauth
 
-        <!--end game master acctions strip
+        <!--end game master acctions strip-->
 
         <!--turn strip left pane is turn, left pane are associated orders-->
         @foreach($gameTurns->reverse() as $gameTurn)
