@@ -28,7 +28,7 @@
 
                             <h3 class="welcome-card-title yellow">{{$gameSession->title}}
                             </h3>
-                            <p>Créée le:{{date('d-M-Y à h:i', strtotime($gameSession->created_at))}}</p>
+                            <p>Créée le:{{date('d-M-Y à H:i', strtotime($gameSession->created_at))}}</p>
                             <p>Avec : {{$gameSession->getUserNames->name}}</p>
                             <a href="{{route('gamesession.show', $gameSession->slug)}}"
                                class="btn btn-primary lined thin">Lire</a>
