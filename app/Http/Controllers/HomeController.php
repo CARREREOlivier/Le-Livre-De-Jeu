@@ -40,15 +40,19 @@ class HomeController extends Controller
                 $greetings = "Bonne après-midi";
             } else
 
-                /* Should the time be between or equal to 1700 and 1900 hours, show good evening */
-                if ($time >= "17" && $time < "22") {
-                    $greetings = "Bonsoir";
+                /* Should the time be between or equal to 1700 and 1900 hours, show good day */
+                if ($time >= "17" && $time < "19") {
+                    $greetings = "Bonjour";
                 } else
+                    /* Should the time be between or equal to 1900 and 2200 hours, show good evening*/
+                    if ($time >= "19" && $time < "22") {
+                        $greetings = "Bonsoir";
+                    } else
 
-                    /* Finally, show good night if the time is greater than or equal to 1900 hours */
-                    if ($time >= "22") {
-                        $greetings = "Bonne nuit";
-                    }
+                        /* Finally, show good night if the time is greater than or equal to 1900 hours */
+                        if ($time >= "22") {
+                            $greetings = "Bonne nuit";
+                        }
 
         return view('home')->with('greetings', $greetings);
     }
