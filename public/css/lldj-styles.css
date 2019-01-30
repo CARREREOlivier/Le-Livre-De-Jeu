@@ -730,11 +730,13 @@ p, a {
     display: block;
     width: 100%;
     height: auto;
+
 }
 .gamesession-description img{
     display: block;
     width: 100%;
     height: auto;
+    max-width:750px;
 }
 
 
