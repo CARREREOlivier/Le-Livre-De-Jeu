@@ -34,6 +34,8 @@ table td {
     color: #4e555b
 }
 
+
+
 label {
     margin: 5px;
     padding: 5px;
@@ -716,7 +718,25 @@ p, a {
     float: left;
     width: 48%;
     margin: 1%;
+
 }
+
+.text-orders img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.turn-description img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.gamesession-description img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 
 .all-auto {
 

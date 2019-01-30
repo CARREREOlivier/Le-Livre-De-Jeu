@@ -49,6 +49,7 @@ Route::resource('turnorder', 'TurnOrderController');
 
 Route::get('/files-create', 'UploadController@create');
 Route::post('/files-save', 'UploadController@store');
+Route::post('/files-saveTinyMCE', 'UploadController@storeViaTinyMCE');
 Route::post('/files-delete', 'UploadController@destroy');
 Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');

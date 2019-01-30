@@ -30,7 +30,7 @@
                     <div id="card">
 
                         <div class="shine"></div>
-                        <div class="text-block">
+                        <div class="text-block gamesession-description">
 
                             <h3 class="welcome-card-title yellow">{{$gameSession->title}}
                             </h3>
@@ -108,7 +108,7 @@
                     @endif
 
 
-                    <div class="text-left">{!! $gameTurn->description!!}</div>
+                    <div class="text-left turn-description" >{!! $gameTurn->description!!}</div>
                     @auth
                         @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
                             @include("gamesessions.modals.modalTurnOrders")

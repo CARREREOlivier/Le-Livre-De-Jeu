@@ -190,6 +190,85 @@ class UploadController extends Controller
 
     }
 
+    public function storeViaTinyMCE(Request $request)
+    {
+
+        $photos = $request->file('file');
+
+        if (!is_array($photos)) {
+            $photos = [$photos];
+
+        }
+
+        if (!is_dir($this->photos_path)) {
+            mkdir($this->photos_path, 0755);
+        }
+
+        for ($i = 0; $i < count($photos); $i++) {
+            $photo = $photos[$i];
+            $name = sha1(date('YmdHis') . str_random(30));
+            $save_name = $name . '.' . $photo->getClientOriginalExtension();
+            $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
+
+            $extension = $photo->getClientOriginalExtension();
+            $allowedImagesFormat = array('jpeg', 'jpg', 'gif', 'png', 'bmp');
+
+            if (in_array($extension, $allowedImagesFormat)) {
+                Image::make($photo)
+                    ->resize(48, null, function ($constraints) {
+                        $constraints->aspectRatio();
+                    })
+                    ->save($this->photos_path . '/' . $resize_name);
+            }
+            $photo->move($this->photos_path, $save_name);
+
+            $upload = new Upload();
+            $upload->filename = $save_name;
+            $upload->resized_name = $resize_name;
+            $upload->original_name = basename($photo->getClientOriginalName());
+            $upload->user_id = $request->user()->id;
+            if (isset($request->category)) {
+                $upload->category = $request->category;
+            } else {
+                $upload->category = 'uncategorized';
+            }
+
+            $upload->entity_id = $request->entity_id;
+
+
+
+            $upload->save();
+            error_log("category: $upload->category ");
+            error_log("entity_id : $upload->entity_id");
+
+            switch ($upload->category) {
+                case 'gameturns':
+                    $this->rewriteGameTurn($upload->entity_id, $upload->filename);
+                    break;
+                case 'turnorders':
+                    error_log('in case of turnorders');
+                    $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
+                    break;
+                case 'story_post':
+                    error_log("story_post user_id: $request->user_id ");
+                    break;
+                case 'info_post':
+                    error_log("info_post user_id: $request->user_id ");
+                    break;
+                case 'uncategorized':
+                    error_log("uncategorized user_id: $request->user_id ");
+                    break;
+                case 'tutorial_post':
+                    error_log("uncategorized user_id: $request->user_id ");
+                    break;
+            }
+
+        }
+        return Response::json([
+            'location' => "/images/$save_name",
+            'link'=>"/images/$save_name",
+        ], 200);
+    }
 
 }
 

@@ -18,15 +18,64 @@
     <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
 
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=65zbam7degsr85vzz2nh3i6bou6evi4sopf9en2j8n8ndm0y"></script>
+
     <script>tinymce.init({
             selector: 'textarea',
             plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
+                " advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste"
+                "insertdatetime media table contextmenu paste imagetools"
             ],
             toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify " +
-            "| bullist numlist outdent indent | link image",
+            "| bullist numlist outdent indent | image imagetools",
+
+            file_picker_types: 'image file',
+
+
+            images_upload_handler: function (blobInfo, success, failure) {
+
+                var xhr, formData;
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '/files-saveTinyMCE');
+                //var token = document.getElementById("_token").value;
+                xhr.setRequestHeader("X-CSRF-Token", "{{ csrf_token() }}");
+                xhr.onload = function() {
+                    var json;
+                    if (xhr.status != 200) {
+                        failure('HTTP Error: ' + xhr.status);
+                        return;
+                    }
+                    json = JSON.parse(xhr.responseText);
+
+                    if (!json || typeof json.location != 'string') {
+                        failure('Invalid JSON: ' + xhr.responseText);
+                        return;
+                    }
+                    success(json.location);
+                };
+                formData = new FormData();
+                formData.append('file', blobInfo.blob(), blobInfo.filename());
+                xhr.send(formData);
+            },
+            file_picker_callback: function(cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.onchange = function() {
+                    var file = this.files[0];
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    var blobInfo = blobCache.create(id, file);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+
+
+
+
+                };
+                input.click();
+            }
 
         });
     </script>

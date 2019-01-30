@@ -40,7 +40,8 @@
 
     <div class="row strip">
         <div class="vignette orange-bg">
-            <div class="col-lg">{!! Form::label('description', 'Description (optionnel):',["id"=>"description-label"]) !!}{!! Form::textarea('description') !!}</div>
+            <div class="col-lg">{!! Form::label('description', 'Description (optionnel):',["id"=>"description-label"]) !!}
+                {!! Form::textarea('description') !!}</div>
         </div>
     </div>
 
