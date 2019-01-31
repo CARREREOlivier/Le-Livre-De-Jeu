@@ -750,3 +750,10 @@ p, a {
 .fs50px {
     font-size: 50px;
 }
+
+.contact-input {
+    height:300px;
+    width:600px;
+    font-size: 12px;
+
+}

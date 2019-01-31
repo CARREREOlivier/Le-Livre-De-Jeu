@@ -44,7 +44,7 @@ class InboxMessage extends Notification
             ->subject(config('admin.name') . ", you got a new message!")
             ->greeting(" ")//override outbounds standard message because this is an inbound message
             ->salutation(" ")//override outbounds standard message because this is an inbound message
-            ->from($this->message->email, $this->message->name)
+            ->from($this->message->email)
             ->line($this->message->message);
     }
 

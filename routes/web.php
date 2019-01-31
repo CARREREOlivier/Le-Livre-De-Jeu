@@ -63,4 +63,4 @@ Route::get('/dumper', function () {
 });
 
 Route::get('/contact', 'ContactController@show');
-Route::post('/contact',  'ContactController@mailToAdmin');
+Route::post('/contact-mail',  'ContactController@mailToAdmin')->name('contact-mail');
