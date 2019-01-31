@@ -61,3 +61,6 @@ Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');
 Route::get('/dumper', function () {
     return View('dumper');
 });
+
+Route::get('/contact', 'ContactController@show');
+Route::post('/contact',  'ContactController@mailToAdmin');
