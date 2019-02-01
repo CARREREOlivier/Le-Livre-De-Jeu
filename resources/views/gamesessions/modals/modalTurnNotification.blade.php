@@ -24,7 +24,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary lined thin" data-dismiss="modal">Annuler</button>
                 {{ Form::open(['route' => ['gamesession.sendnotification', $gameTurn->id], 'method' => 'get']) }}
-                <button type="submit" class="btn btn-danger lined thin">Envoyer les mails<</button>
+                <button type="submit" class="btn btn-danger lined thin">Envoyer les mails</button>
                 {{ Form::close() }}
             </div>
         </div>

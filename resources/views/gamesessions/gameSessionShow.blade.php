@@ -82,8 +82,8 @@
                 </div>
             </div>
         </div>
-            <!--End top strip-->
-            <!-- game master actions strip -->
+        <!--End top strip-->
+        <!-- game master actions strip -->
         @auth
             @if(Auth::User()->id == $gameSession->user_id or Auth::User()->status == 'Admin' )
                 <div class="row strip">
@@ -100,7 +100,7 @@
             @endif
         @endauth
 
-        <!--end game master acctions strip-->
+    <!--end game master acctions strip-->
 
         <!--turn strip left pane is turn, left pane are associated orders-->
         @foreach($gameTurns->reverse() as $gameTurn)
@@ -121,12 +121,15 @@
                     @endif
 
 
-                    <div class="text-left turn-description" >{!! $gameTurn->description!!}</div>
+                    <div class="text-left turn-description">{!! $gameTurn->description!!}</div>
                     @auth
                         @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
                             @include("gamesessions.modals.modalTurnOrders")
-
-                           @include("gamesessions.modals.modalTurnNotification")
+                        @endif
+                    @endauth
+                    @auth
+                        @if( Auth::User()->id == $gameSession->user_id)
+                            @include("gamesessions.modals.modalTurnNotification")
                         @endif
                     @endauth
                     @auth
@@ -142,7 +145,8 @@
                     <div class="col-12 vignette orange-bg all-auto float-right">
                         @foreach($orders->reverse() as $order)
                             @if($order->gameturn_id == $gameTurn->id)
-                                <div class="text-orders"><p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p>
+                                <div class="text-orders">
+                                    <p>{{date('H:i d-M-y', strtotime($order->orderDate))}} {{$order->name}}:</p>
 
 
                                 </div>
@@ -152,7 +156,7 @@
                                         @endif
                                     @endauth</div>
                                 @auth
-                                   @if( ($gameTurn->locked == false and $order->user_id == Auth::User()->id) or Auth::User()->status == 'Admin')
+                                    @if( ($gameTurn->locked == false and $order->user_id == Auth::User()->id) or Auth::User()->status == 'Admin')
 
                                         @include('gamesessions.modals.modalDropzoneOrder')
                                         @include('gamesessions.modals.modalEditOrder')
@@ -168,8 +172,8 @@
                 </div>
                 <br/>
             </div>
-        @endforeach
-        <!--end turn strip-->
+    @endforeach
+    <!--end turn strip-->
 
     </div>
 
