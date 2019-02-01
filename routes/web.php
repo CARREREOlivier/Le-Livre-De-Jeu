@@ -62,5 +62,5 @@ Route::get('/dumper', function () {
     return View('dumper');
 });
 
-Route::get('/contact', 'ContactController@show');
-Route::post('/contact-mail',  'ContactController@mailToAdmin')->name('contact-mail');
+Route::get('/contact', 'ContactController@show')->middleware('auth')->name('contact');
+Route::post('/contact-mail',  'ContactController@mailToAdmin')->name('contact-mail')->middleware('auth');

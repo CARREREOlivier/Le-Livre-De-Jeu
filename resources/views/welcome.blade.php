@@ -473,7 +473,7 @@
                                         <div class="text-block">
                                             <h2 class="welcome-card-title violet">Contact
                                             </h2>
-                                            <button>En construction</button>
+                                            <a href="{{route('contact')}}" class="btn btn-primary lined thin" role="button"><strong>Ecrire un mail</strong></a>
                                         </div>
                                     </div>
                                 </div>

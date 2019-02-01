@@ -21,20 +21,20 @@
         @endif
         <div class="row strip">
 
-            <div class="col-12 vignette blue-bg">
+            <div class="col-12 vignette blue-bg pencil">
                 {!! Form::open(array('route' => 'contact-mail', 'method' => 'POST')) !!}
                 {!! csrf_field() !!}
 
 
-
                 <div class="form-group">
-
-                    {!! Form::label('title', 'Titre du mail:') !!}
-                    {!! Form::text('title',"", array('required'=>'required','class'=>'form-control', 'placeholder'=>'Votre titre')) !!}
+                    <div class="row">
+                        <div class="col-lg-3">{!! Form::label('title', 'Titre du mail(obligatoire):',['id'=>'contact-title-label']) !!}</div>
+                        <div class="col-lg-9"> {!! Form::text('title',"", array('required'=>'required','class'=>'form-control', 'placeholder'=>'Votre titre')) !!}</div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('message', 'Votre Message:') !!}
+                    {!! Form::label('message', 'Votre Message (obligatoire):',['id'=>'message-label']) !!}
                     {!! Form::textarea('message',"Bonjour, ", array('required'=>'required', 'id'=>'contactTextarea')) !!}
                 </div>
 

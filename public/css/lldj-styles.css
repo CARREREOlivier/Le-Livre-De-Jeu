@@ -673,7 +673,7 @@ button {
 
 }
 
-#description-label, #title-label, #game-label {
+#description-label, #title-label, #game-label, #message-label,#contact-title-label {
     margin: 5px;
     padding: 5px;
     background: #fcffb3;
@@ -686,6 +686,13 @@ button {
 }
 
 /*utils*/
+
+.pencil{
+    color: #4e555b;
+    font-family: "Patrick Hand SC";
+    font-size: 20px;
+    font-style: italic;
+}
 .nopadding {
     padding: 0%;
 
