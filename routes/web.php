@@ -43,7 +43,7 @@ Route::resource('turnorder', 'TurnOrderController');
 
 
 /**
- * upload and dowload routes
+ * upload and download routes
  *
  **/
 
@@ -53,14 +53,23 @@ Route::post('/files-saveTinyMCE', 'UploadController@storeViaTinyMCE');
 Route::post('/files-delete', 'UploadController@destroy');
 Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');
-
-
 Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');
 
+/**test view for dump**/
 
 Route::get('/dumper', function () {
     return View('dumper');
 });
 
-Route::get('/contact', 'ContactController@show')->middleware('auth')->name('contact');
-Route::post('/contact-mail',  'ContactController@mailToAdmin')->name('contact-mail')->middleware('auth');
+/*emails*/
+
+Route::get('/contact', 'ContactController@show')
+    ->middleware('auth')
+    ->name('contact');
+Route::post('/contact-mail',  'ContactController@mailToAdmin')
+    ->name('contact-mail')
+    ->middleware('auth');
+
+route::get('/gamesession-send-notification-{id}', 'GameSessionController@mailToPlayers')
+    ->name('gamesession.sendnotification')
+    ->middleware('auth');

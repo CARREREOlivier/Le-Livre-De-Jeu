@@ -7,11 +7,14 @@ use App\Factories\GameSessionFactory;
 use App\GameRole;
 use App\GameSession;
 use App\GameTurn;
+use App\Mail\TurnNotification;
 use App\TurnOrder;
+use App\Upload;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 
 
 class GameSessionController extends Controller
@@ -351,6 +354,60 @@ class GameSessionController extends Controller
         } else { //if the user is not logged in:
             return $canSendOrder = false;
         }
+    }
+
+
+    public function mailToPlayers($gameTurnId)
+    {
+
+        //finding the turn
+        $gameTurn = GameTurn::find($gameTurnId);
+
+        //retrieving gameSessionId
+        $gameSessionId = $gameTurn->gamesessions_id;
+
+        //finding the associated players-not the gamemaster as he/she creates the new turn.
+
+        $players = GameRole::with('getUsers:id,name,email')
+            ->where("gamesession_id", "=", $gameSessionId)
+            ->where('gamerole', '=', 'GameParticipant')
+            ->get();
+
+        if ($players->count()>0) {
+            //getting sender mail and name
+            $user_email = Auth::user()->email;
+            $user_name = Auth::user()->name;
+
+
+            //looping through player to send
+            foreach ($players as $player) {
+
+                //getting player mail and name
+                $player_mail = $player->getusers->email;
+                $player_name = $player->getusers->name;
+
+                //instantiating mailable object
+                $email = new \stdClass();
+                $email->message = $gameTurn->description;
+                $email->sender = "$user_name : $user_email";
+                $email->attachment = $user_email;
+                $email->receiver = $player_name;
+                $email->subject = $gameTurn->title;
+
+                //Send Mail
+                Mail::to($player_mail)->send(new TurnNotification($email));
+
+                //cleaning memory-php should do it anyway but who knows?
+                unset($email);
+            }//Endforeach $players
+
+            //redirect back with message
+            return redirect()->back()->with('message', "la notification a été envoyé aux joueurs! ");
+        } else {
+
+            return redirect()->back()->with('message', "Merci d'ajouter un joueur");
+        }
+
     }
 }
 

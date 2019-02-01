@@ -11,7 +11,20 @@
 @endsection
 
 @section('content')
-
+    @if(session('message'))
+        <div class='alert alert-success'>
+            {{ session('message') }}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <!-- Top strip -->
     <div class="container mt-5 mb-5" id="showgamessesionMain">
@@ -112,6 +125,8 @@
                     @auth
                         @if($gameTurn->id == $lastTurnId and $canSendOrder == true and $gameTurn->locked == false)
                             @include("gamesessions.modals.modalTurnOrders")
+
+                           @include("gamesessions.modals.modalTurnNotification")
                         @endif
                     @endauth
                     @auth
