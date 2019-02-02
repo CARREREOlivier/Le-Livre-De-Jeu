@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Factories\GameTurnFactory;
 use App\GameSession;
 use App\GameTurn;
+use App\Utils\DataFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class GameTurnController extends Controller
 {
+
+    public function __construct(DataFinder $dataFinder)
+    {
+
+        $this->dataFinder=$dataFinder;
+    }
 
     /**
      * Display a listing of the resource.
@@ -38,6 +45,7 @@ class GameTurnController extends Controller
      */
     public function store(Request $request)
     {
+
         //validation
         $validatedData = Validator::make($request->all(), [
             'title' => 'required|unique:gameturns|max:126',
@@ -54,9 +62,12 @@ class GameTurnController extends Controller
         //game turn creation
         $gameTurn = GameTurnFactory::build($request);
         $gameTurn->save();
+        $gameSessionId=$gameTurn->gamesessions_id;
+
+        $slug = $this->dataFinder->getGameSession('slug', $gameSessionId );
 
         //redirecting to current view for user
-        return redirect()->back();
+        return redirect()->route('gamesession.show', ['slug' => $slug]);
     }
 
     /**
