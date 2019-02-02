@@ -11,6 +11,7 @@ use App\Mail\TurnNotification;
 use App\TurnOrder;
 use App\Upload;
 use App\User;
+use App\Utils\DataFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -19,6 +20,12 @@ use Illuminate\Support\Facades\Mail;
 
 class GameSessionController extends Controller
 {
+
+
+    public function __construct(DataFinder $dataFinder)
+    {
+        $this->dataFinder = $dataFinder;
+    }
 
     /**
      * Display a listing of the resource.
@@ -108,17 +115,14 @@ class GameSessionController extends Controller
 
 
         $gameSession = GameSession::where('slug', $slug)->first();
+        $gameSessionId = $gameSession->id;
 
         //getting players with game role
-        $players = GameRole::with('getUsers:id,name')
-            ->where("gamesession_id", "=", $gameSession->id)
-            ->where('gamerole', '=', 'GameParticipant')
-            ->get();
+        //test
 
-        $gameMaster = GameRole::with('getUsers:id,name')
-            ->where("gamesession_id", "=", $gameSession->id)
-            ->where("gamerole", '=', 'GameMaster')
-            ->get();
+        $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
+        $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
+
 
         if (Auth::check()) {
             $users = $this->getPotentialPlayers();
@@ -140,7 +144,7 @@ class GameSessionController extends Controller
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
         } else {
-            $last = -1;
+            $last = -1;//-1 is a non existing id that will never be found in the database.
         }
 
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
@@ -190,16 +194,11 @@ class GameSessionController extends Controller
 
             $users = $this->getPotentialPlayers();
 
-            //getting players with game role
-            $players = GameRole::with('getUsers:id,name')
-                ->where("gamesession_id", "=", $gameSessionId)
-                ->where('gamerole', '=', 'GameParticipant')
-                ->get();
+            //getting players and game master with game role
 
-            $gameMasters = GameRole::with('getUsers:id,name')
-                ->where("gamesession_id", "=", $gameSessionId)
-                ->where('gamerole', '=', 'GameMaster')
-                ->get();
+            $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
+            $gameMasters = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
+
 
             foreach ($players as $player) {
 
@@ -233,7 +232,6 @@ class GameSessionController extends Controller
     public function update(Request $request, $id)
     {
 
-
         $gamesession = GameSession::findOrFail($id);//findorfail avoids to write a bit of code to launch a 404page if query fails.
         if (Gate::allows('gamesession.update', $gamesession)) {
             // The current user can update the gamesession...
@@ -251,10 +249,8 @@ class GameSessionController extends Controller
 
             //update players
             //simplest way : delete all GameParticipant bound to the gamesession and insert new entries
-            $players = GameRole::with('getUsers:id,name')
-                ->where("gamesession_id", "=", $gameSessionId)
-                ->where('gamerole', '=', 'GameParticipant')
-                ->get();
+            $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
+
 
             foreach ($players as $player) {
 
@@ -306,11 +302,7 @@ class GameSessionController extends Controller
         //removing GameMaster from list if there is an existing gamemaster.
         // GameMasters are not updated through the gamesessions' views but through a specific view.
         if (isset($gameSessionId)) {
-
-            $gameMaster = GameRole::with('getUsers:id,name')
-                ->where("gamesession_id", '=', $gameSessionId)
-                ->where('gamerole', '=', 'GameMaster')
-                ->get();
+            $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
 
             $users = User::where("status", '=', 'User')
                 ->where('id', '!=', $gameMaster->user_id)
@@ -366,18 +358,27 @@ class GameSessionController extends Controller
         //retrieving gameSessionId
         $gameSessionId = $gameTurn->gamesessions_id;
 
-        //finding the associated players-not the gamemaster as he/she creates the new turn.
+        //finding the associated players-
 
-        $players = GameRole::with('getUsers:id,name,email')
-            ->where("gamesession_id", "=", $gameSessionId)
-            ->where('gamerole', '=', 'GameParticipant')
-            ->get();
+        $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
 
-        if ($players->count()>0) {
+
+        if ($players->count() > 0) {
             //getting sender mail and name
             $user_email = Auth::user()->email;
             $user_name = Auth::user()->name;
 
+            //building link to gamesession
+            $gameSession = GameSession::find($gameSessionId);
+            $slug = $gameSession->slug;
+
+            $link = config('app.url') . "/gamesession/" . $slug;
+
+            //building subject
+            //assessing turn number
+            $turn_number = $this->turnPosition($gameTurn, $gameSessionId);
+            $title= $gameSession->title;
+            $subject="Tour ".$turn_number." : ".$title;
 
             //looping through player to send
             foreach ($players as $player) {
@@ -392,7 +393,9 @@ class GameSessionController extends Controller
                 $email->sender = "$user_name : $user_email";
                 $email->attachment = $user_email;
                 $email->receiver = $player_name;
-                $email->subject = $gameTurn->title;
+                $email->subject = $subject;
+                $email->turn_title = $gameTurn->title;
+                $email->link = $link;
 
                 //Send Mail
                 Mail::to($player_mail)->send(new TurnNotification($email));
@@ -408,6 +411,44 @@ class GameSessionController extends Controller
             return redirect()->back()->with('message', "Merci d'ajouter un joueur");
         }
 
+    }
+
+    /**
+     *
+     * This method  asses the current turn position
+     * regarding the others turns of the considered gamesession
+     *
+     * @param $currentTurn
+     * @param $gameSessionId
+     * @return int
+     */
+    function turnPosition($currentTurn, $gameSessionId)
+    {
+
+
+        //retrieving all gameturns corresponding to the game session
+        $gameTurns = GameTurn::where('gamesessions_id', $gameSessionId)->get();
+
+        //initializing loop counter
+        $counter = 1;
+
+        //looping through gameturns
+        foreach ($gameTurns as $gameTurn) {
+
+            //we are looking for the fist turn that is the same as the one in parameters.
+            if ($gameTurn->id = $currentTurn->id) {
+
+                //that's good so get out of this loop, NOW!
+                break;
+            } else {// Well.. let's see if the next one is the good one.
+
+                $counter++;
+            }
+
+        }
+
+        //return the loop counter value as turn position.
+        return $counter;
     }
 }
 

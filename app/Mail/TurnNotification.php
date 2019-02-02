@@ -36,7 +36,8 @@ class TurnNotification extends Mailable
             ->with(
                 [
                     'message' => $this->email->message,
-
+                    'link' => $this->email->link,
+                    'turn_title' =>  $this->email->turn_title,
                 ]);
     }
 }

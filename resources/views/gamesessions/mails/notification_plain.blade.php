@@ -1,8 +1,14 @@
-
 Le Livre de jeu
->Vous avez reçu un message de {!! $email->sender!!}
+
+Le maitre de jeu {!! $email->sender!!} vous informe qu'un nouveau tour est disponible.
+Le tour est accessible par ce lien : {!! $email->link !!}}
 
 Message :
-        {!!  $email->message !!}
+Un nouveau tour vient d'être publié.
+{!!  $email->message !!}
+
+Cordialement,
+
+Le Livre de Jeu
 
 
