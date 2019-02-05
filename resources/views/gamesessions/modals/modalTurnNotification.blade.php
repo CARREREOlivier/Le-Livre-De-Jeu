@@ -1,6 +1,6 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-secondary lined thin" data-toggle="modal" data-target="#sendNotification">
-    Avertir les joueurs
+    <i class="fas fa-mail-bulk"></i>Notification
 </button>
 
 <!-- Modal -->
@@ -23,7 +23,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary lined thin" data-dismiss="modal">Annuler</button>
-                {{ Form::open(['route' => ['gamesession.sendnotification', $gameTurn->id], 'method' => 'get']) }}
+                {{ Form::open(['route' => ['gamesession.sendnotification', $gameTurns->last()->id], 'method' => 'get']) }}
                 <button type="submit" class="btn btn-danger lined thin">Envoyer les mails</button>
                 {{ Form::close() }}
             </div>

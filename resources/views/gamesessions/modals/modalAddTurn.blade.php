@@ -3,7 +3,7 @@
 
 <!-- modalAddTurn -->
 <div class="modal fade" id="modalAddTurn" style="display: none;">
-    <div class="modal-dialog modal-confirm">
+    <div class="modal-dialog modal-lg">
 
         @include("gameturns.form.gameturns")
 

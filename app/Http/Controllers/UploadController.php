@@ -6,7 +6,8 @@ use App\GameTurn;
 use \App\TurnOrder;
 use \App\Upload;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Facades\Image;
 
 class UploadController extends Controller
@@ -44,12 +45,13 @@ class UploadController extends Controller
      * Saving images uploaded through XHR Request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
 
         $photos = $request->file('file');
+
 
         if (!is_array($photos)) {
             $photos = [$photos];
@@ -94,15 +96,14 @@ class UploadController extends Controller
 
 
             $upload->save();
-            error_log("category: $upload->category ");
-            error_log("entity_id : $upload->entity_id");
+
 
             switch ($upload->category) {
                 case 'gameturns':
-                    $this->rewriteGameTurn($upload->entity_id, $upload->filename);
+
                     break;
                 case 'turnorders':
-                    error_log('in case of turnorders');
+                    error_log('in case of turnorders id='.$upload->entity_id);
                     $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
                     break;
                 case 'story_post':
@@ -120,9 +121,10 @@ class UploadController extends Controller
             }
 
         }
-        return Response::json([
+       return Response::json([
             'message' => 'Image saved Successfully'
         ], 200);
+
     }
 
     /**
@@ -157,6 +159,38 @@ class UploadController extends Controller
         return Response::json(['message' => 'File successfully delete'], 200);
     }
 
+    public function deleteFile($id)
+    {
+
+
+        $file =Upload::find($id);
+        $filename=$file->filename;
+
+        $uploaded_image = Upload::where('filename', basename($filename))->first();
+
+        if (empty($uploaded_image)) {
+            return Response::json(['message' => 'Sorry file does not exist'], 400);
+        }
+
+        $file_path = $this->photos_path . '/' . $uploaded_image->filename;
+        $resized_file = $this->photos_path . '/' . $uploaded_image->resized_name;
+
+        if (file_exists($file_path)) {
+            unlink($file_path);
+        }
+
+        if (file_exists($resized_file)) {
+            unlink($resized_file);
+        }
+
+        if (!empty($uploaded_image)) {
+            $uploaded_image->delete();
+        }
+        return Redirect::back()->with('message',"fichier $file->original_filename effacé!");
+
+        //return Response::json(['message' => 'File successfully deleted'], 200);
+    }
+
 
     function rewriteGameTurn($gameTurnId, $filename)
     {
@@ -176,16 +210,20 @@ class UploadController extends Controller
     function rewriteTurnOrder($TurnOrderId, $filename)
     {
 
-        $turnorder = TurnOrder::where('id', $TurnOrderId)->firstOrFail();
-
+        $turnorder = TurnOrder::where('id', $TurnOrderId)->firstOrFail();//find() does not work. Don't know why.
         $file = Upload::where('filename', $filename)->firstOrFail();
+
+
 
         $message = $turnorder->message;
 
-        $downloadLink = "<a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
+        //building download link
+        $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
 
+        //saving message with download link
         $turnorder->message = $message . " " . $downloadLink;
 
+        //saving turn order.
         $turnorder->save();
 
     }
@@ -238,8 +276,6 @@ class UploadController extends Controller
 
 
             $upload->save();
-            error_log("category: $upload->category ");
-            error_log("entity_id : $upload->entity_id");
 
             switch ($upload->category) {
                 case 'gameturns':
@@ -269,6 +305,7 @@ class UploadController extends Controller
             'link'=>"/images/$save_name",
         ], 200);
     }
+
 
 }
 

@@ -6,7 +6,7 @@ Dropzone.options.myDropzone = {
     maxFilesize: 2,
     previewTemplate: document.querySelector('#preview').innerHTML,
     addRemoveLinks: true,
-    dictRemoveFile: 'Remove file',
+    dictRemoveFile: 'Retirer de la liste',
     dictFileTooBig: 'Image is larger than 16MB',
     timeout: 10000,
 
@@ -22,9 +22,14 @@ Dropzone.options.myDropzone = {
                 }
             });
         });
+
+        this.on('complete', function () {
+            location.reload();
+        });
     },
     success: function (file, done) {
         total_photos_counter++;
         $("#counter").text("# " + total_photos_counter);
+
     }
 };

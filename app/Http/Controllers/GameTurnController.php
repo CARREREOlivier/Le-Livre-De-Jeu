@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Factories\GameTurnFactory;
+use App\Factories\TurnOrderFactory;
 use App\GameSession;
 use App\GameTurn;
 use App\Utils\DataFinder;
@@ -15,7 +16,7 @@ class GameTurnController extends Controller
     public function __construct(DataFinder $dataFinder)
     {
 
-        $this->dataFinder=$dataFinder;
+        $this->dataFinder = $dataFinder;
     }
 
     /**
@@ -48,7 +49,7 @@ class GameTurnController extends Controller
 
         //validation
         $validatedData = Validator::make($request->all(), [
-            'title' => 'required|unique:gameturns|max:126',
+            'title' => 'required|max:126',
             'description' => 'max:1024',
         ]);
 
@@ -62,9 +63,22 @@ class GameTurnController extends Controller
         //game turn creation
         $gameTurn = GameTurnFactory::build($request);
         $gameTurn->save();
-        $gameSessionId=$gameTurn->gamesessions_id;
+        $gameSessionId = $gameTurn->gamesessions_id;
 
-        $slug = $this->dataFinder->getGameSession('slug', $gameSessionId );
+        $slug = $this->dataFinder->getGameSession('slug', $gameSessionId);
+
+        //creating blanck orders.
+        $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
+        error_log("banzai 1");
+        $turnOrder = TurnOrderFactory::build($gameTurn->id, $gameMaster->first()->user_id);
+
+        error_log("gamemaster_id : $gameMaster");
+        $turnOrder->save();
+        $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
+        foreach ($players as $player) {
+            $turnOrder = TurnOrderFactory::build($gameTurn->id, $player->user_id);
+            $turnOrder->save();
+        }
 
         //redirecting to current view for user
         return redirect()->route('gamesession.show', ['slug' => $slug]);
@@ -146,6 +160,7 @@ class GameTurnController extends Controller
         return redirect()->back();
 
     }
+
 
 }
 

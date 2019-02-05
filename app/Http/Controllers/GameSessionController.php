@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Factories\GameRoleFactory;
 use App\Factories\GameSessionFactory;
+use App\Factories\TurnOrderFactory;
 use App\GameRole;
 use App\GameSession;
 use App\GameTurn;
@@ -96,6 +97,7 @@ class GameSessionController extends Controller
             foreach ($users as $user) {
                 $gameRole = GameRoleFactory::build($user, $gameSessionId, 'GameParticipant');
                 $gameRole->save();
+
             }
         }
         //returning view
@@ -113,38 +115,45 @@ class GameSessionController extends Controller
     public function show($slug)
     {
 
-
+        //1-Finding gameSession
         $gameSession = GameSession::where('slug', $slug)->first();
+
+        //2-retrieving players and gamesession
         $gameSessionId = $gameSession->id;
-
-        //getting players with game role
-        //test
-
         $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
         $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
 
 
-        if (Auth::check()) {
+        //If current user is Admin or gamemaster
+        //we need to send the list of current players to the players list.
+
+        if (Auth::check()) {//FIXME: wrong condition.
             $users = $this->getPotentialPlayers();
             foreach ($players as $player) {
-
                 foreach ($users as $user) {
-
                     if ($player->user_id == $user->id) {
-
                         $user->checked = 'true';
                     }
                 };
             }
-
+        } else {
+            $users = null;
         }
-        $gameTurns = GameTurn::where('gamesessions_id', $gameSession->id)->get();//TODO: correct column nam//$turnOrders = TurnOrder::where('gameTurn_id',$gameSession->id)->get();
-        $lastTurn = $gameTurns->last();
 
+        $gameTurns = GameTurn::where('gamesessions_id',$gameSessionId)->get();
+
+        $lastTurn = $gameTurns->last();
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
+            $gameMasterFiles = Upload::where('category','gameturns')
+                ->where('entity_id',$last)
+                ->where('user_id',$gameMaster->last()->getusers->id)
+                ->get();
+            error_log("turnid".$last);
+
         } else {
-            $last = -1;//-1 is a non existing id that will never be found in the database.
+            $last = -1;//No turns. -1 is a non existing id that will never be found in the database.
+            $gameMasterFiles = null;
         }
 
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
@@ -154,29 +163,17 @@ class GameSessionController extends Controller
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
-        $canSendOrder = $this->canSendOrder($last);
+        $orders = $orders->keyBy('user_id');
 
-        if (Auth::check()) {
-            return view('gamesessions.gameSessionShow')
-                ->with('gameSession', $gameSession)
-                ->with('gameTurns', $gameTurns)
-                ->with('orders', $orders)
-                ->with('canSendOrder', $canSendOrder)
-                ->with('lastTurnId', $last)
-                ->with('players', $players)
-                ->with('gamemaster', $gameMaster)
-                ->with('users', $users);
-
-        } else {
-            return view('gamesessions.gameSessionShow')
-                ->with('gameSession', $gameSession)
-                ->with('gameTurns', $gameTurns)
-                ->with('orders', $orders)
-                ->with('canSendOrder', $canSendOrder)
-                ->with('lastTurnId', $last)
-                ->with('players', $players)
-                ->with('gamemaster', $gameMaster);
-        }
+        return View('dumper')
+            ->with('gameSession', $gameSession)
+            ->with('gameTurns',$gameTurns)
+            ->with('players', $players)
+            ->with('gamemaster', $gameMaster)
+            ->with('users', $users)
+            ->with('lastTurnId', $last)
+            ->with('orders', $orders)
+            ->with('gameMasterFiles', $gameMasterFiles);
     }
 
     /**
@@ -334,13 +331,17 @@ class GameSessionController extends Controller
             $userOrders = TurnOrder::where('user_id', $userId)->where('gameturn_id', $last)->get();
             // var_dump($userOrders);
 
-
+            error_log("userOrders :".$userOrders );
             //if Yes, it means the user has posted an order corresponding to the last turn.
             // Hence it does not have to post a new order.
             //If No, it means the user is either new to the gamesession or has not posted order on the last turn.
             if (isset($userOrders[0])) {//if N2
-                return $canSendOrder = false;
+                $canSendOrder = false;
+                error_log("canSendOrder:".$canSendOrder);
+                return $canSendOrder;
+
             } else {
+
                 return $canSendOrder = true;
             }//If N2
         } else { //if the user is not logged in:
@@ -377,8 +378,8 @@ class GameSessionController extends Controller
             //building subject
             //assessing turn number
             $turn_number = $this->turnPosition($gameTurn, $gameSessionId);
-            $title= $gameSession->title;
-            $subject="Tour ".$turn_number." : ".$title;
+            $title = $gameSession->title;
+            $subject = "Tour " . $turn_number . " : " . $title;
 
             //looping through player to send
             foreach ($players as $player) {
@@ -450,6 +451,10 @@ class GameSessionController extends Controller
         //return the loop counter value as turn position.
         return $counter;
     }
+
+
+
+
 }
 
 

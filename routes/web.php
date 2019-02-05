@@ -50,16 +50,16 @@ Route::resource('turnorder', 'TurnOrderController');
 Route::get('/files-create', 'UploadController@create');
 Route::post('/files-save', 'UploadController@store');
 Route::post('/files-saveTinyMCE', 'UploadController@storeViaTinyMCE');
-Route::post('/files-delete', 'UploadController@destroy');
+Route::post('/files-delete', 'UploadController@destroy');//uses request to delete
+Route::get('/delete-turn-file/{id}','UploadController@deleteFile')->name('upload.delete_file');// does not use request to delete
 Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');
 Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');
 
+
 /**test view for dump**/
 
-Route::get('/dumper', function () {
-    return View('dumper');
-});
+Route::get('/gamesession/gsni/{slug}', 'GameSessionController@show2')->name('gamesession.show2');
 
 /*emails*/
 

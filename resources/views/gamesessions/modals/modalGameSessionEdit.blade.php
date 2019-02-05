@@ -4,7 +4,7 @@
 
 <!-- Modal HTML -->
 <div class="modal fade" id="modalGameSessionEditTurn" style="display: none;">
-    <div class="modal-dialog modal-confirm">
+    <div class="modal-dialog modal-lg">
         {!! Form::model($gameSession, array('route' => array('gamesession.update', $gameSession->id),'method' => 'PUT')) !!}
         {!! csrf_field() !!}
         <div class="modal-content">

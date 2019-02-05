@@ -4,25 +4,25 @@
     margin: 20px 0;
     color: #666;
     -webkit-font-smoothing: antialiased;
-    font-family: "Segoe UI Light", "Arial", serif;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-family: "Patrick Hand SC";
+
 }
 
 #my-dropzone .message {
-    font-family: "Segoe UI Light", "Arial", serif;
-    font-weight: 600;
-    color: #0087F7;
-    font-size: 1.5em;
-    letter-spacing: 0.05em;
+    font-family: "Patrick Hand SC";
+    font-style: italic;
+    text-align: center;
+    vertical-align: middle;
+    color: #1b1b1b;
+    font-size: 15px;
+
 }
 
 .dropzone {
     border: 2px dashed #0087F7;
-    background: white;
+    background: #fcffb3;
     border-radius: 5px;
-    min-height: 300px;
-    padding: 90px 0;
+    min-height: 10px;
     vertical-align: baseline;
 }
 

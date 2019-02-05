@@ -34,8 +34,6 @@ table td {
     color: #4e555b
 }
 
-
-
 label {
     margin: 5px;
     padding: 5px;
@@ -541,6 +539,21 @@ button {
     box-shadow: 3px 3px 0 #222;
 }
 
+.evenboxinner-descriptive {
+    font-family: "Patrick Hand SC";
+    font-style: italic;
+    font-size: 20px;
+    z-index: 2;
+    margin: 2px;
+    padding: 0 5px;
+    position: absolute;
+    top: -5px;
+    left: -1px;
+    float: left;
+    background: #fcffb3;
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+}
 
 /*colors*/
 
@@ -583,7 +596,33 @@ button {
     font-size: 25px;
 }
 
+.player-slot {
+
+    border: solid #222;
+    border-radius: 15px;
+    min-height: 50px;
+    padding: 5px;
+    margin-top: 5px;
+
+}
+
 /*backgrounds*/
+.yellow-bg {
+    background-image: radial-gradient(ellipse farthest-corner,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+    radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
+    radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%,
+            #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(40deg, #ffce55 0, #fffc83 30%, #ffffb1 50%, #fffc83 70%, #ffce55 100%);
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+}
+
 .green-bg {
     background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
     radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
@@ -640,6 +679,10 @@ button {
     font-style: italic;
 }
 
+.modal-lg {
+    width: 75%;
+}
+
 /*gamesessionNew styles */
 
 .create-game {
@@ -653,6 +696,23 @@ button {
 
 .h2-black {
     color: #000000;
+}
+
+.last-turn-title {
+    font-family: Bangers;
+    text-shadow: -1px -1px #404040, 1px 1px #000000, 2px 2px #000000;
+    float: left;
+    width: 100%;
+}
+
+.slot-cell-left {
+
+    border-right: double;
+}
+
+.slot-cell-right {
+
+    border-left: double;
 }
 
 .strip {
@@ -673,7 +733,11 @@ button {
 
 }
 
-#description-label, #title-label, #game-label, #message-label,#contact-title-label {
+.delete-link {
+    color: #FF0000;
+}
+
+#description-label, #title-label, #game-label, #message-label, #contact-title-label {
     margin: 5px;
     padding: 5px;
     background: #fcffb3;
@@ -687,12 +751,13 @@ button {
 
 /*utils*/
 
-.pencil{
+.pencil {
     color: #4e555b;
     font-family: "Patrick Hand SC";
     font-size: 20px;
     font-style: italic;
 }
+
 .nopadding {
     padding: 0%;
 
@@ -707,10 +772,12 @@ button {
     padding-right: 5px;
 
 }
+
 .padding-10px-top {
     padding-top: 10px;
 
 }
+
 .white-bg {
     background-color: #ffffff;
 
@@ -728,24 +795,25 @@ p, a {
 
 }
 
-.text-orders img{
+.text-orders img {
     display: block;
     width: 100%;
     height: auto;
 }
-.turn-description img{
+
+.turn-description img {
     display: block;
     width: 100%;
     height: auto;
 
 }
-.gamesession-description img{
+
+.gamesession-description img {
     display: block;
     width: 100%;
     height: auto;
-    max-width:750px;
+    max-width: 750px;
 }
-
 
 .all-auto {
 
@@ -759,8 +827,35 @@ p, a {
 }
 
 .contact-input {
-    height:300px;
-    width:600px;
+    height: 300px;
+    width: 600px;
     font-size: 12px;
 
 }
+
+.box-left {
+    padding: 0 5px 0 0px;
+}
+
+.box-right {
+    padding: 0 0px 0 5px;
+}
+
+.full-height {
+    height: 100%;
+
+}
+
+.archive-left {
+    padding: 0 5px 0 0px;
+}
+
+.archive-center {
+    padding: 0 5px 0 5px;
+}
+
+.archive-right {
+    padding: 0 0px 0 5px;
+}
+
+
