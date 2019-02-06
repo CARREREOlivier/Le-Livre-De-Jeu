@@ -200,6 +200,10 @@
 
                             </tbody>
                         </table>
+
+                        <br/>
+                        <a href="{{route('gameturn.show', $gameTurns->last()->id)}}" role="button" class="btn btn-warning lined thin float-right">Fiche détaillée</a>
+                        <br/>
                     </div>
                 </div>
                 <div class="col-md-6 box-right">
@@ -439,7 +443,7 @@
                                         </div>
                                         <div class="vignette orange-bg  full-height">
                                             <p>{{$gameTurn->title}}</p>
-                                            <a href="#" role="button" class="btn btn-warning lined thin">Lire</a>
+                                            <a href="{{route('gameturn.show', $gameTurn->id)}}" role="button" class="btn btn-warning lined thin">Lire</a>
                                         </div>
                                     </div>
                     </div>
@@ -452,7 +456,7 @@
                                 </div>
                                 <div class="vignette blue-bg  full-height">
                                     <p>{{$gameTurn->title}}</p>
-                                    <a href="#" role="button" class="btn btn-warning lined thin">Lire</a>
+                                    <a href="{{route('gameturn.show',$gameTurn->id)}}" role="button" class="btn btn-warning lined thin">Lire</a>
                                 </div>
                             </div>
                         @elseif($loop->index%3 == 2)
@@ -462,7 +466,7 @@
                                 </div>
                                 <div class="vignette green-bg  full-height">
                                     <p>{{$gameTurn->title}}</p>
-                                    <a href="#" role="button" class="btn btn-warning lined thin">Lire</a>
+                                    <a href="{{route('gameturn.show', $gameTurn->id)}}" role="button" class="btn btn-warning lined thin">Lire</a>
                                 </div>
                             </div>
                         @endif

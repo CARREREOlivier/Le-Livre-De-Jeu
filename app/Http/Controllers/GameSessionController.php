@@ -165,7 +165,7 @@ class GameSessionController extends Controller
 
         $orders = $orders->keyBy('user_id');
 
-        return View('dumper')
+        return View('gamesessions.gameSessionShow')
             ->with('gameSession', $gameSession)
             ->with('gameTurns',$gameTurns)
             ->with('players', $players)

@@ -32,8 +32,6 @@
                             <p>Avec : {{$gameSession->getUserNames->name}}</p>
                             <a href="{{route('gamesession.show', $gameSession->slug)}}"
                                class="btn btn-primary lined thin">Lire</a>
-                            <a href="{{route('gamesession.show2', $gameSession->slug)}}"
-                               class="btn btn-danger lined thin">test</a>
                         </div>
                     </div>
 

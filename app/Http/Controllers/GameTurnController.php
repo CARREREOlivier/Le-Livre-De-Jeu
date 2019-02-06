@@ -6,6 +6,9 @@ use App\Factories\GameTurnFactory;
 use App\Factories\TurnOrderFactory;
 use App\GameSession;
 use App\GameTurn;
+use App\TurnOrder;
+use App\Upload;
+use App\User;
 use App\Utils\DataFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -69,10 +72,8 @@ class GameTurnController extends Controller
 
         //creating blanck orders.
         $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
-        error_log("banzai 1");
         $turnOrder = TurnOrderFactory::build($gameTurn->id, $gameMaster->first()->user_id);
 
-        error_log("gamemaster_id : $gameMaster");
         $turnOrder->save();
         $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
         foreach ($players as $player) {
@@ -92,6 +93,37 @@ class GameTurnController extends Controller
      */
     public function show($id)
     {
+
+        $gameTurn = GameTurn::find($id);
+        $gameSession = GameSession::find($gameTurn->gamesessions_id);
+
+        $gamemaster = User::find($gameTurn->user_id);
+
+        $gamemaster_files = Upload::where('category', '=', 'gameturns')
+            ->where('entity_id', '=', $gameTurn->id)
+            ->get();
+        if($gamemaster_files->count()<1){
+            $gamemaster_files = null;
+        }
+
+
+        $orders = GameTurn::where('gamesessions_id', $gameSession->id)
+            ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
+            ->join('users', 'turnorders.user_id', '=', 'users.id')
+            ->select('gameturns.*', 'users.*', 'turnorders.*', 'turnorders.created_at as orderDate')
+            ->get()
+            ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
+
+        if($orders->count()<1){
+            $orders = null;
+        }
+
+        return view("gameturns.gameTurnShow")
+            ->with('gameTurn', $gameTurn)
+            ->with('gamemaster_files', $gamemaster_files)
+            ->with('orders', $orders)
+            ->with('gameSession', $gameSession)
+            ->with('gamemaster', $gamemaster);
 
     }
 

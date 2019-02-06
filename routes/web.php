@@ -57,10 +57,6 @@ Route::get('/download/{file}', 'DownloadsController@download');
 Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');
 
 
-/**test view for dump**/
-
-Route::get('/gamesession/gsni/{slug}', 'GameSessionController@show2')->name('gamesession.show2');
-
 /*emails*/
 
 Route::get('/contact', 'ContactController@show')
