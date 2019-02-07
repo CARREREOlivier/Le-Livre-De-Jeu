@@ -758,6 +758,13 @@ button {
     font-style: italic;
 }
 
+.pencil-small {
+    color: #222;
+    font-family: "Patrick Hand SC";
+    font-size: 17px;
+
+}
+
 .nopadding {
     padding: 0%;
 
@@ -857,5 +864,3 @@ p, a {
 .archive-right {
     padding: 0 0px 0 5px;
 }
-
-

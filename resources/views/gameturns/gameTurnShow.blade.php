@@ -32,12 +32,17 @@
             @if($gamemaster->id == Auth::User()->id)
                 <div class="row strip white-bg">
                     <div class="col-lg-12 vignette red-bg">
-                        <a href="{{route('gameturn.edit',$gameTurn->id)}}" role="button" class="btn btn-secondary lined thin">Editer le tour</a>
-
-                        {{ Form::open(['route' => ['gameturn.destroy', $gameTurn->id], 'method' => 'delete']) }}
-                        <button type="submit" class="btn btn-danger lined thin">Effacer le tour</button>
-                        {{ Form::close() }}
+                        <div class="row">
+                            <div class="col-2"><a href="{{route('gameturn.edit',$gameTurn->id)}}" role="button"
+                                                  class="btn btn-secondary lined thin">Editer le tour</a>
+                            </div>
+                            <div class="col-10">
+                                {{ Form::open(['route' => ['gameturn.destroy', $gameTurn->id], 'method' => 'delete']) }}
+                                <button type="submit" class="btn btn-danger lined thin">Effacer le tour</button>
+                                {{ Form::close() }}
+                            </div>
                         </div>
+                    </div>
                 </div>
         @endif
     @endauth
@@ -58,24 +63,27 @@
                 </div>
             </div>
 
+
             <div class="col-lg-6 box-right">
-                <div class="vignette yellow-bg full-height"></div>
-                <div class="evenboxinner-turn">Ordres Passés</div>
-                <br/>
-                @if($orders != null)
-                    <table class="table-hover">
-                        <tbody>
-                        @foreach($orders as $order)
-                            @if($order->message != "")
-                                <tr>
-                                    <td><p>{!! $order->updated_at !!} par {{$order->name}}</p></td>
-                                    <td><p>{!! $order->message !!}</p></td>
-                                </tr>
-                            @endif
-                        @endforeach
-                        </tbody>
-                    </table>
-                @endif
+                <div class="vignette yellow-bg full-height">
+                    <div class="evenboxinner-turn">Ordres Passés</div>
+                    <br/>
+                    @if($orders != null)
+                        <table class="table-hover">
+                            <tbody>
+                            @foreach($orders as $order)
+                                @if($order->message != "" and $order->gameturn_id == $gameTurn->id)
+                                    <tr>
+
+                                        <td><p>{!! $order->updated_at !!} par {{$order->name}}</p></td>
+                                        <td><p>{!! $order->message !!}</p></td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -91,4 +99,5 @@
         </div>
         <!--end long description-->
     </div>
+
 @endsection

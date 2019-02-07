@@ -78,7 +78,7 @@ class GameTurnController extends Controller
 
         $slug = $this->dataFinder->getGameSession('slug', $gameSessionId);
 
-        //creating blanck orders.
+        //creating blank orders.
         $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
         $turnOrder = TurnOrderFactory::build($gameTurn->id, $gameMaster->first()->user_id);
 

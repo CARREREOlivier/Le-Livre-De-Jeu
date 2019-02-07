@@ -140,16 +140,16 @@ class GameSessionController extends Controller
             $users = null;
         }
 
-        $gameTurns = GameTurn::where('gamesessions_id',$gameSessionId)->get();
+        $gameTurns = GameTurn::where('gamesessions_id', $gameSessionId)->get();
 
         $lastTurn = $gameTurns->last();
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
-            $gameMasterFiles = Upload::where('category','gameturns')
-                ->where('entity_id',$last)
-                ->where('user_id',$gameMaster->last()->getusers->id)
+            $gameMasterFiles = Upload::where('category', 'gameturns')
+                ->where('entity_id', $last)
+                ->where('user_id', $gameMaster->last()->getusers->id)
                 ->get();
-            error_log("turnid".$last);
+            error_log("turnid" . $last);
 
         } else {
             $last = -1;//No turns. -1 is a non existing id that will never be found in the database.
@@ -163,17 +163,19 @@ class GameSessionController extends Controller
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
-        $orders = $orders->keyBy('user_id');
+        $orderFileExists=$this->orderFileExists($orders);
+
 
         return View('gamesessions.gameSessionShow')
             ->with('gameSession', $gameSession)
-            ->with('gameTurns',$gameTurns)
+            ->with('gameTurns', $gameTurns)
             ->with('players', $players)
             ->with('gamemaster', $gameMaster)
             ->with('users', $users)
             ->with('lastTurnId', $last)
             ->with('orders', $orders)
-            ->with('gameMasterFiles', $gameMasterFiles);
+            ->with('gameMasterFiles', $gameMasterFiles)
+            ->with('orderFileExists', $orderFileExists);
     }
 
     /**
@@ -331,13 +333,13 @@ class GameSessionController extends Controller
             $userOrders = TurnOrder::where('user_id', $userId)->where('gameturn_id', $last)->get();
             // var_dump($userOrders);
 
-            error_log("userOrders :".$userOrders );
+            error_log("userOrders :" . $userOrders);
             //if Yes, it means the user has posted an order corresponding to the last turn.
             // Hence it does not have to post a new order.
             //If No, it means the user is either new to the gamesession or has not posted order on the last turn.
             if (isset($userOrders[0])) {//if N2
                 $canSendOrder = false;
-                error_log("canSendOrder:".$canSendOrder);
+                error_log("canSendOrder:" . $canSendOrder);
                 return $canSendOrder;
 
             } else {
@@ -453,6 +455,20 @@ class GameSessionController extends Controller
     }
 
 
+    function orderFileExists($orders)
+    {
+        $boolean = false;
+        foreach ($orders as $order) {
+            $file = Upload::where('category', 'turnorders')
+                ->where('entity_id', $order->id)
+                ->get();
+            if (isset($file->filename)) {
+                $boolean = true;
+                break;
+            }
+        }
+        return $boolean;
+    }
 
 
 }

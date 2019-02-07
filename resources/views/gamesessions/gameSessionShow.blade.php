@@ -79,8 +79,7 @@
 
                         <div class="evenboxinner-turn">Gestion de la partie</div>
                         <br/>
-                        @include("gamesessions.modals.modalAddTurn")
-                        <a href="{{route("gameturn.create-turn", $gameSession->slug)}}" role="button" class="btn btn-secondary lined thin float-right">Add turn</a>
+                        <a href="{{route("gameturn.create-turn", $gameSession->slug)}}" role="button" class="btn btn-secondary lined thin"><i class="fas fa-pen-alt"></i>Ajouter un tour</a>
                         @include("gamesessions.modals.modalGameSessionEdit")
                         @include("gamesessions.modals.modalDeleteGameSession")
                         @if($lastTurnId>-1)

@@ -28,25 +28,22 @@ class DownloadsController extends Controller
     public function zipMultipleFiles($gameTurnId)
     {
 
+
+
         $gameTurn = GameTurn::find($gameTurnId);
         $gameSession = GameSession::find($gameTurn->gamesessions_id);
         $orders = TurnOrder::where("gameturn_id", $gameTurnId)->get();
+
+
 
         $zipname = $gameSession->title . "-" . $gameTurn->title;
 
         $downloadFolder = "downloads/";
         if (File::exists(public_path("$downloadFolder" . "$zipname.zip"))) {
             File::delete(public_path("$downloadFolder" . "$zipname.zip"));
-
         }
 
-        $category = "gameturns";
-        $mainfile = Upload::where("category", $category)->where("entity_id", "=", $gameTurn->id)->first();
 
-
-        if (isset($mainfile)) {
-            Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("images/" . $mainfile->filename, $mainfile->original_name)->close();
-        }
 
         $category = "turnorders";
         foreach ($orders as $order) {
