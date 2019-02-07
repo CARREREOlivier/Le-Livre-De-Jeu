@@ -17,16 +17,16 @@
                 <table>
 
                     <thead>
-                    <th>Select</th>
-                    <th scope="col">name</th>
-                    <th scope="col">email</th>
+                    <th scope="col">Selectionner</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Email</th>
                     </thead>
                     <tbody id="usersLists">
 
                     @foreach($users as$user)
                         <tr>
                             <td id="selection">{{Form::checkbox("checkBox[]", $user->id, null, ['class'=>'ckbox'])}}</td>
-                            <td>{{$user->name}}</td>
+                            <td>{{$user->username}}</td>
                             <td>{{$user->email}}</td>
                         </tr>
                     @endforeach

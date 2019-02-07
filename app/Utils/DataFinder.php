@@ -40,14 +40,14 @@ class DataFinder
 
         if ($role=='GameParticipant'){
 
-            $people = GameRole::with('getUsers:id,name')
+            $people = GameRole::with('getUsers:id,username')
                 ->where("gamesession_id", "=", $gameSessionId)
                 ->where('gamerole', '=', 'GameParticipant')
                 ->get();
         }
         if ($role=='GameMaster'){
 
-            $people = GameRole::with('getUsers:id,name')
+            $people = GameRole::with('getUsers:id,username')
                 ->where("gamesession_id", "=", $gameSessionId)
                 ->where('gamerole', '=', 'GameMaster')
                 ->get();

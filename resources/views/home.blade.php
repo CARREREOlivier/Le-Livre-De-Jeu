@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-               <h2>{{$greetings}} {{Auth::user()->name}}</h2>
+               <h2>{{$greetings}} {{Auth::user()->username}}</h2>
 
                     <a href="{{url('/')}}" class="btn btn-primary lined thin">Aller à l'accueil</a>
                 </div>

@@ -51,15 +51,15 @@
                             <br/>
                             <p><strong>Maitre de jeu :</strong>
                                 @foreach($gamemaster as $gm)
-                                    {{$gm->getusers->name}}
+                                    {{$gm->getusers->username}}
                                 @endforeach
                                 <br/>
                                 <strong>Joueurs :</strong>
                                 @foreach($players as $player)
                                     @if($loop->last)
-                                        {{$player->getusers->name}}
+                                        {{$player->getusers->username}}
                                     @else
-                                        {{$player->getusers->name}} -
+                                        {{$player->getusers->username}} -
 
                                     @endif
                                 @endforeach</p>
@@ -197,10 +197,8 @@
                                 </tr>
                                 </tr>
                             @endforeach
-
                             </tbody>
                         </table>
-
                         <br/>
                         <a href="{{route('gameturn.show', $gameTurns->last()->id)}}" role="button" class="btn btn-warning lined thin float-right">Fiche détaillée</a>
                         <br/>
@@ -210,13 +208,12 @@
                     <div class="evenboxinner-descriptive">Ordres</div>
                     <div class="vignette blue-bg full-height">
                         @if($orders->get($gameSession->user_id)->updated_at != $orders->get($gameSession->user_id)->created_at)
-
                             <div class="row player-slot white-bg col-12" data-toggle="tooltip" data-placement="left"
                                  title="{{$orders->get($gameSession->user_id)->updated_at}}">
                                 @else
                                     <div class="row player-slot white-bg col-12">
                                         @endif
-                                        <div class="col-3  slot-cell-left"><p> {{$gamemaster->first()->getusers->name}}
+                                        <div class="col-3  slot-cell-left"><p> {{$gamemaster->first()->getusers->username}}
                                             </p>
                                             @auth
                                                 @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
@@ -337,7 +334,7 @@
                                                     <div class="row player-slot white-bg col-12">
                                                         @endif
                                                         <div class="col-3 slot-cell-left">
-                                                            <p> {{$player->getusers->name}}</p>
+                                                            <p> {{$player->getusers->username}}</p>
                                                             @auth
                                                                 @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false)
                                                                     <button type="button" class="btn btn-primary lined thin"

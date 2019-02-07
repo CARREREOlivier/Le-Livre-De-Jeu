@@ -122,7 +122,7 @@ class GameTurnController extends Controller
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
-        if ($orders->count() < 1) {
+        if ($orders->count() == 0) {
             $orders = null;
         }
 

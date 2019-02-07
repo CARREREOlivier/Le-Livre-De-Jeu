@@ -36,7 +36,7 @@ class GameSessionController extends Controller
     public function index()
     {
 
-        $gameSessions = GameSession::with('getUserNames:id,name')->get();
+        $gameSessions = GameSession::with('getUserNames:id,username')->get();
 
         return view('gamesessions.gameSessionIndex')
             ->with('gamesessions', $gameSessions);
@@ -74,7 +74,7 @@ class GameSessionController extends Controller
         //Validation
         $validatedData = $request->validate([
             'title' => 'required|unique:gamesessions|max:125',
-            'game' => 'max:50',
+            'game' => 'required|max:50',
             'description' => 'max:21844', // text is 65535 bytes. utf8 take 3 bytes per character. Hence the maximum character number is 65535/3=21845.
             // And I take one character off to make the string will fit into the text field
         ]);
@@ -149,7 +149,7 @@ class GameSessionController extends Controller
                 ->where('entity_id', $last)
                 ->where('user_id', $gameMaster->last()->getusers->id)
                 ->get();
-            error_log("turnid" . $last);
+
 
         } else {
             $last = -1;//No turns. -1 is a non existing id that will never be found in the database.
@@ -162,6 +162,9 @@ class GameSessionController extends Controller
             ->select('gameturns.*', 'users.*', 'turnorders.*', 'turnorders.created_at as orderDate')
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
+
+
+        $orders=$orders->keyBy('user_id');
 
         $orderFileExists=$this->orderFileExists($orders);
 
@@ -369,7 +372,7 @@ class GameSessionController extends Controller
         if ($players->count() > 0) {
             //getting sender mail and name
             $user_email = Auth::user()->email;
-            $user_name = Auth::user()->name;
+            $user_name = Auth::user()->username;
 
             //building link to gamesession
             $gameSession = GameSession::find($gameSessionId);
@@ -388,7 +391,7 @@ class GameSessionController extends Controller
 
                 //getting player mail and name
                 $player_mail = $player->getusers->email;
-                $player_name = $player->getusers->name;
+                $player_name = $player->getusers->username;
 
                 //instantiating mailable object
                 $email = new \stdClass();
