@@ -34,12 +34,17 @@ class GameTurnController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
+     * @param $id
+     * @return $this
      */
-    public function create()
+
+    public function create($slug)
     {
 
+
+        $gameSession=GameSession::where('slug',$slug)->firstOrFail();
+
+        return View("gameturns.gameTurnNew")->with('gameSessionId', $gameSession->id);
     }
 
     /**
@@ -50,10 +55,12 @@ class GameTurnController extends Controller
     public function store(Request $request)
     {
 
+
         //validation
         $validatedData = Validator::make($request->all(), [
             'title' => 'required|max:126',
             'description' => 'max:1024',
+            'long_description' => 'max:16000'
         ]);
 
         if ($validatedData->fails()) {
@@ -65,6 +72,7 @@ class GameTurnController extends Controller
 
         //game turn creation
         $gameTurn = GameTurnFactory::build($request);
+
         $gameTurn->save();
         $gameSessionId = $gameTurn->gamesessions_id;
 
@@ -102,7 +110,7 @@ class GameTurnController extends Controller
         $gamemaster_files = Upload::where('category', '=', 'gameturns')
             ->where('entity_id', '=', $gameTurn->id)
             ->get();
-        if($gamemaster_files->count()<1){
+        if ($gamemaster_files->count() < 1) {
             $gamemaster_files = null;
         }
 
@@ -114,7 +122,7 @@ class GameTurnController extends Controller
             ->get()
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
-        if($orders->count()<1){
+        if ($orders->count() < 1) {
             $orders = null;
         }
 
@@ -136,6 +144,11 @@ class GameTurnController extends Controller
     public function edit($id)
     {
 
+        $gameTurn = GameTurn::findOrFail($id);
+
+
+        return View('gameturns.gameTurnsEdit')
+            ->with('gameTurn', $gameTurn);
     }
 
     /**
@@ -151,11 +164,11 @@ class GameTurnController extends Controller
 
         $gameTurn->title = $request->title;
         $gameTurn->description = $request->description;
-
+        $gameTurn->long_description = $request->long_description;
 
         $gameTurn->save();
 
-        return redirect()->back();
+        return $this->show($gameTurn->id);
 
     }
 
@@ -168,11 +181,11 @@ class GameTurnController extends Controller
     public function destroy($id)
     {
         $gameTurn = GameTurn::findOrFail($id);
-        // $gameSession = GameSession::findOrFail($gameTurn->gamesessions_id);
+        $gameSession = GameSession::findOrFail($gameTurn->gamesessions_id);
 
         $gameTurn->delete();
 
-        return redirect()->back();
+        return redirect()->route('gamesession.show',$gameSession->slug);
 
     }
 

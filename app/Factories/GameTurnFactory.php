@@ -24,17 +24,9 @@ class GameTurnFactory
         $gameTurn->gamesessions_id = $request->gamesessions_id;
         $gameTurn->title = $request->title;
         $gameTurn->description = $request->description;
+        $gameTurn->long_description = $request->long_description;
 
         return $gameTurn;
     }
 }
 
-/*
-$table->increments('id');
-$table->timestamps();
-$table->softDeletes();
-$table->integer('user_id')->unsigned();
-$table->integer('gamesessions_id')->unsigned();
-$table->string('title');
-$table->text('description')->nullable();
-*/

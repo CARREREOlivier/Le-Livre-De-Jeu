@@ -34,7 +34,7 @@
 
                             <h3 class="last-turn-title yellow">{{$gameSession->title}}
                             </h3>
-                            <p>Créée le:{{date('d-M-Y à H:i', strtotime($gameSession->created_at))}}</p>
+                            <p>Créée le:{{date('d-m-Y à H:i', strtotime($gameSession->created_at))}}</p>
                             {!!  $gameSession->description !!}
                         </div>
                     </div>
@@ -80,6 +80,7 @@
                         <div class="evenboxinner-turn">Gestion de la partie</div>
                         <br/>
                         @include("gamesessions.modals.modalAddTurn")
+                        <a href="{{route("gameturn.create-turn", $gameSession->slug)}}" role="button" class="btn btn-secondary lined thin float-right">Add turn</a>
                         @include("gamesessions.modals.modalGameSessionEdit")
                         @include("gamesessions.modals.modalDeleteGameSession")
                         @if($lastTurnId>-1)

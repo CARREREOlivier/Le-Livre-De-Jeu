@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('user', 'UserController');
 Route::resource('gamesession', 'GameSessionController');
 Route::post('gameturn/lock-{id}', 'GameTurnController@lock')->name('gameturn.lock');
+Route::get('gameturn/create-turn-for/{slug}', 'GameTurnController@create')->name('gameturn.create-turn');
 Route::resource('gameturn', 'GameTurnController');
 Route::resource('gamerole', 'GameRoleController');
 Route::resource('story', 'StoryController');

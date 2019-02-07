@@ -31,7 +31,13 @@
 
             @if($gamemaster->id == Auth::User()->id)
                 <div class="row strip white-bg">
-                    <div class="col-lg-12 vignette red-bg">Actions</div>
+                    <div class="col-lg-12 vignette red-bg">
+                        <a href="{{route('gameturn.edit',$gameTurn->id)}}" role="button" class="btn btn-secondary lined thin">Editer le tour</a>
+
+                        {{ Form::open(['route' => ['gameturn.destroy', $gameTurn->id], 'method' => 'delete']) }}
+                        <button type="submit" class="btn btn-danger lined thin">Effacer le tour</button>
+                        {{ Form::close() }}
+                        </div>
                 </div>
         @endif
     @endauth
@@ -40,7 +46,7 @@
         <!--description and orders strip-->
         <div class="row strip white-bg">
             <div class="col-lg-6 box-left">
-                <div class="vignette orange-bg">
+                <div class="vignette orange-bg full-height">
                     <div class="evenboxinner-turn">Résumé</div>
                     <br/>
                     <p>{!! $gameTurn->description !!}</p>
@@ -51,8 +57,9 @@
                     @endif
                 </div>
             </div>
+
             <div class="col-lg-6 box-right">
-                <div class="vignette yellow-bg"></div>
+                <div class="vignette yellow-bg full-height"></div>
                 <div class="evenboxinner-turn">Ordres Passés</div>
                 <br/>
                 @if($orders != null)
@@ -75,7 +82,12 @@
         <!--end description and orders strip-->
         <!--long description-->
         <div class="row strip white-bg">
-            <div class="col-lg-12 vignette green-bg">Description détaillée</div>
+            <div class="col-lg-12 vignette green-bg">
+                <div class="evenboxinner-turn">
+                    Description Détaillée
+                </div>
+                {!! $gameTurn->long_description !!}
+            </div>
         </div>
         <!--end long description-->
     </div>

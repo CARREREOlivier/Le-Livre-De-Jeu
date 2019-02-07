@@ -14,8 +14,9 @@
         {!! Form::label('title', 'Titre:') !!}
         {!! Form::text('title') !!}
         <br/>
-        {!! Form::label('description', 'Description:') !!}{!! Form::textarea('description') !!}
+        {!! Form::label('description', 'Résumé:') !!}{!! Form::textarea('description') !!}
 
+        {!! Form::label('long_description', 'Description:') !!}{!! Form::textarea('longdescription') !!}
 
     </div>
     <div class="modal-footer">

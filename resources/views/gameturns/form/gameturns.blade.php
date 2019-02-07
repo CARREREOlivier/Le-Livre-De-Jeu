@@ -13,7 +13,10 @@
         {!! Form::label('title', 'Title:') !!}
         {!! Form::text('title') !!}
         <br/>
-        {!! Form::label('description', 'Description:') !!}
+        {!! Form::label('description', 'Résumé:') !!}
+        {!! Form::textarea('description') !!}
+        <br/>
+        {!! Form::label('long_description', 'Description détaillée:') !!}
         {!! Form::textarea('description') !!}
 
 
