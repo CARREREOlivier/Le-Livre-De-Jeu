@@ -25,9 +25,9 @@
             plugins: [
                 " advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste imagetools"
+                "insertdatetime media table contextmenu paste imagetools textcolor"
             ],
-            toolbar: "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify " +
+            toolbar: "undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify " +
             "| bullist numlist outdent indent | image imagetools",
 
             file_picker_types: 'image file',
