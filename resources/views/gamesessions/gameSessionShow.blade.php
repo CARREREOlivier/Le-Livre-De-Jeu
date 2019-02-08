@@ -207,14 +207,10 @@
                 <div class="col-md-6 box-right">
                     <div class="evenboxinner-descriptive">Ordres</div>
                     <div class="vignette blue-bg full-height">
-                        @if($orders->get($gameSession->user_id)->updated_at != $orders->get($gameSession->user_id)->created_at)
-                            <div class="row player-slot white-bg col-12" data-toggle="tooltip" data-placement="left"
-                                 title="{{$orders->get($gameSession->user_id)->updated_at}}">
-                                @else
+
                                     <div class="row player-slot white-bg col-12">
-                                        @endif
-                                        <div class="col-3  slot-cell-left"><p> {{$gamemaster->first()->getusers->username}}
-                                            </p>
+                                        <div class="col-3  slot-cell-left"><p> {{$gamemaster->first()->getusers->username}}</p>
+
                                             @auth
                                                 @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
 
@@ -276,7 +272,10 @@
                                             @endauth
                                         </div>
                                         <div class="col-7">
-                                            {!! $orders->get($gameSession->user_id)->message!!}
+                                            @if($orders->get($gameSession->user_id)->updated_at != $orders->get($gameSession->user_id)->created_at)
+                                                <p> @include('utils.date_french',['date'=>$orders->get($gameSession->user_id)->updated_at])</p>
+                                            @endif
+                                           <p> {!! $orders->get($gameSession->user_id)->message!!}</p>
                                         </div>
                                         <div class="col-2  slot-cell-right">
                                             @auth
