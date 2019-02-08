@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,6 +164,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Chumper\Zipper\ZipperServiceProvider::class,
+        Jenssegers\Date\DateServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -177,6 +178,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
 
 
     ],
@@ -231,6 +233,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Zipper' => Chumper\Zipper\Zipper::class,
+        'Date' => Jenssegers\Date\Date::class,
 
     ],
 

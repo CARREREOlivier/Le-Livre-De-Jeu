@@ -34,7 +34,7 @@
 
                             <h3 class="last-turn-title yellow">{{$gameSession->title}}
                             </h3>
-                            <p>Créée le:{{date('d-m-Y à H:i', strtotime($gameSession->created_at))}}</p>
+                            <p>Créée le:@include('utils.date_french',['date'=>$gameSession->created_at])</p>
                             {!!  $gameSession->description !!}
                         </div>
                     </div>
@@ -97,7 +97,7 @@
             <div class="row strip">
                 <div class="col-lg-12 vignette red-bg turn-title-strip">
                     <div class="evenboxinner-turn">
-                        Le {{date('d-M-Y à H:i', strtotime($gameTurns->last()->created_at))}}</div>
+                        Le @include('utils.date_french',['date'=> $gameTurns->last()->created_at])</div>
 
                     <br/>
 

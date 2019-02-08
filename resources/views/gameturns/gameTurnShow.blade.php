@@ -16,7 +16,8 @@
                 <div class="vignette green-bg full-height">
                     <div class="evenboxinner-descriptive ">{{$gameSession->game}}</div>
                     <br/>
-                    <p>Créé le {{$gameTurn->created_at}}</p>
+
+                    <p>Créé le @include('utils.date_french', ['date'=>$gameTurn->created_at])}</p>
 
                     @if($gameTurn->updated__at != null)
                         <p>Dernière modification :{{$gameTurn->updated__at}}</p>
@@ -60,23 +61,25 @@
                     <p>{!! $gameTurn->description !!}</p>
                     <table>
                         <tbody>
-                    @if($gamemaster_files != null)
-                        @foreach($gamemaster_files as $file)
-                            <tr><td><p>{!! $file->original_name !!}
-                            </p></td><td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
-                                    <i class="fas fa-download"></i></a></td>
+                        @if($gamemaster_files != null)
+                            @foreach($gamemaster_files as $file)
+                                <tr>
+                                    <td>
+                                        <p>{!! $file->original_name !!}</p>
+                                    </td>
+                                    <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
+                                            <i class="fas fa-download"></i></a></td>
 
-                               <td> @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
-                                        class="delete-link"
-                                        href="{{route('upload.delete_file',$file->id)}}"
-                                        onclick="confirmDeletion()"> <i
-                                            class="fas fa-trash-alt"></i></a></td>
-                                @endif
-                            </tr>
-                        @endforeach
-                    @else
-                        <p>pas de fichier associé</p>
-                    @endif
+                                    <td> @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
+                                                class="delete-link"
+                                                href="{{route('upload.delete_file',$file->id)}}"
+                                                onclick="confirmDeletion()"> <i class="fas fa-trash-alt"></i></a></td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        @else
+                            <p>pas de fichier associé</p>
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -93,9 +96,12 @@
                             @foreach($orders as $order)
                                 @if($order->message != "" and $order->gameturn_id == $gameTurn->id)
                                     <tr>
-
-                                        <td><p>{!! $order->updated_at !!} par {{$order->username}}</p></td>
-                                        <td><p>{!! $order->message !!}</p></td>
+                                        <td>
+                                            <p>{!! $order->updated_at !!} par {{$order->username}}</p>
+                                        </td>
+                                        <td>
+                                            <p>{!! $order->message !!}</p>
+                                        </td>
                                     </tr>
                                 @endif
                             @endforeach
