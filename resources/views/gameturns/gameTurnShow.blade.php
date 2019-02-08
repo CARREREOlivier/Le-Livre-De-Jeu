@@ -15,12 +15,13 @@
             <div class="col-lg-3  box-right">
                 <div class="vignette green-bg full-height">
                     <div class="evenboxinner-descriptive ">{{$gameSession->game}}</div>
+                    <br/>
                     <p>Créé le {{$gameTurn->created_at}}</p>
 
                     @if($gameTurn->updated__at != null)
                         <p>Dernière modification :{{$gameTurn->updated__at}}</p>
                     @endif
-                    <p>par : <strong>{{$gamemaster->name}}</strong></p>
+                    <p>par : <strong>{{$gamemaster->username}}</strong></p>
 
                 </div>
             </div>
@@ -75,7 +76,7 @@
                                 @if($order->message != "" and $order->gameturn_id == $gameTurn->id)
                                     <tr>
 
-                                        <td><p>{!! $order->updated_at !!} par {{$order->name}}</p></td>
+                                        <td><p>{!! $order->updated_at !!} par {{$order->username}}</p></td>
                                         <td><p>{!! $order->message !!}</p></td>
                                     </tr>
                                 @endif
@@ -94,6 +95,7 @@
                 <div class="evenboxinner-turn">
                     Description Détaillée
                 </div>
+                <br/>
                 {!! $gameTurn->long_description !!}
             </div>
         </div>
