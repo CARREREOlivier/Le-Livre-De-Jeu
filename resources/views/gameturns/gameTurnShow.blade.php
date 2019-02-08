@@ -41,6 +41,8 @@
                                 {{ Form::open(['route' => ['gameturn.destroy', $gameTurn->id], 'method' => 'delete']) }}
                                 <button type="submit" class="btn btn-danger lined thin">Effacer le tour</button>
                                 {{ Form::close() }}
+
+
                             </div>
                         </div>
                     </div>
@@ -56,11 +58,27 @@
                     <div class="evenboxinner-turn">Résumé</div>
                     <br/>
                     <p>{!! $gameTurn->description !!}</p>
+                    <table>
+                        <tbody>
                     @if($gamemaster_files != null)
-                        <p>{!! $gamemaster_files->original_name !!}</p>
+                        @foreach($gamemaster_files as $file)
+                            <tr><td><p>{!! $file->original_name !!}
+                            </p></td><td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
+                                    <i class="fas fa-download"></i></a></td>
+
+                               <td> @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
+                                        class="delete-link"
+                                        href="{{route('upload.delete_file',$file->id)}}"
+                                        onclick="confirmDeletion()"> <i
+                                            class="fas fa-trash-alt"></i></a></td>
+                                @endif
+                            </tr>
+                        @endforeach
                     @else
                         <p>pas de fichier associé</p>
                     @endif
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -101,5 +119,14 @@
         </div>
         <!--end long description-->
     </div>
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
+        function confirmDeletion() {
+            confirm("Souhaitez-vous effacer ce fichier?");
+        }
+
+    </script>
 @endsection
