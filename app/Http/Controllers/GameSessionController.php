@@ -465,6 +465,7 @@ class GameSessionController extends Controller
 
             $players = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
             $player = $players->last();
+
             //getting player mail and name
             $player_name = $player->getusers->username;
             $player_mail = $player->getusers->email;
@@ -474,6 +475,7 @@ class GameSessionController extends Controller
             $email = new \stdClass();
             $email->message = $gameTurn->description;
             $email->from = $player_mail;
+            $email->recipient = $player_name;
             $email->expeditor = $player_name;
             $email->sender = "$user_name : $user_email";
             $email->attachment = $user_email;
