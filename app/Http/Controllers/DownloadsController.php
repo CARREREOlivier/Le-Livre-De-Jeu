@@ -29,11 +29,9 @@ class DownloadsController extends Controller
     {
 
 
-
         $gameTurn = GameTurn::find($gameTurnId);
         $gameSession = GameSession::find($gameTurn->gamesessions_id);
         $orders = TurnOrder::where("gameturn_id", $gameTurnId)->get();
-
 
 
         $zipname = $gameSession->title . "-" . $gameTurn->title;
@@ -44,12 +42,22 @@ class DownloadsController extends Controller
         }
 
 
-
+        Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->close();
         $category = "turnorders";
-        foreach ($orders as $order) {
-            $document = Upload::where("category", $category)->where("entity_id", "=", $order->id)->first();
 
-            Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("images/" . $document->filename, $document->original_name)->close();
+
+        foreach ($orders as $order) {
+
+            $document = Upload::where("category", $category)->where("entity_id", "=", $order->id)->first();
+            if ($document != null) {
+                Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("images/" . $document->filename, $document->original_name)->close();
+            } else {
+                $message = "il n'y a pas de fichier à télécharger";
+                return redirect()->back()->with('message', $message);
+                break;
+            }
+
+
         }
 
         return response()->download(public_path("$downloadFolder" . "$zipname.zip"));
