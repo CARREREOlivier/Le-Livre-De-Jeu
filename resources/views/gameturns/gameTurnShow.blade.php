@@ -18,7 +18,7 @@
                     <div class="evenboxinner-descriptive ">{{$gameSession->game}}</div>
                     <br/>
 
-                    <p>Créé le @include('utils.date_french', ['date'=>$gameTurn->created_at])}</p>
+                    <p>Créé le @include('utils.date_french', ['date'=>$gameTurn->created_at])</p>
 
                     @if($gameTurn->updated__at != null)
                         <p>Dernière modification :{{$gameTurn->updated__at}}</p>
