@@ -181,7 +181,7 @@
                             <tbody>
                             @foreach($gameMasterFiles as $file)
                                 <tr>
-                                    <td>{{$file->original_name}}</td>
+                                    <td><p>{{$file->original_name}}</p></td>
                                     @auth
                                         <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
                                                 <i
@@ -325,13 +325,9 @@
 
 
                                     @foreach($players as $player)
-                                        @if($orders->get($player->user_id)->updated_at != $orders->get($player->user_id)->created_at)
-                                            <div class="row player-slot white-bg col-12" data-toggle="tooltip"
-                                                 data-placement="left"
-                                                 title="{{$orders->get($player->user_id)->updated_at}}">
-                                                @else
+
+
                                                     <div class="row player-slot white-bg col-12">
-                                                        @endif
                                                         <div class="col-3 slot-cell-left">
                                                             <p> {{$player->getusers->username}}</p>
                                                             @auth
