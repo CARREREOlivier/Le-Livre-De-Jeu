@@ -365,7 +365,7 @@
 
             @auth
 
-                <a href="{{ url('/home') }}">Home</a>
+                <a href="{{ url('/home') }}">Lien inutile</a>
 
                 @else
 

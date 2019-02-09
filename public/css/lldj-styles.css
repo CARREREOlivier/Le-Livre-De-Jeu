@@ -864,3 +864,24 @@ p, a {
 .archive-right {
     padding: 0 0px 0 5px;
 }
+
+
+/*NAVIGATION*/
+/*https://codepen.io/victorknust/pen/GwIsA*/
+mark {
+    position: relative;
+    background-color: #fff;
+}
+mark:after {
+    border: .15em solid red;
+    border-top: none;
+    border-radius: 1.5em 1em 2em 1.5em;
+    bottom: -.3em;
+    content: '';
+    left: -.3em;
+    position: absolute;
+    right: -.3em;
+    top: -.1em;
+}
+
+/*https://codepen.io/victorknust/pen/GwIsA*/

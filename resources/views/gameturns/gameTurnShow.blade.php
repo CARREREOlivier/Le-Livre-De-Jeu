@@ -10,6 +10,7 @@
                     <div class="evenboxinner-turn"> {{$gameSession->title}}</div>
                     <br/>
                     <h1 class="title">{{$gameTurn->title}}</h1>
+                    <a href="{{route('gamesession.show',$gameSession->slug)}}" role="button" class="btn btn-primary lined thin"><i class="fas fa-caret-square-left"></i>Retour</a>
                 </div>
             </div>
             <div class="col-lg-3  box-right">
