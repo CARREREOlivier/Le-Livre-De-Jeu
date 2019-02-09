@@ -33,7 +33,7 @@
     </tr>
     @foreach($players as $player)
         <tr>
-            <td>{{$player->getusers->name}}</td>
+            <td>{{$player->getusers->username}}</td>
             <td><p>Joueur</p></td>
         </tr>
     @endforeach
@@ -69,7 +69,7 @@
                     @else
                         <td id="selection">{{Form::checkbox("checkBox[]", $user->id, false, ['class'=>'ckbox'])}}</td>
                     @endif
-                    <td>{{$user->name}}</td>
+                    <td>{{$user->username}}</td>
                     <td>{{$user->email}}</td>
                 </tr>
             @endforeach
