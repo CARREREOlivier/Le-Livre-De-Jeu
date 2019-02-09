@@ -164,9 +164,9 @@ class GameSessionController extends Controller
             ->makeHidden(['email', "email_verified_at", "password", "remember_token"]);
 
 
-        $orders=$orders->keyBy('user_id');
+        $orders = $orders->keyBy('user_id');
 
-        $orderFileExists=$this->orderFileExists($orders);
+        $orderFileExists = $this->orderFileExists($orders);
 
 
         return View('gamesessions.gameSessionShow')
@@ -197,17 +197,13 @@ class GameSessionController extends Controller
             $users = $this->getPotentialPlayers();
 
             //getting players and game master with game role
-
             $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
             $gameMasters = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
 
 
             foreach ($players as $player) {
-
                 foreach ($users as $user) {
-
                     if ($player->user_id == $user->id) {
-
                         $user->checked = 'true';
                     }
                 };
@@ -255,9 +251,7 @@ class GameSessionController extends Controller
 
 
             foreach ($players as $player) {
-
                 GameRole::find($player->id)->delete();
-
             }
 
             //Assigning GameParticipants (if any) to gamesession
@@ -269,7 +263,40 @@ class GameSessionController extends Controller
                 }
             }
 
+            //Adding new players to last turn (the last turn one is the only one allowing to change players :)
+            $gameTurns = GameTurn::where('gamesessions_id', $gameSessionId)->get();
+            $lol = $gameTurns->count();
 
+            //refresh players' collection
+            $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
+
+            if ($gameTurns->count() > 0) {
+
+                $lastTurn = $gameTurns->last()->id;
+                error_log("last turn id : $lastTurn");
+                $turnOrders = TurnOrder::where('gameturn_id', $lastTurn)->get();
+
+                foreach ($players as $player) {
+                    $hasOrder = false;
+                    foreach ($turnOrders as $turnOrder) {
+                        if ($player->user_id == $turnOrder->user_id) {
+                            $hasOrder = true;
+                            break;
+                        }
+                    }
+
+                    if ($hasOrder == false) {
+
+                        error_log("player id : $player->user_id");
+                        $order = TurnOrderFactory::build($lastTurn, $player->user_id);
+                        error_log("order player id: $order->user_id");
+                        $order->save();
+                    }
+                }
+
+            }
+
+            error_log("yeah!");
             //return to view to visually check the update
             return $this->show($gamesession->slug);
         } else  return view('home');
@@ -336,13 +363,12 @@ class GameSessionController extends Controller
             $userOrders = TurnOrder::where('user_id', $userId)->where('gameturn_id', $last)->get();
             // var_dump($userOrders);
 
-            error_log("userOrders :" . $userOrders);
+
             //if Yes, it means the user has posted an order corresponding to the last turn.
             // Hence it does not have to post a new order.
             //If No, it means the user is either new to the gamesession or has not posted order on the last turn.
             if (isset($userOrders[0])) {//if N2
                 $canSendOrder = false;
-                error_log("canSendOrder:" . $canSendOrder);
                 return $canSendOrder;
 
             } else {
@@ -368,6 +394,10 @@ class GameSessionController extends Controller
 
         $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
 
+        //files to attach
+        $files = Upload::where('category', 'gameturns')
+            ->where('entity_id', $gameTurnId)
+            ->get();
 
         if ($players->count() > 0) {
             //getting sender mail and name
@@ -396,6 +426,8 @@ class GameSessionController extends Controller
                 //instantiating mailable object
                 $email = new \stdClass();
                 $email->message = $gameTurn->description;
+                $email->from = $player_mail;
+                $email->recipient = $player_name;
                 $email->sender = "$user_name : $user_email";
                 $email->attachment = $user_email;
                 $email->receiver = $player_name;
@@ -403,21 +435,86 @@ class GameSessionController extends Controller
                 $email->turn_title = $gameTurn->title;
                 $email->link = $link;
 
-                //Send Mail
-                Mail::to($player_mail)->send(new TurnNotification($email));
+
+                //Send Mail to player
+                Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
+
+
+                    $m->from('le.pire.ottoman@gmail.com', config('name'));
+                    $m->to($email->from, $email->recipient)
+                        ->subject($email->subject);
+
+                    foreach ($files as $file) {
+                        $filename = $file->filename;
+                        $path = public_path('/images');
+                        $path_to_file = $path . "/" . $filename;
+                        $original_name = $filename = $file->original_name;
+                        $m->attach($path_to_file, ['as' => $original_name]);
+                    }
+
+
+                });
+
 
                 //cleaning memory-php should do it anyway but who knows?
                 unset($email);
             }//Endforeach $players
 
+
+            //gamemaster
+
+            $players = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
+            $player = $players->last();
+            //getting player mail and name
+            $player_name = $player->getusers->username;
+            $player_mail = $player->getusers->email;
+
+
+            //instantiating mailable object
+            $email = new \stdClass();
+            $email->message = $gameTurn->description;
+            $email->from = $player_mail;
+            $email->expeditor = $player_name;
+            $email->sender = "$user_name : $user_email";
+            $email->attachment = $user_email;
+            $email->receiver = $player_name;
+            $email->subject = $subject;
+            $email->turn_title = $gameTurn->title;
+            $email->link = $link;
+
+
+            //sending notification to gamemaster as feedback.
+            Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
+
+
+                $m->from('le.pire.ottoman@gmail.com', config('name'));
+                $m->to($email->from, $email->recipient)
+                    ->subject($email->subject);
+
+                foreach ($files as $file) {
+                    $filename = $file->filename;
+                    $path = public_path('/images');
+                    $path_to_file = $path . "/" . $filename;
+
+                    $original_name = $filename = $file->original_name;
+                    $m->attach($path_to_file, ['as' => $original_name]);
+                }
+
+
+            });
+
+
+            //cleaning memory-php should do it anyway but who knows?
+            unset($email);
+
             //redirect back with message
             return redirect()->back()->with('message', "la notification a été envoyé aux joueurs! ");
         } else {
-
             return redirect()->back()->with('message', "Merci d'ajouter un joueur");
         }
 
     }
+
 
     /**
      *
@@ -472,7 +569,6 @@ class GameSessionController extends Controller
         }
         return $boolean;
     }
-
 
 }
 
