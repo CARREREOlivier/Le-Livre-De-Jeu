@@ -73,3 +73,7 @@ Route::post('/contact-mail',  'ContactController@mailToAdmin')
 route::get('/gamesession-send-notification-{id}', 'GameSessionController@mailToPlayers')
     ->name('gamesession.sendnotification')
     ->middleware('auth');
+
+
+/*Admin routes*/
+Route::get('/admin', 'AdminController@index')->name('admin.main')->middleware('auth');

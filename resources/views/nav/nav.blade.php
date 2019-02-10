@@ -53,7 +53,7 @@
                 @auth
                 @if(Auth::user()->status=="Admin")
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Admin</a>
+                                <a class="nav-link" href="{{route(('admin.main'))}}">Admin</a>
                             </li>
                @endif
 

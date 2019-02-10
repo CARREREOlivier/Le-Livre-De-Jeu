@@ -31,7 +31,6 @@
         <!--end top strip-->
         <!--gamemaster actions strip-->
         @auth
-
             @if($gamemaster->id == Auth::User()->id)
                 <div class="row strip white-bg">
                     <div class="col-lg-12 vignette red-bg">
@@ -71,11 +70,12 @@
                                     <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
                                             <i class="fas fa-download"></i></a></td>
 
-                                    <td> @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
+                                    <td>@auth @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
                                                 class="delete-link"
                                                 href="{{route('upload.delete_file',$file->id)}}"
                                                 onclick="confirmDeletion()"> <i class="fas fa-trash-alt"></i></a></td>
                                     @endif
+                                    @endauth
                                 </tr>
                             @endforeach
                         @else

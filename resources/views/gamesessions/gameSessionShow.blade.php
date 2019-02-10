@@ -150,24 +150,28 @@
                             @foreach($gameMasterFiles as $file)
                                 <tr>
                                     <td><p>{{$file->original_name}}</p></td>
-                                    @auth
+
                                         <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
                                                 <i
                                                         class="fas fa-download"></i></a>
+                                            @auth
                                             &nbsp;&nbsp;&nbsp;@if(Auth::User()->id == $gameSession->user_id)
                                                 @include('gamesessions._partials.delete_file')
                                             @endif
+                                            @endauth
                                         </td>
-                                    @endauth
+
                                 </tr>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
+                   
                         <br/>
                         <a href="{{route('gameturn.show', $gameTurns->last()->id)}}" role="button"
                            class="btn btn-warning lined thin float-right">Fiche détaillée</a>
                         <br/>
+
                     </div>
                 </div>
                 <div class="col-md-6 box-right">
@@ -202,7 +206,6 @@
 
                                 @endauth
                             </div>
-
                         </div>
 
 
@@ -253,9 +256,6 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
 
-        function confirmDeletion() {
-            return confirm("Souhaitez-vous effacer ce fichier?");
-        }
 
     </script>
 @endsection

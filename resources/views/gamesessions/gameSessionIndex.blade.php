@@ -18,24 +18,7 @@
         <div class="row">
         @foreach($gamesessions->reverse() as $gameSession)
             <div class="col-md-6">
-
-                <div id="card_container_large">
-                    <div class="evenboxinner">{{$gameSession->game}}</div>
-                    <div id="card">
-
-                        <div class="shine"></div>
-                        <div class="text-block">
-
-                            <h3 class="welcome-card-title yellow">{{$gameSession->title}}
-                            </h3>
-                            <p>Créée le: @include('utils.date_french',['date'=>$gameSession->created_at])</p>
-                            <p>Avec : {{$gameSession->getUserNames->username}}</p>
-                            <a href="{{route('gamesession.show', $gameSession->slug)}}"
-                               class="btn btn-primary lined thin">Lire</a>
-                        </div>
-                    </div>
-
-                </div>
+                @include('gamesessions._partials.index_card_container',['data'=> $gameSession])
             </div>
                 @if ($loop->iteration % 2 == 0)
         </div>
