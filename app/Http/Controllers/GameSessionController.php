@@ -273,7 +273,6 @@ class GameSessionController extends Controller
             if ($gameTurns->count() > 0) {
 
                 $lastTurn = $gameTurns->last()->id;
-                error_log("last turn id : $lastTurn");
                 $turnOrders = TurnOrder::where('gameturn_id', $lastTurn)->get();
 
                 foreach ($players as $player) {
@@ -287,16 +286,13 @@ class GameSessionController extends Controller
 
                     if ($hasOrder == false) {
 
-                        error_log("player id : $player->user_id");
                         $order = TurnOrderFactory::build($lastTurn, $player->user_id);
-                        error_log("order player id: $order->user_id");
                         $order->save();
                     }
                 }
 
             }
-
-            error_log("yeah!");
+            
             //return to view to visually check the update
             return $this->show($gamesession->slug);
         } else  return view('home');
