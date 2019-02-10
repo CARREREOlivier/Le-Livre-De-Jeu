@@ -29,6 +29,12 @@
     <!-- Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/lldj-styles.css') }}" rel="stylesheet">
+
     <style>
         @import url(//fonts.googleapis.com/css?family=Patrick+Hand+SC|Bangers|Happy+Monkey);
         @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
@@ -357,35 +363,8 @@
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand brand-text padding10pc " href="#">Le Livre de Jeu</a>
-    @if (Route::has('login'))
 
-        <div class="top-right plop links">
-
-            @auth
-
-                <a href="{{ url('/home') }}">Lien inutile</a>
-
-                @else
-
-                    <a href="{{ route('login') }}">Login</a>
-
-
-
-                    @if (Route::has('register'))
-
-                        <a href="{{ route('register') }}">Register</a>
-
-                    @endif
-
-                    @endauth
-
-        </div>
-
-    @endif
-
-</nav>
+    @include('nav.nav')
 
 <div class="flex-center position-ref full-height">
 
@@ -404,79 +383,16 @@
                     <div class="col-lg-9 offset-1">
                         <div class="row">
                             <div class="col-lg-4">
-
-                                <div id="card_container">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title yellow">Parties
-                                            </h2>
-                                            <a href="{{route('gamesession.index')}}" class="btn btn-primary lined thin" role="button"><strong>Aller à l'Index</strong></a>
-                                            </div>
-                                    </div>
-                                </div>
-                                <div id="card_container">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title green">News
-                                            </h2>
-
-                                            <button>En construction</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'yellow','title'=>'Parties', 'route'=>'gamesession.index', 'text'=>'Aller à l\'Index'])
+                                @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'green','title'=>'News', 'route'=>'', 'text'=>'En construction'])
                             </div>
                             <div class="col-lg-4">
-                                <div id="card_container">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title orange">AARs
-                                            </h2>
-                                            <button>En construction</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="card_container" data-offset="2">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title blue">Github
-                                                </h2>
-                                            <a href="https://github.com/Flefounet/Le-Livre-De-Jeu" class="btn btn-primary lined thin" role="button"><strong>Voir le repo</strong></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'orange','title'=>'AARs', 'route'=>'', 'text'=>'En construction'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'blue','title'=>'Github', 'route'=>'github', 'text'=>'Voir le repo'])
                             </div>
                             <div class="col-lg-4">
-                                <div id="card_container" data-offset="2">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title red">Tutoriels
-                                            </h2>
-
-                                            <button>En construction</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="card_container" data-offset="2">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title violet">Contact
-                                            </h2>
-                                            <a href="{{route('contact')}}" class="btn btn-primary lined thin" role="button"><strong>Ecrire un mail</strong></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'red','title'=>'Tutos', 'route'=>'', 'text'=>'En construction'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'violet','title'=>'contact', 'route'=>'contact', 'text'=>'Ecrire un mail'])
                             </div>
                         </div>
                     </div>

@@ -292,7 +292,7 @@ class GameSessionController extends Controller
                 }
 
             }
-            
+
             //return to view to visually check the update
             return $this->show($gamesession->slug);
         } else  return view('home');

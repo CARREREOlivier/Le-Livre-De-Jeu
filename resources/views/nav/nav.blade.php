@@ -9,9 +9,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
+                @if(Route::currentRouteName()=='welcome')
+                    <li class="nav-item active ">
+                        <a class="nav-link" href="{{ url('/') }}">
+                            <mark>Accueil</mark>
+                        </a>
+                    </li>
+                @else
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Accueil</a>
                 </li>
+                @endif
 
                 @if(Route::currentRouteName()=='gamesession.index')
                     <li class="nav-item active ">
@@ -42,6 +50,16 @@
                     </li>
                 @endif
 
+                @auth
+                @if(Auth::user()->status=="Admin")
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Admin</a>
+                            </li>
+               @endif
+
+
+
+                @endauth
 
             </ul>
 
