@@ -424,36 +424,11 @@ class GameSessionController extends Controller
                 $player_name = $player->getusers->username;
 
                 //instantiating mailable object
-                $email = new \stdClass();
-                $email->message = $gameTurn->description;
-                $email->from = $player_mail;
-                $email->recipient = $player_name;
-                $email->sender = "$user_name : $user_email";
-                $email->attachment = $user_email;
-                $email->receiver = $player_name;
-                $email->subject = $subject;
-                $email->turn_title = $gameTurn->title;
-                $email->link = $link;
+                $email = $this->createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $link);
 
 
                 //Send Mail to player
-                Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
-
-
-                    $m->from('le.pire.ottoman@gmail.com', config('name'));
-                    $m->to($email->from, $email->recipient)
-                        ->subject($email->subject);
-
-                    foreach ($files as $file) {
-                        $filename = $file->filename;
-                        $path = public_path('/images');
-                        $path_to_file = $path . "/" . $filename;
-                        $original_name = $filename = $file->original_name;
-                        $m->attach($path_to_file, ['as' => $original_name]);
-                    }
-
-
-                });
+                $this->sendMail($email, $files);
 
 
                 //cleaning memory-php should do it anyway but who knows?
@@ -472,38 +447,11 @@ class GameSessionController extends Controller
 
 
             //instantiating mailable object
-            $email = new \stdClass();
-            $email->message = $gameTurn->description;
-            $email->from = $player_mail;
-            $email->recipient = $player_name;
-            $email->expeditor = $player_name;
-            $email->sender = "$user_name : $user_email";
-            $email->attachment = $user_email;
-            $email->receiver = $player_name;
-            $email->subject = $subject;
-            $email->turn_title = $gameTurn->title;
-            $email->link = $link;
+            $email = $this->createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $link);
 
 
             //sending notification to gamemaster as feedback.
-            Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
-
-
-                $m->from('le.pire.ottoman@gmail.com', config('name'));
-                $m->to($email->from, $email->recipient)
-                    ->subject($email->subject);
-
-                foreach ($files as $file) {
-                    $filename = $file->filename;
-                    $path = public_path('/images');
-                    $path_to_file = $path . "/" . $filename;
-
-                    $original_name = $filename = $file->original_name;
-                    $m->attach($path_to_file, ['as' => $original_name]);
-                }
-
-
-            });
+            $this->sendMail($email, $files);
 
 
             //cleaning memory-php should do it anyway but who knows?
@@ -570,6 +518,56 @@ class GameSessionController extends Controller
             }
         }
         return $boolean;
+    }
+
+    /**
+     * @param $gameTurn
+     * @param $player_mail
+     * @param $player_name
+     * @param $user_name
+     * @param $user_email
+     * @param $subject
+     * @param $link
+     * @return \stdClass
+     */
+    public function createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $link): \stdClass
+    {
+        $email = new \stdClass();
+        $email->message = $gameTurn->description;
+        $email->from = $player_mail;
+        $email->recipient = $player_name;
+        $email->sender = "$user_name : $user_email";
+        $email->attachment = $user_email;
+        $email->receiver = $player_name;
+        $email->subject = $subject;
+        $email->turn_title = $gameTurn->title;
+        $email->link = $link;
+        return $email;
+    }
+
+    /**
+     * @param $email
+     * @param $files
+     */
+    public function sendMail($email, $files): void
+    {
+        Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
+
+
+            $m->from('le.pire.ottoman@gmail.com', config('name'));
+            $m->to($email->from, $email->recipient)
+                ->subject($email->subject);
+
+            foreach ($files as $file) {
+                $filename = $file->filename;
+                $path = public_path('/images');
+                $path_to_file = $path . "/" . $filename;
+                $original_name = $filename = $file->original_name;
+                $m->attach($path_to_file, ['as' => $original_name]);
+            }
+
+
+        });
     }
 
 }
