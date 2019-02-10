@@ -16,9 +16,9 @@
                         </a>
                     </li>
                 @else
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">Accueil</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">Accueil</a>
+                    </li>
                 @endif
 
                 @if(Route::currentRouteName()=='gamesession.index')
@@ -51,15 +51,15 @@
                 @endif
 
                 @auth
-                @if(Auth::user()->status=="Admin")
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{route(('admin.main'))}}">Admin</a>
-                            </li>
-               @endif
-
-
-
+                    @if(Auth::user()->status=="Admin")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route(('admin.main'))}}">Admin</a>
+                        </li>
+                    @endif
                 @endauth
+                <li class="nav-item">
+                    <a class="nav-link" href="https://fr.tipeee.com/le-livre-de-jeu">Me soutenir</a>
+                </li>
 
             </ul>
 
