@@ -8,7 +8,7 @@
 
 Return [
 
-    'email' => 'le.pire.ottoman@gmail.com',
+    'email' => 'lebossdulelivredejeu@gmail.com',
     'name' => 'Admin',
 
 ];

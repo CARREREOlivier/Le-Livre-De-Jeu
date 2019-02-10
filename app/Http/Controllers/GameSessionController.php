@@ -550,7 +550,7 @@ class GameSessionController extends Controller
         Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
 
 
-            $m->from('le.pire.ottoman@gmail.com', config('name'));
+            $m->from(config('email'), config('name'));
             $m->to($email->from, $email->recipient)
                 ->subject($email->subject);
 

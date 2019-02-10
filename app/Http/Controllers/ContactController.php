@@ -41,7 +41,7 @@ class ContactController extends Controller
         $email->subject = $request->title;
 
         Mail::to( $admin_mail)->send(new ContactEmail( $email));
-        return redirect()->back()->with('message', "Votre message a été envoyé et une copie vous à été envoyée sur $user_email
+        return redirect()->back()->with('message', "Votre message a été envoyé et une copie vous a été envoyée sur $user_email
         . Je reviens vers vous très vite! ");
     }
 
