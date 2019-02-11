@@ -16,8 +16,8 @@
         @endif
     @endauth
     @guest
-        
-        {{ Redirect::to('/') }}
+
+        {{ Redirect::to('/dashboard') }}
 
     @endguest
 @endsection
