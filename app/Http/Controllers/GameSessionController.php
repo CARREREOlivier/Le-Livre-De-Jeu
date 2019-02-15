@@ -294,7 +294,7 @@ class GameSessionController extends Controller
             }
 
             //return to view to visually check the update
-            return $this->show($gamesession->slug);
+            return redirect()->route('gamesession.show',$gamesession->slug);
         } else  return view('home');
     }
 
@@ -550,7 +550,7 @@ class GameSessionController extends Controller
         Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
 
 
-            $m->from(config('email'), config('name'));
+            $m->from('lebossdulelivredejeu@gmail.com', 'Le livre De Jeu');
             $m->to($email->from, $email->recipient)
                 ->subject($email->subject);
 
