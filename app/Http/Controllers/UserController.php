@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 
 class UserController extends Controller 
 {
@@ -43,9 +47,14 @@ class UserController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function show($id)
+  public function show($username)
   {
-    
+
+     $user = User::where('username',$username)->first();
+    // $user = $user->pluck("username", "email");
+
+
+      return View('profile.show')->with('user', $user);
   }
 
   /**
@@ -80,7 +89,29 @@ class UserController extends Controller
   {
     
   }
-  
+
+
+  public function sendResetLink()
+  {
+        $userId=Auth::user()->id;
+        $user=User::find($userId);
+
+        $credentials = ['email' => $user->email];
+        $response = Password::sendResetLink($credentials, function (Message $message) {
+            $message->subject("Lien pour mettre à jour votre mot de passe");
+        });
+
+        switch ($response) {
+            case Password::RESET_LINK_SENT:
+                $backToPage = redirect()->back()->with('status', trans($response));
+            case Password::INVALID_USER:
+                $backToPage = redirect()->back()->withErrors(['email' => trans($response)]);
+        }
+
+        return $backToPage;
+  }
+
+
 }
 
 ?>
