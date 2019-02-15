@@ -885,3 +885,17 @@ mark:after {
 }
 
 /*https://codepen.io/victorknust/pen/GwIsA*/
+
+/*ADMIN PAGE*/
+
+.custom-control-label{
+    margin: 5px;
+    padding-left: 25px;
+    background: #ffffff;
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+
+
+}
+
+
