@@ -27,7 +27,12 @@ Route::get('/github', function(){
 })->name('github');
 
 Route::resource('user', 'UserController');
-Route::resource('gamesession', 'GameSessionController');
+Route::resource('gamesession', 'GameSessionController', ['except' => [
+    'show',
+    'edit'
+]]);
+Route::get('gamesession/{slug}','GameSessionController@show')->name('gamesession.show');
+Route::get('gamesession/edit-{slug}','GameSessionController@edit')->name('gamesession.edit');
 Route::post('gameturn/lock-{id}', 'GameTurnController@lock')->name('gameturn.lock');
 Route::get('gameturn/create-turn-for/{slug}', 'GameTurnController@create')->name('gameturn.create-turn');
 Route::resource('gameturn', 'GameTurnController');
@@ -75,5 +80,19 @@ route::get('/gamesession-send-notification-{id}', 'GameSessionController@mailToP
     ->middleware('auth');
 
 
+/*Profile page*/
+
+Route::get('/profile/{username}', 'UserController@show')->name('profile');
+Route::post('/profile-reset-p4$$w0rD', 'UserController@sendResetLink')->name('profile.reset.password');
+
+
 /*Admin routes*/
 Route::get('/admin', 'AdminController@index')->name('admin.main')->middleware('auth');
+Route::put('/admin-update-user-{id}', 'AdminController@updateUser')->name('admin.update_user')->middleware('auth');
+
+Route::get('/admin-update-gamesession-{id}', 'AdminController@editGameSession')->name('admin.update_gamesession')->middleware('auth');
+Route::put('/admin-store-update-gamesession-{id}', 'AdminController@updateGameSession')->name('admin.store_update_gamesession')->middleware('auth');
+
+Route::get('/admin-update-gameturn-{id}', 'AdminController@editGameTurn')->name('admin.update_gameturn')->middleware('auth');
+Route::put('/admin-store-update-gameturn-{id}', 'AdminController@updateGameTurn')->name('admin.store_update_gameturn')->middleware('auth');
+
