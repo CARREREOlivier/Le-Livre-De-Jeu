@@ -151,22 +151,22 @@
                                 <tr>
                                     <td><p>{{$file->original_name}}</p></td>
 
-                                        <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
-                                                <i
-                                                        class="fas fa-download"></i></a>
-                                            @auth
+                                    <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
+                                            <i
+                                                    class="fas fa-download"></i></a>
+                                        @auth
                                             &nbsp;&nbsp;&nbsp;@if(Auth::User()->id == $gameSession->user_id)
                                                 @include('gamesessions._partials.delete_file')
                                             @endif
-                                            @endauth
-                                        </td>
+                                        @endauth
+                                    </td>
 
                                 </tr>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-                   
+
                         <br/>
                         <a href="{{route('gameturn.show', $gameTurns->last()->id)}}" role="button"
                            class="btn btn-warning lined thin float-right">Fiche détaillée</a>
@@ -221,7 +221,11 @@
                                         @endif
                                     @endauth
                                 </div>
-                                <div class="col-7">{!! $orders->get($player->getusers->id)->message!!}</div>
+                                <div class="col-7">
+                                    @if($orders->get($player->user_id)->updated_at != $orders->get($player->user_id)->created_at)
+                                        <p> @include('utils.date_french',['date'=>$orders->get($player->user_id)->updated_at])</p>
+                                    @endif
+                                    <p>{!! $orders->get($player->getusers->id)->message!!}</p></div>
                                 <div class="col-2 slot-cell-right">
                                     @auth
                                         @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false)
