@@ -6,8 +6,8 @@ use App\GameTurn;
 use \App\TurnOrder;
 use \App\Upload;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
 
 class UploadController extends Controller
@@ -92,11 +92,7 @@ class UploadController extends Controller
             }
 
             $upload->entity_id = $request->entity_id;
-
-
-
             $upload->save();
-
 
             switch ($upload->category) {
                 case 'gameturns':
