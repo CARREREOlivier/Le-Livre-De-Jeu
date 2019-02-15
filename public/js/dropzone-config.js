@@ -4,7 +4,7 @@ Dropzone.options.myDropzone = {
     parallelUploads: 2,
     acceptedFiles: ".jpeg,.jpg,.png,.gif, .hst,.ord",
     maxFilesize: 2,
-    previewTemplate: document.querySelector('#preview').innerHTML,
+   // previewTemplate: document.querySelector('#preview').innerHTML,
     addRemoveLinks: true,
     dictRemoveFile: 'Retirer de la liste',
     dictFileTooBig: 'Image is larger than 16MB',
