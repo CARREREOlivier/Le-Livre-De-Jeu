@@ -30,7 +30,7 @@
                         <div class="col-lg-10"><p class="text-left">{!! $user->email !!}</p></div>
                     </div>
                     <br/>
-                    <button class="btn btn-secondary lined thin">Modifier mon email</button>
+                    <button class="btn btn-secondary lined thin">Modifier mon email - en construction</button>
                     <hr>
                     <div class="row">
                         <div class="col-lg-12"> {{Form::open(array('route'=>'profile.reset.password'))}}
@@ -42,7 +42,7 @@
             </div>
             <div class="row strip">
                 <div class="vignette blue-bg pencil">
-                    Mes fichiers-faire collapsible
+                    Mes fichiers-en construction
                 </div>
             </div>
         </div>
