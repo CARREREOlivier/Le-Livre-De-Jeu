@@ -2,7 +2,7 @@
 
 @section('js')
     <!--<script src="{{ url('/js/jquery.js') }}"></script>-->
-    <script src="{{ url('/js/dropzone.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
     <script src="{{ url('/js/dropzone-config.js') }}"></script>
 @endsection
 
@@ -161,7 +161,7 @@
                                         @endauth
                                     </td>
 
-                                </tr>
+
                                 </tr>
                             @endforeach
                             </tbody>
