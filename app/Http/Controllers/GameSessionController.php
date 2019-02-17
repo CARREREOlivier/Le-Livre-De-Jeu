@@ -16,6 +16,7 @@ use App\Utils\DataFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -115,6 +116,7 @@ class GameSessionController extends Controller
     public function show($slug)
     {
 
+        Log::channel('single')->info("gamesession show ".$slug);
         //1-Finding gameSession
         $gameSession = GameSession::where('slug', $slug)->first();
 
@@ -189,9 +191,11 @@ class GameSessionController extends Controller
 
     public function edit($slug)
     {
+
         //getting concerned gamesession for sending its data back to user
         $gameSession = GameSession::where('slug', $slug)->first();
         if (Gate::allows('gamesession.edit', $gameSession)) {
+            Log::channel('single')->info("Edit page accessed for gamesession ".$slug);
             $gameSessionId = $gameSession->id;
 
             $users = $this->getPotentialPlayers();
@@ -229,7 +233,7 @@ class GameSessionController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        Log::channel('single')->info("Updating gamesession ".$id);
         $gamesession = GameSession::findOrFail($id);//findorfail avoids to write a bit of code to launch a 404page if query fails.
         if (Gate::allows('gamesession.update', $gamesession)) {
             // The current user can update the gamesession...
@@ -454,6 +458,7 @@ class GameSessionController extends Controller
             unset($email);
 
             //redirect back with message
+
             return redirect()->back()->with('message', "la notification a été envoyé aux joueurs! ");
         } else {
             return redirect()->back()->with('message', "Merci d'ajouter un joueur");
@@ -547,6 +552,12 @@ class GameSessionController extends Controller
      */
     public function sendMail($email, $files): void
     {
+
+        Log::channel('single')->info("sending mail from ".$email->from);
+        Log::channel('single')->info("sending mail to ".$email->recipient);
+        Log::channel('single')->info("subject ".$email->subject);
+        Log::channel('single')->info("subject ".$email->message);
+
         Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
 
 

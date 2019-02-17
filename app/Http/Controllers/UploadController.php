@@ -6,6 +6,8 @@ use App\GameTurn;
 use \App\TurnOrder;
 use \App\Upload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Intervention\Image\Facades\Image;
@@ -64,11 +66,17 @@ class UploadController extends Controller
 
         for ($i = 0; $i < count($photos); $i++) {
             $photo = $photos[$i];
+
             $name = sha1(date('YmdHis') . str_random(30));
+
+
             $save_name = $name . '.' . $photo->getClientOriginalExtension();
+
+
             $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
 
             $extension = $photo->getClientOriginalExtension();
+
             $allowedImagesFormat = array('jpeg', 'jpg', 'gif', 'png', 'bmp');
 
             if (in_array($extension, $allowedImagesFormat)) {
@@ -78,7 +86,9 @@ class UploadController extends Controller
                     })
                     ->save($this->photos_path . '/' . $resize_name);
             }
-            $photo->move($this->photos_path, $save_name);
+
+            $photo->save($this->photos_path . '/' . $save_name);
+
 
             $upload = new Upload();
             $upload->filename = $save_name;
@@ -93,31 +103,31 @@ class UploadController extends Controller
 
             $upload->entity_id = $request->entity_id;
             $upload->save();
-
+            Log::channel('single')->warning("upload saved in database under id : " . $upload->id);
             switch ($upload->category) {
                 case 'gameturns':
-
+                    Log::channel('single')->warning("gameturns :: nothing to do");
                     break;
                 case 'turnorders':
-                    error_log('in case of turnorders id='.$upload->entity_id);
+                    Log::channel('single')->warning("turnorder :: rewriting turnorder :$upload->entity_id");
                     $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
                     break;
                 case 'story_post':
-                    error_log("story_post user_id: $request->user_id ");
+
                     break;
                 case 'info_post':
-                    error_log("info_post user_id: $request->user_id ");
+
                     break;
                 case 'uncategorized':
-                    error_log("uncategorized user_id: $request->user_id ");
+
                     break;
                 case 'tutorial_post':
-                    error_log("uncategorized user_id: $request->user_id ");
+
                     break;
             }
 
         }
-       return Response::json([
+        return Response::json([
             'message' => 'Image saved Successfully'
         ], 200);
 
@@ -159,8 +169,8 @@ class UploadController extends Controller
     {
 
 
-        $file =Upload::find($id);
-        $filename=$file->filename;
+        $file = Upload::find($id);
+        $filename = $file->filename;
 
         $uploaded_image = Upload::where('filename', basename($filename))->first();
 
@@ -182,7 +192,7 @@ class UploadController extends Controller
         if (!empty($uploaded_image)) {
             $uploaded_image->delete();
         }
-        return Redirect::back()->with('message',"fichier $file->original_filename effacé!");
+        return Redirect::back()->with('message', "fichier $file->original_filename effacé!");
 
         //return Response::json(['message' => 'File successfully deleted'], 200);
     }
@@ -208,7 +218,6 @@ class UploadController extends Controller
 
         $turnorder = TurnOrder::where('id', $TurnOrderId)->firstOrFail();//find() does not work. Don't know why.
         $file = Upload::where('filename', $filename)->firstOrFail();
-
 
 
         $message = $turnorder->message;
@@ -270,7 +279,6 @@ class UploadController extends Controller
             $upload->entity_id = $request->entity_id;
 
 
-
             $upload->save();
 
             switch ($upload->category) {
@@ -298,8 +306,36 @@ class UploadController extends Controller
         }
         return Response::json([
             'location' => "/images/$save_name",
-            'link'=>"/images/$save_name",
+            'link' => "/images/$save_name",
         ], 200);
+    }
+
+
+    function buildUpload($document, $save_name, $resized_name)
+    {
+
+        $upload = new Upload();
+        $upload->filename = $save_name;
+        $upload->resized_name = $resized_name;
+        $upload->original_name = basename($document->getClientOriginalName());
+
+        return $upload;
+
+    }
+
+    function generateName(){
+        $name = sha1(date('YmdHis') . str_random(30));
+        return $name;
+    }
+
+    function generateSaveName($name, $document){
+        $save_name = $name . '.' . $document->getClientOriginalExtension();
+        return $save_name;
+    }
+
+    function generateResizeName($name, $document){
+        $resize_name = $name . str_random(2) . '.' . $document->getClientOriginalExtension();
+        return $resize_name;
     }
 
 

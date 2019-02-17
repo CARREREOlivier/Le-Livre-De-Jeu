@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -46,6 +48,9 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
+        $user=$request->get($this->username());
+
+        Log::channel('single')->info("Logged in : ".$user);
         $field = filter_var($request->get($this->username()), FILTER_VALIDATE_EMAIL)
             ? $this->username()
             : 'username';
