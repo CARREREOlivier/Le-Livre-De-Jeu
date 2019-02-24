@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+
     @if(session('message'))
         <div class='alert alert-success'>
             {{ session('message') }}
@@ -137,9 +138,22 @@
                                     {{--Dropzone Preview Template--}}
                                     @include('gamesessions._partials.dz_preview_template')
                                     {{--End of Dropzone Preview Template--}}
+
+                                    <br/>
+                                    <button class="btn btn-secondary lined thin" type="button" data-toggle="collapse"
+                                            data-target="#respudUpload" aria-expanded="false"
+                                            aria-controls="collapseExample">
+                                        Problème d'upload?
+                                    </button>
+
+                                    <div class="collapse" id="respudUpload">
+                                        <div class="card card-body">
+                                            @include('gamesessions._partials.respud_file_upload')
+                                        </div>
+                                    </div>
                                 @endif
 
-                                @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
+                                @if((Auth::User()->id == $gameSession->user_id or Auth::User()->status='Admin') and $gameTurn->locked == false)
                                     @include("gamesessions.modals.modalEditTurn")
                                 @endif
                             @endauth
@@ -151,9 +165,8 @@
                                 <tr>
                                     <td><p>{{$file->original_name}}</p></td>
 
-                                    <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
-                                            <i
-                                                    class="fas fa-download"></i></a>
+                                    <td>{!! Html::link("uploads/$file->filename", "", ['download'=> $file->original_name, 'class'=>'fas fa-download'] ) !!}
+
                                         @auth
                                             &nbsp;&nbsp;&nbsp;@if(Auth::User()->id == $gameSession->user_id)
                                                 @include('gamesessions._partials.delete_file')
@@ -216,7 +229,7 @@
                                 <div class="col-3 slot-cell-left">
                                     <p> {{$player->getusers->username}}</p>
                                     @auth
-                                        @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false)
+                                        @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false )
                                             @include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$player->user_id])
                                         @endif
                                     @endauth
