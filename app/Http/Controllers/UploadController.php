@@ -7,10 +7,15 @@ use \App\TurnOrder;
 use \App\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use Mockery\Exception;
 
 class UploadController extends Controller
 {
@@ -51,50 +56,79 @@ class UploadController extends Controller
      */
     public function store(Request $request)
     {
+        log::channel('single')->info('file is entering validation');
+        //request validation
 
-        $photos = $request->file('file');
+
+        try {
+            $validator = Validator::make($request->allFiles(), [
+                'filename.*' => 'file|required|max:2048|mimes:jpeg,jpg,bmp,png,tiff,txt,zip'
+            ]);
+
+            if ($validator->fails()) {
+                log::channel('single')->error('file has failed validation'.$validator->errors());
+                return redirect()->back()->with('errors', 'A-Taille de fichier maximum : 2Mo');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('errors', 'Le validateur de fichier a échoué avec succès');
+        }
+        log::channel('single')->info('file has past validation');
+        //process
+        $documents = $request->file('file');
 
 
-        if (!is_array($photos)) {
-            $photos = [$photos];
+        if (!is_array($documents)) {
+            $documents = [$documents];
 
         }
 
-        if (!is_dir($this->photos_path)) {
-            mkdir($this->photos_path, 0755);
+        if (!is_dir(storage_path('app/public/uploads'))) {
+            Storage::disk('public')->makeDirectory('/uploads');
         }
 
-        for ($i = 0; $i < count($photos); $i++) {
-            $photo = $photos[$i];
+        for ($i = 0; $i < count($documents); $i++) {
+            $document = $documents[$i];
+            //checking extension
+            log::channel('single')->info('file is entering entering extension validation');
+            $extension = $document->getClientOriginalExtension();
+            log::channel('single')->info('file extension is'.$extension);
+            log::channel('single')->info('file name is'.$document);
+            if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst"))) {
 
-            $name = sha1(date('YmdHis') . str_random(30));
-
-
-            $save_name = $name . '.' . $photo->getClientOriginalExtension();
-
-
-            $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
-
-            $extension = $photo->getClientOriginalExtension();
-
-            $allowedImagesFormat = array('jpeg', 'jpg', 'gif', 'png', 'bmp');
-
-            if (in_array($extension, $allowedImagesFormat)) {
-                Image::make($photo)
-                    ->resize(48, null, function ($constraints) {
-                        $constraints->aspectRatio();
-                    })
-                    ->save($this->photos_path . '/' . $resize_name);
+                $message = 'un fichier contient une extension interdite et cela est interdit à l\'upload';
+                return \redirect()->back()->with('message', $message);
             }
 
-            $photo->save($this->photos_path . '/' . $save_name);
+            log::channel('single')->warning('file as past validation');
+            $name = $this->generateName();
+            $save_name = $this->generateSaveName($name, $document);
+            $resize_name = $this->generateResizeName($name, $document);
 
+            $pathAndFileName = 'uploads/' . $save_name; // located in
+            //Storing files to disk
 
-            $upload = new Upload();
-            $upload->filename = $save_name;
-            $upload->resized_name = $resize_name;
-            $upload->original_name = basename($photo->getClientOriginalName());
+            Storage::putFileAs('public', $document, $pathAndFileName);
+
+            if (in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff"))) {
+                $image = Image::make(Storage::disk('public')->get($pathAndFileName))->resize(125, null, function ($constraints) {
+                    $constraints->aspectRatio();
+                })->stream();
+                Storage::disk('public')->put('uploads/' . $resize_name, $image);
+            }
+
+            //Doing copies as the symlink does not seems to work on ovh
+            $storage_path = storage_path() . "/app/public";
+            $public_path = public_path() . '/uploads';
+
+            File::move("$storage_path/uploads/$save_name", "$public_path/$save_name");
+
+            if (in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff"))) {
+            File::move("$storage_path/uploads/$resize_name", "$public_path/$resize_name");
+            }
+
+            $upload = $this->buildUpload($document, $save_name, $resize_name);//TODO:should be receiving an array
             $upload->user_id = $request->user()->id;
+
             if (isset($request->category)) {
                 $upload->category = $request->category;
             } else {
@@ -103,6 +137,7 @@ class UploadController extends Controller
 
             $upload->entity_id = $request->entity_id;
             $upload->save();
+
             Log::channel('single')->warning("upload saved in database under id : " . $upload->id);
             switch ($upload->category) {
                 case 'gameturns':
@@ -167,19 +202,17 @@ class UploadController extends Controller
 
     public function deleteFile($id)
     {
-
-
         $file = Upload::find($id);
         $filename = $file->filename;
 
-        $uploaded_image = Upload::where('filename', basename($filename))->first();
+        $uploaded_document = Upload::where('filename', basename($filename))->first();
 
-        if (empty($uploaded_image)) {
+        if (empty($uploaded_document)) {
             return Response::json(['message' => 'Sorry file does not exist'], 400);
         }
 
-        $file_path = $this->photos_path . '/' . $uploaded_image->filename;
-        $resized_file = $this->photos_path . '/' . $uploaded_image->resized_name;
+        /*$file_path = $this->photos_path . $uploaded_image->filename;
+        $resized_file = $this->photos_path . $uploaded_image->resized_name;
 
         if (file_exists($file_path)) {
             unlink($file_path);
@@ -187,16 +220,15 @@ class UploadController extends Controller
 
         if (file_exists($resized_file)) {
             unlink($resized_file);
-        }
+        }*/
 
-        if (!empty($uploaded_image)) {
-            $uploaded_image->delete();
+        if (!empty($uploaded_document)) {
+            $uploaded_document->delete();
         }
-        return Redirect::back()->with('message', "fichier $file->original_filename effacé!");
+        return Redirect::back();
 
         //return Response::json(['message' => 'File successfully deleted'], 200);
     }
-
 
     function rewriteGameTurn($gameTurnId, $filename)
     {
@@ -206,7 +238,7 @@ class UploadController extends Controller
 
         $description = $gameTurn->description;
 
-        $downloadLink = "<a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
+        $downloadLink = "<a href=\"/storage/uploads/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
 
         $gameTurn->description = $description . " " . $downloadLink;
         $gameTurn->save();
@@ -223,7 +255,7 @@ class UploadController extends Controller
         $message = $turnorder->message;
 
         //building download link
-        $downloadLink = "<br/><a href=\"/images/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
+        $downloadLink = "<br/><a href=\"/uploads/$filename\" download=\"$file->original_name\"><i class=\"fas fa-download\"></i>$file->original_name</a>";
 
         //saving message with download link
         $turnorder->message = $message . " " . $downloadLink;
@@ -236,77 +268,115 @@ class UploadController extends Controller
     public function storeViaTinyMCE(Request $request)
     {
 
-        $photos = $request->file('file');
+        log::channel('single')->info('file is entering validation');
+        //request validation
+        try {
+            $validator = Validator::make($request->allFiles(), [
+                'filename.*' => 'file|required|max:2048|mimes:jpeg,jpg,bmp,png,tiff,txt,zip'
+            ]);
 
-        if (!is_array($photos)) {
-            $photos = [$photos];
-
+            if ($validator->fails()) {
+                log::channel('single')->error('file has failed validation'.$validator->errors());
+                return redirect()->back()->with('errors', 'A-Taille de fichier maximum : 2Mo');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('errors', 'Le validateur de fichier a échoué avec succès');
         }
+        log::channel('single')->info('file has past validation');
 
+        //extractiong files from request
+        $documents = $request->file('file');
+
+        //Checking if directory exists
+        if (!is_array($documents)) {
+            $documents = [$documents];
+        }
+        //if not creating it
         if (!is_dir($this->photos_path)) {
             mkdir($this->photos_path, 0755);
         }
 
-        for ($i = 0; $i < count($photos); $i++) {
-            $photo = $photos[$i];
-            $name = sha1(date('YmdHis') . str_random(30));
-            $save_name = $name . '.' . $photo->getClientOriginalExtension();
-            $resize_name = $name . str_random(2) . '.' . $photo->getClientOriginalExtension();
+        //looping though uploaded files
+        for ($i = 0; $i < count($documents); $i++) {
+            $document = $documents[$i];
 
-            $extension = $photo->getClientOriginalExtension();
-            $allowedImagesFormat = array('jpeg', 'jpg', 'gif', 'png', 'bmp');
+            //checking extension of file
+            log::channel('single')->info('file is entering entering extension validation');
+            $extension = $document->getClientOriginalExtension();
+            log::channel('single')->info('file extension is'.$extension);
+            log::channel('single')->info('file name is'.$document);
+            if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst"))) {
 
-            if (in_array($extension, $allowedImagesFormat)) {
-                Image::make($photo)
-                    ->resize(48, null, function ($constraints) {
-                        $constraints->aspectRatio();
-                    })
-                    ->save($this->photos_path . '/' . $resize_name);
+                $message = 'un fichier contient une extension interdite et cela est interdit à l\'upload';
+                return \redirect()->back()->with('message', $message);
             }
-            $photo->move($this->photos_path, $save_name);
 
-            $upload = new Upload();
-            $upload->filename = $save_name;
-            $upload->resized_name = $resize_name;
-            $upload->original_name = basename($photo->getClientOriginalName());
+            //Naming elements to save;
+            $name = $this->generateName();
+            $save_name = $this->generateSaveName($name, $document);
+            $resize_name = $this->generateResizeName($name, $document);
+
+            $pathAndFileName = 'uploads/' . $save_name; // located in uploads folder
+
+            //Storing file to disk
+            Storage::putFileAs('public', $document, $pathAndFileName);
+
+            //if file is picture then a resized image is generated has thumbnail. If not it has the not_image_icon attributed.
+            if (in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff"))) {
+                $image = Image::make(Storage::disk('public')->get($pathAndFileName))->resize(125, null, function ($constraints) {
+                    $constraints->aspectRatio();
+                })->stream();
+                Storage::disk('public')->put('uploads/' . $resize_name, $image);
+            } else {
+                $resize_name = "not_image_icon.jpg";
+            }
+
+            //Doing copies as the symlink does not seems to work on ovh
+            $storage_path = storage_path() . "/app/public";
+            $public_path = public_path() . '/uploads';
+
+            File::move("$storage_path/uploads/$save_name", "$public_path/$save_name");
+            File::move("$storage_path/uploads/$resize_name", "$public_path/$resize_name");
+
+
+            //Saving to database
+            $upload = $this->buildUpload($document, $save_name, $resize_name);//TODO:should be receiving an array
             $upload->user_id = $request->user()->id;
             if (isset($request->category)) {
                 $upload->category = $request->category;
             } else {
                 $upload->category = 'uncategorized';
             }
-
             $upload->entity_id = $request->entity_id;
-
-
             $upload->save();
+
 
             switch ($upload->category) {
                 case 'gameturns':
-                    $this->rewriteGameTurn($upload->entity_id, $upload->filename);
+                    Log::channel('single')->warning("gameturns :: nothing to do");
                     break;
                 case 'turnorders':
-                    error_log('in case of turnorders');
+                    Log::channel('single')->warning("turnorders :: rewriting turn");
                     $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
                     break;
                 case 'story_post':
-                    error_log("story_post user_id: $request->user_id ");
+
                     break;
                 case 'info_post':
-                    error_log("info_post user_id: $request->user_id ");
+
                     break;
                 case 'uncategorized':
-                    error_log("uncategorized user_id: $request->user_id ");
+
                     break;
                 case 'tutorial_post':
-                    error_log("uncategorized user_id: $request->user_id ");
+
                     break;
             }
 
         }
         return Response::json([
-            'location' => "/images/$save_name",
-            'link' => "/images/$save_name",
+            'location' => "/uploads/$save_name",
+            'link' => "/uploads/$save_name",
         ], 200);
     }
 
@@ -323,21 +393,104 @@ class UploadController extends Controller
 
     }
 
-    function generateName(){
+    function generateName()
+    {
         $name = sha1(date('YmdHis') . str_random(30));
         return $name;
     }
 
-    function generateSaveName($name, $document){
+    function generateSaveName($name, $document)
+    {
         $save_name = $name . '.' . $document->getClientOriginalExtension();
         return $save_name;
     }
 
-    function generateResizeName($name, $document){
+    function generateResizeName($name, $document)
+    {
         $resize_name = $name . str_random(2) . '.' . $document->getClientOriginalExtension();
         return $resize_name;
     }
 
+
+    public function respudStore(Request $request)
+    {
+
+        //request validation
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'file' => 'file|required|max:2048|mimes:jpeg,jpg,bmp,png,tiff,txt,zip,ord,hst'
+            ]);
+
+            if ($validator->fails()) {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+        } catch (Exception $e) {
+
+            return redirect()->back()->with('message', 'Taille de fichier maximum : 2Mo');
+
+        }
+
+        $document = $request->file('file');
+
+        $extension = $document->getClientOriginalExtension();
+        if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst"))) {
+
+            $message = 'un fichier contient une extension interdite et cela est interdit à l\'upload';
+            return \redirect()->back()->with('message', $message);
+        }
+
+        //if upload directory des not exist, create it.
+        if (!is_dir(storage_path('app/public/uploads'))) {
+            Storage::disk('public')->makeDirectory('/uploads');
+        }
+
+        //building names
+        $name = $this->generateName();
+        $save_name = $this->generateSaveName($name, $document);
+        $resize_name = $this->generateResizeName($name, $document);
+
+        $pathAndFileName = 'uploads/' . $save_name; // located in
+        $extension = $document->getClientOriginalExtension();
+        //Storing files to disk
+
+        Storage::putFileAs('public', $document, $pathAndFileName);
+
+        if (in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff"))) {
+
+            $image = Image::make(Storage::disk('public')->get($pathAndFileName))->resize(125, null, function ($constraints) {
+                $constraints->aspectRatio();
+            })->stream();
+
+            Storage::disk('public')->put('uploads/' . $resize_name, $image);
+        }
+
+
+        //Doing copies as the symlink does not seems to work on ovh
+        $storage_path = storage_path() . "/app/public";
+        $public_path = public_path() . '/uploads';
+
+        File::move("$storage_path/uploads/$save_name", "$public_path/$save_name");
+        if (in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff"))) {
+            File::move("$storage_path/uploads/$resize_name", "$public_path/$resize_name");
+        }
+        //building upload
+        $upload = new Upload();
+
+        $upload->filename = $save_name;
+        $upload->category = "gameturns";
+        $upload->entity_id = $request->entity_id;
+        $upload->user_id = $request->user_id;
+        $upload->resized_name = $resize_name;
+        $upload->original_name = basename($document->getClientOriginalName());
+
+        //saving
+        $upload->save();
+        //
+
+        return redirect()->back()->with('message', "fichier $upload->original_name traité!");
+
+    }
 
 }
 
