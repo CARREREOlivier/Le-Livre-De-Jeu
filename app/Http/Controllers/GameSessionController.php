@@ -466,7 +466,6 @@ class GameSessionController extends Controller
 
     }
 
-
     /**
      *
      * This method  asses the current turn position
@@ -490,7 +489,7 @@ class GameSessionController extends Controller
         foreach ($gameTurns as $gameTurn) {
 
             //we are looking for the fist turn that is the same as the one in parameters.
-            if ($gameTurn->id = $currentTurn->id) {
+            if ($gameTurn->id == $currentTurn->id) {
 
                 //that's good so get out of this loop, NOW!
                 break;
@@ -500,7 +499,6 @@ class GameSessionController extends Controller
             }
 
         }
-
         //return the loop counter value as turn position.
         return $counter;
     }
