@@ -65,6 +65,8 @@ Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');
 Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');
 
+Route::post('/file-respud','UploadController@respudStore');
+
 
 /*emails*/
 
