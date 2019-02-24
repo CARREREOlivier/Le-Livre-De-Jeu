@@ -67,7 +67,7 @@
                                     <td>
                                         <p>{!! $file->original_name !!}</p>
                                     </td>
-                                    <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
+                                    <td><a href="/uploads/{{$file->filename}}" download="{{$file->original_name}}">
                                             <i class="fas fa-download"></i></a></td>
 
                                     <td>@auth @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
