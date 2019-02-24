@@ -1,13 +1,12 @@
 var total_photos_counter = 0;
 Dropzone.options.myDropzone = {
-    uploadMultiple: false,
+    uploadMultiple: true,
     parallelUploads: 2,
-    acceptedFiles: ".jpeg,.jpg,.png,.gif, .hst,.ord",
     maxFilesize: 2,
    // previewTemplate: document.querySelector('#preview').innerHTML,
     addRemoveLinks: true,
     dictRemoveFile: 'Retirer de la liste',
-    dictFileTooBig: 'Image is larger than 16MB',
+    dictFileTooBig: 'Image is larger than 2MB',
     timeout: 10000,
 
     init: function () {
