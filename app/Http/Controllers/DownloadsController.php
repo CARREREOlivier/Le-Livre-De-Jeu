@@ -17,7 +17,7 @@ class DownloadsController extends Controller
 
         $document = Upload::where('filename', $filename)->first();
 
-        $file_path = public_path('images/' . $filename);
+        $file_path = public_path('uploads/' . $filename);
         $name = $document->original_name;
 
 
@@ -56,7 +56,7 @@ class DownloadsController extends Controller
 
             if ($document != null) {
                 foreach ($document as $doc) {
-                    Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("images/" . $doc->filename, $doc->original_name)->close();
+                    Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("uploads/" . $doc->filename, $doc->original_name)->close();
                 }
             } else {
                 $message = "il n'y a pas de fichier à télécharger";
