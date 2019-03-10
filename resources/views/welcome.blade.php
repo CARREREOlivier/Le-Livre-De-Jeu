@@ -41,22 +41,19 @@
 
         html, body {
 
-
             color: #404040;
             font-family: "Patrick Hand SC";
             font-weight: 200;
             height: 100vh;
             margin: 0;
 
-            background-image:
-                    radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+            background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
             radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
             radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
             radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
             radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
             linear-gradient(40deg, #bd2d10 0, #f4502f 30%, #ff6e51 50%, #f4502f 70%, #bd2d10 100%);
             background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
-
 
         }
 
@@ -348,13 +345,31 @@
             color: rgb(255, 111, 193);
         }
 
-        .padding10pc{
+        .padding10pc {
             padding-left: 10%
         }
 
-        .brand-text{
+        .brand-text {
 
             font-family: Bangers;
+        }
+
+
+        /*bublles*/
+        blockquote.electric {
+            background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/electric.svg);
+            width: 25%;
+            font-size: 2.4vw;
+            font-style: italic;
+            padding: 4% 6% 12% 0%;
+        }
+        blockquote.electric span {
+            display: block;
+            font-size: 3vw;
+            font-weight: bold;
+        }
+        .carousel-inner{
+        height: 250px;
         }
 
 
@@ -364,27 +379,22 @@
 
 <body>
 
-    @include('nav.nav')
+@include('nav.nav')
 
 <div class="flex-center position-ref full-height">
 
 
-
     <div class="content main panel">
-        <div class="container">
-            <div class="row row-title">
-                <div class="title m-b-md big">
-                    Le Livre De Jeu
-                </div>
 
-            </div>
+        <div class="container">
+            @include('_partials.carrousel')
             <div class="row row-buttons">
                 <div class="row">
                     <div class="col-lg-9 offset-1">
                         <div class="row">
                             <div class="col-lg-4">
                                 @include('_partials.card_container',['type'=>'ready', 'color'=>'yellow','title'=>'Parties', 'route'=>'gamesession.index', 'text'=>'Aller à l\'Index'])
-                                @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'green','title'=>'News', 'route'=>'', 'text'=>'En construction'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'green','title'=>'News', 'route'=>'info.index', 'text'=>'l\'actu du site'])
                             </div>
                             <div class="col-lg-4">
                                 @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'orange','title'=>'AARs', 'route'=>'', 'text'=>'En construction'])

@@ -98,9 +98,7 @@
                 <div class="col-lg-12 vignette red-bg turn-title-strip">
                     <div class="evenboxinner-turn">
                         Le @include('utils.date_french',['date'=> $gameTurns->last()->created_at])</div>
-
                     <br/>
-
                     <div>
                         <h3 class="last-turn-title orange">{!! $gameTurns->last()->title !!}</h3>
                     </div>

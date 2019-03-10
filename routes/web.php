@@ -14,9 +14,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/','WelcomeController@show' )->name('welcome');
 
 Auth::routes();
 
@@ -41,9 +39,24 @@ Route::resource('story', 'StoryController');
 Route::resource('storyrole', 'StoryRoleController');
 Route::resource('gamesessioncomment', 'GameSessionCommentController');
 Route::resource('storycomment', 'StoryCommentController');
-Route::resource('info', 'InfoController');
+
+Route::get('info/create', 'InfoController@create')->name('info.create');
+Route::get('info/{slug}', 'InfoController@show')->name('info.show');
+Route::get('info/{slug}/edit', 'InfoController@edit')->name('info.edit');
+Route::delete('info/delete-{slug}', 'InfoController@destroy')->name('info.destroy');
+
+Route::resource('info', 'InfoController', ['except' => [
+    'create',
+    'show',
+    'edit',
+    'destroy'
+]]);
+
+
 Route::resource('infocomment', 'InfoCommentController');
 Route::resource('storypost', 'StoryPostController');
+Route::get('infopost/{slug}/create', 'InfoPostController@create')->name('news.add.post');
+
 Route::resource('infopost', 'InfoPostController');
 Route::resource('tutorial', 'TutorialController');
 Route::resource('tutorialpost', 'TutorialPostController');
