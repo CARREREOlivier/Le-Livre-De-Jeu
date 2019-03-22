@@ -565,7 +565,7 @@ class GameSessionController extends Controller
 
             foreach ($files as $file) {
                 $filename = $file->filename;
-                $path = public_path('/images');
+                $path = public_path('/uploads');
                 $path_to_file = $path . "/" . $filename;
                 $original_name = $filename = $file->original_name;
                 $m->attach($path_to_file, ['as' => $original_name]);

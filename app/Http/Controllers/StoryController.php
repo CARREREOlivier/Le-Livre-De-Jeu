@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Story;
 use Illuminate\Http\Request;
 
 class StoryController extends Controller 
@@ -14,7 +15,10 @@ class StoryController extends Controller
    */
   public function index()
   {
-    
+      $stories = Story::all();
+
+      return View('stories.main')
+          ->with('stories', $stories);
   }
 
   /**
@@ -24,7 +28,7 @@ class StoryController extends Controller
    */
   public function create()
   {
-    
+      return View('stories.main');
   }
 
   /**

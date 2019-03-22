@@ -39,9 +39,6 @@
             <div class="evenboxinner-turn">Le:@include('utils.date_french',['date'=>$post->created_at])</div>
             <br/>
             {!! $post->text !!}
-
-
-
             @auth
                 @include('news._partials.btn_add_comment')
                 @if(Auth::User()->status=='Admin')
