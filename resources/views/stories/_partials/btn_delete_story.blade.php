@@ -1,0 +1,1 @@
+<a href="{{route('story.destroy',$story->slug)}}" role="button" class="btn btn-danger lined thin" ><i class="fas fa-trash-alt"></i></a>

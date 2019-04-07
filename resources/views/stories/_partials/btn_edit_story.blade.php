@@ -1,0 +1,1 @@
+<a href="{{route('story.edit', $story->slug)}}" class="btn btn-warning lined thin" role="button"><i class="fas fa-edit"></i></a>

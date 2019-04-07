@@ -14,10 +14,11 @@
                     {!! $story->title !!}
 
                     @auth
-                        @if(Auth::user()->status=='Admin')
+                        @if(Auth::user()->status=='Admin' OR Auth::user()->id == $story->user_id)
                             <hr>
-                            Edit AAR
-                            Effacer AAR
+                            @include('stories._partials.btn_edit_story')
+                            @include('stories._partials.btn_delete_story')
+                            @include('stories._partials.btn_manage_permissions_story')
                         @endif
                     @endauth
 
@@ -27,8 +28,9 @@
 
             <div class="col-md-8 box-right">
                 <div class="green-bg vignette full-height">
-                    {!! $story->summary !!}
-                    bouton lire AAR
+                    {!! $story->description !!}
+                    @include('stories._partials.btn_read_story')
+
                 </div>
             </div>
         </div>

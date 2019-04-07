@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Factories\StoryFactory;
 use App\Story;
+use App\StoryPost;
+use App\User;
 use Illuminate\Http\Request;
 
 class StoryController extends Controller 
@@ -56,9 +58,20 @@ class StoryController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function show($id)
+  public function show($slug)
   {
-    
+      $story = Story::where('slug',$slug)->firstOrFail();
+
+      $results= StoryPost::with(['getComments'])->where('story_id',$story->id);
+      $posts = $results->get();
+
+      $author = User::find($story->user_id);
+      $author = $author->username;
+
+      return View('stories.main')
+          ->with('story', $story)
+          ->with('author', $author)
+          ->with('posts',$posts);
   }
 
   /**

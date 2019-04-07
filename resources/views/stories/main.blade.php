@@ -13,6 +13,9 @@
             @include('stories.content.create')
             @break;
 
+            @case('story.show')
+            @include('stories.content.show')
+            @break;
         @endswitch
 
     </div>
