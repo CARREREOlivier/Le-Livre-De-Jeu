@@ -1,9 +1,7 @@
 @auth()
-    @if(Auth::User()->status=='Admin')
     <div class="row strip" id="index_actions_strip">
         <div class="col-12 red-bg vignette">
-           bouton ici
+           @include('stories._partials.btn_create_story')
         </div>
     </div>
-    @endif
 @endauth

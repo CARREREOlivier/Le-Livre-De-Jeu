@@ -10,7 +10,7 @@
             @break;
 
             @case('story.create')
-            @include('stories.content.index')
+            @include('stories.content.create')
             @break;
 
         @endswitch

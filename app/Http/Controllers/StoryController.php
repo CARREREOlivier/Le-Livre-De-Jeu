@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\StoryFactory;
 use App\Story;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,15 @@ class StoryController extends Controller
    */
   public function store(Request $request)
   {
-    
+      //validator
+
+      // storage
+
+      $story = StoryFactory::build($request);
+      $story->save();
+
+      return redirect()->route('story.index');
+
   }
 
   /**

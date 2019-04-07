@@ -57,6 +57,7 @@ Route::resource('infocomment', 'InfoCommentController');
 Route::resource('storypost', 'StoryPostController');
 Route::get('infopost/{slug}/create', 'InfoPostController@create')->name('news.add.post');
 
+
 Route::resource('infopost', 'InfoPostController');
 Route::resource('tutorial', 'TutorialController');
 Route::resource('tutorialpost', 'TutorialPostController');
