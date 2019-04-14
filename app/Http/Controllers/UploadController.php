@@ -62,7 +62,7 @@ class UploadController extends Controller
 
         try {
             $validator = Validator::make($request->allFiles(), [
-                'filename.*' => 'file|required|max:2048|mimes:jpeg,jpg,bmp,png,tiff,txt,zip'
+                'filename.*' => 'file|required|max:4096|mimes:jpeg,jpg,bmp,png,tiff,txt,zip'
             ]);
 
             if ($validator->fails()) {
@@ -93,7 +93,7 @@ class UploadController extends Controller
             $extension = $document->getClientOriginalExtension();
             log::channel('single')->info('file extension is'.$extension);
             log::channel('single')->info('file name is'.$document);
-            if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst"))) {
+            if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst", "trn"))) {
 
                 $message = 'un fichier contient une extension interdite et cela est interdit à l\'upload';
                 return \redirect()->back()->with('message', $message);
