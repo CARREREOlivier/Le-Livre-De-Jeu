@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
@@ -16,15 +17,17 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Mockery\Exception;
+use App\Utils\DataFinder;
 
 class UploadController extends Controller
 {
 
     private $photos_path;
 
-    public function __construct()
+    public function __construct(DataFinder $dataFinder)
     {
         $this->photos_path = public_path('/images');
+        $this->dataFinder = $dataFinder;
     }
 
     /**
@@ -66,8 +69,8 @@ class UploadController extends Controller
             ]);
 
             if ($validator->fails()) {
-                log::channel('single')->error('file has failed validation'.$validator->errors());
-                return redirect()->back()->with('errors', 'A-Taille de fichier maximum : 2Mo');
+                log::channel('single')->error('file has failed validation' . $validator->errors());
+                return redirect()->back()->with('errors', 'A-Taille de fichier maximum : 4Mo');
             }
         } catch (Exception $e) {
             return redirect()->back()->with('errors', 'Le validateur de fichier a échoué avec succès');
@@ -91,8 +94,8 @@ class UploadController extends Controller
             //checking extension
             log::channel('single')->info('file is entering entering extension validation');
             $extension = $document->getClientOriginalExtension();
-            log::channel('single')->info('file extension is'.$extension);
-            log::channel('single')->info('file name is'.$document);
+            log::channel('single')->info('file extension is' . $extension);
+            log::channel('single')->info('file name is' . $document);
             if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst", "trn"))) {
 
                 $message = 'un fichier contient une extension interdite et cela est interdit à l\'upload';
@@ -123,7 +126,7 @@ class UploadController extends Controller
             File::move("$storage_path/uploads/$save_name", "$public_path/$save_name");
 
             if (in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff"))) {
-            File::move("$storage_path/uploads/$resize_name", "$public_path/$resize_name");
+                File::move("$storage_path/uploads/$resize_name", "$public_path/$resize_name");
             }
 
             $upload = $this->buildUpload($document, $save_name, $resize_name);//TODO:should be receiving an array
@@ -139,13 +142,61 @@ class UploadController extends Controller
             $upload->save();
 
             Log::channel('single')->warning("upload saved in database under id : " . $upload->id);
+
             switch ($upload->category) {
                 case 'gameturns':
-                    Log::channel('single')->warning("gameturns :: nothing to do");
+                    Log::channel('single')->warning("gameturns :: nothing to do!!!");
+
                     break;
                 case 'turnorders':
-                    Log::channel('single')->warning("turnorder :: rewriting turnorder :$upload->entity_id");
+
+                    Log::channel('single')->info("turnorder :: rewriting turnorder :$upload->entity_id");
                     $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
+
+                    $notificationStatus = $this->notifyGameMaster($upload->entity_id);
+                    if ($notificationStatus < 3) {
+                        Log::channel('single')->info("test");
+                        //gamemaster
+                        $turnOrder_id = intval($upload->entity_id);
+                        $turnOrder = TurnOrder::where('id', $turnOrder_id)->firstOrFail();//find() does not work. Don't know why.
+                        Log::channel('single')->info("finding turn order id: $upload->entity_id");
+
+                        $turn_id = $turnOrder->gameturn_id;
+                        Log::channel('single')->info("finding turn id: $upload->entity_id");
+
+                        $gameTurn = GameTurn::find($turn_id);
+                        $players = $this->dataFinder->getPeople('GameMaster', $gameTurn->gamesessions_id);
+                        $player = $players->last();
+
+                        //getting game Master mail and name
+                        $player_name = $player->getusers->username;
+                        $player_mail = $player->getusers->email;
+                        Log::channel('single')->info("finding gamemaster :  $player_name");
+                        $user_email = Auth::user()->email;
+                        $user_name = Auth::user()->username;
+
+                        //building subject
+
+                        $subject = "fichier uploadé par";
+                        $message = null;
+
+                        //todo: create function buildMessage
+                        if ($notificationStatus == 2) {
+                            $message = "L'avant dernier joueur a uploadé son ordre";
+
+                        }
+
+                        if ($notificationStatus == 1) {
+                            $message = "Le dernier joueur a uploadé son ordre. La résolution attend";
+
+                        }
+                        //instantiating mailable object
+                        $email = $this->createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $message);
+                        //sending notification to gamemaster to warn her/him he got a new file uploaded.
+                        $this->sendMail($email);
+                        //cleaning memory-php should do it anyway but who knows?
+                        unset($email);
+                    }
                     break;
                 case 'story_post':
 
@@ -272,12 +323,12 @@ class UploadController extends Controller
         //request validation
         try {
             $validator = Validator::make($request->allFiles(), [
-                'filename.*' => 'file|required|max:2048|mimes:jpeg,jpg,bmp,png,tiff,txt,zip'
+                'filename.*' => 'file|required|max:4096|mimes:jpeg,jpg,bmp,png,tiff,txt,zip'
             ]);
 
             if ($validator->fails()) {
-                log::channel('single')->error('file has failed validation'.$validator->errors());
-                return redirect()->back()->with('errors', 'A-Taille de fichier maximum : 2Mo');
+                log::channel('single')->error('file has failed validation' . $validator->errors());
+                return redirect()->back()->with('errors', 'A-Taille de fichier maximum : 4Mo');
             }
         } catch (Exception $e) {
             return redirect()->back()->with('errors', 'Le validateur de fichier a échoué avec succès');
@@ -303,9 +354,9 @@ class UploadController extends Controller
             //checking extension of file
             log::channel('single')->info('file is entering entering extension validation');
             $extension = $document->getClientOriginalExtension();
-            log::channel('single')->info('file extension is'.$extension);
-            log::channel('single')->info('file name is'.$document);
-            if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst"))) {
+            log::channel('single')->info('file extension is' . $extension);
+            log::channel('single')->info('file name is' . $document);
+            if (!in_array($extension, array("jpg", "jpeg", "gif", "bmp", "tiff", "txt", "zip", "ord", "hst", "trn"))) {
 
                 $message = 'un fichier contient une extension interdite et cela est interdit à l\'upload';
                 return \redirect()->back()->with('message', $message);
@@ -358,6 +409,8 @@ class UploadController extends Controller
                 case 'turnorders':
                     Log::channel('single')->warning("turnorders :: rewriting turn");
                     $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
+
+
                     break;
                 case 'story_post':
 
@@ -492,6 +545,100 @@ class UploadController extends Controller
 
     }
 
+    public function sendMail($email): void
+    {
+
+        Log::channel('single')->info("sending mail from " . $email->from);
+        Log::channel('single')->info("sending mail to " . $email->recipient);
+        Log::channel('single')->info("subject " . $email->subject);
+        Log::channel('single')->info("message " . $email->message);
+
+        Mail::send('gameturns.mails.notification', ['email' => $email], function ($m) use ($email) {
+
+
+            $m->from('lebossdulelivredejeu@gmail.com', 'Le livre De Jeu');
+            $m->to($email->from, $email->recipient)
+                ->subject($email->subject);
+
+        });
+
+
+    }
+
+    public function createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $message): \stdClass
+    {
+        $email = new \stdClass();
+        $email->message = $gameTurn->description;
+        $email->from = $player_mail;
+        $email->recipient = $player_name;
+        $email->sender = "$user_name : $user_email";
+        $email->receiver = $player_name;
+        $email->subject = $subject;
+        $email->message = $message;
+        $email->turn_title = $gameTurn->title;
+        return $email;
+    }
+
+
+    /**
+     * Gamemaster will be notified only if there is one player left to play his/her turn.
+     * Thi method return a boolean that will be used to trigger the email's expedition.
+     * @param $turnOrderId
+     * @return int|null
+     */
+    public function notifyGameMaster($turnOrderId)
+    {
+        Log::channel('single')->info("notification status is begining to be computed");
+        $turn_id = $turnOrderId;
+        Log::channel('single')->info("turn id: $turn_id");
+        $turnOrder = TurnOrder::find($turn_id);
+        $gameTurn_id = $turnOrder->gameturn_id;
+        Log::channel('single')->info("game turn id: $gameTurn_id");
+        $gameTurn = GameTurn::find($gameTurn_id);
+        Log::channel('single')->info("recovered turn: $gameTurn->title");
+        $notificationStatus = null;
+        $hasUploaded = [];
+
+
+        //players list recovery
+        $players = $this->dataFinder->getPeople('GameParticipant', $gameTurn->gamesessions_id);
+        Log::channel('single')->info("player list recovered : $players");
+        //uploads recovery
+        $uploads = Upload::where('entity_id', $turnOrderId)->get();
+
+        Log::channel('single')->info("uploads recovered : $uploads");
+        //check if players has uploaded something.
+        //loop foreach through players'list
+        foreach ($players as $player) {
+
+            //loop foreach
+            foreach ($uploads as $upload) {
+                //is player's id in the upload list?
+                if ($upload->user_id == $player->id) {
+                    //if yes then push user_id to array
+                    array_push($hasUploaded, $player->id);
+                    break;
+                }
+            }//end loopforeach uploads
+        } //end loop foreach players
+
+
+        //count total numer of players
+        $nbPlayers = count($players);
+
+        Log::channel('single')->info("number of players : $nbPlayers");
+        //count number of players that has uploaded something
+        $nbUploadMade = count($hasUploaded);
+        Log::channel('single')->info("number of uploadsmade : $nbUploadMade");
+        //if difference between players and players who has uploaded something is equal or inferior to one, just make boolean true
+        if (($nbPlayers - $nbUploadMade) <= 1) {
+
+            $notificationStatus = $nbPlayers - $nbUploadMade;
+        }
+
+        Log::channel('single')->info("notification status : " . $notificationStatus);
+        return $notificationStatus;
+    }
 }
 
 ?>
