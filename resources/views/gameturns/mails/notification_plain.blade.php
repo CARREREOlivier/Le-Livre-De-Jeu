@@ -14,7 +14,7 @@
 <div class="row row-strip">
     <div class="vignette green-bg">
         <p><b> Message : </b></p>
-
+        <br/>
         {!! $email->message!!}
         <br/>
         Cordialement,

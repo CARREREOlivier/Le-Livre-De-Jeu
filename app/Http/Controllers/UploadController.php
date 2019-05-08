@@ -177,7 +177,7 @@ class UploadController extends Controller
 
                         //building subject
 
-                        $subject = "fichier uploadé par";
+                        $subject = "fichier uploadé par $user_name";
                         $message = null;
 
                         //todo: create function buildMessage
@@ -545,6 +545,9 @@ class UploadController extends Controller
 
     }
 
+    /**
+     * @param $email
+     */
     public function sendMail($email): void
     {
 
@@ -565,6 +568,16 @@ class UploadController extends Controller
 
     }
 
+    /**
+     * @param $gameTurn
+     * @param $player_mail
+     * @param $player_name
+     * @param $user_name
+     * @param $user_email
+     * @param $subject
+     * @param $message
+     * @return \stdClass
+     */
     public function createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $message): \stdClass
     {
         $email = new \stdClass();
@@ -611,10 +624,10 @@ class UploadController extends Controller
         //loop foreach through players'list
         foreach ($players as $player) {
 
-            //loop foreach
+            //loop foreach upload
             foreach ($uploads as $upload) {
                 //is player's id in the upload list?
-                if ($upload->user_id == $player->id) {
+                if ($upload->user_id == $player->user_id) {
                     //if yes then push user_id to array
                     array_push($hasUploaded, $player->id);
                     break;
@@ -631,10 +644,10 @@ class UploadController extends Controller
         $nbUploadMade = count($hasUploaded);
         Log::channel('single')->info("number of uploadsmade : $nbUploadMade");
         //if difference between players and players who has uploaded something is equal or inferior to one, just make boolean true
-        if (($nbPlayers - $nbUploadMade) <= 1) {
+
 
             $notificationStatus = $nbPlayers - $nbUploadMade;
-        }
+
 
         Log::channel('single')->info("notification status : " . $notificationStatus);
         return $notificationStatus;
