@@ -150,11 +150,8 @@ class UploadController extends Controller
                     break;
                 case 'turnorders':
 
-                    Log::channel('single')->info("turnorder :: rewriting turnorder :$upload->entity_id");
-                    $this->rewriteTurnOrder($upload->entity_id, $upload->filename);
-
                     $notificationStatus = $this->notifyGameMaster($upload->entity_id);
-                    if ($notificationStatus < 3) {
+                    if ($notificationStatus < 2) {
                         Log::channel('single')->info("test");
                         //gamemaster
                         $turnOrder_id = intval($upload->entity_id);
@@ -181,15 +178,16 @@ class UploadController extends Controller
                         $message = null;
 
                         //todo: create function buildMessage
-                        if ($notificationStatus == 2) {
+                        if ($notificationStatus == 1) {
                             $message = "L'avant dernier joueur a uploadé son ordre";
 
                         }
 
-                        if ($notificationStatus == 1) {
+                        if ($notificationStatus == 0) {
                             $message = "Le dernier joueur a uploadé son ordre. La résolution attend";
 
                         }
+
                         //instantiating mailable object
                         $email = $this->createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $message);
                         //sending notification to gamemaster to warn her/him he got a new file uploaded.
@@ -605,19 +603,30 @@ class UploadController extends Controller
         $turn_id = $turnOrderId;
         Log::channel('single')->info("turn id: $turn_id");
         $turnOrder = TurnOrder::find($turn_id);
+
         $gameTurn_id = $turnOrder->gameturn_id;
+        $turnOrders = TurnOrder::where('gameturn_id','=',$gameTurn_id)->get();
         Log::channel('single')->info("game turn id: $gameTurn_id");
         $gameTurn = GameTurn::find($gameTurn_id);
         Log::channel('single')->info("recovered turn: $gameTurn->title");
         $notificationStatus = null;
         $hasUploaded = [];
 
+        $arrayOrderId=[];
+
+        foreach ($turnOrders as $to){
+
+            array_push($arrayOrderId, $to->id);
+
+        } Log::channel('single')->info("arrayorder : $arrayOrderId[0]");
 
         //players list recovery
         $players = $this->dataFinder->getPeople('GameParticipant', $gameTurn->gamesessions_id);
         Log::channel('single')->info("player list recovered : $players");
         //uploads recovery
-        $uploads = Upload::where('entity_id', $turnOrderId)->get();
+
+        $uploads = Upload::wherein('entity_id', $arrayOrderId)->get();
+
 
         Log::channel('single')->info("uploads recovered : $uploads");
         //check if players has uploaded something.
@@ -635,7 +644,11 @@ class UploadController extends Controller
             }//end loopforeach uploads
         } //end loop foreach players
 
+        foreach ($hasUploaded as $item){
+            Log::channel('single')->info("array:  $item ");
+        }
 
+        //Log::channel('single')->info("array:  $hasUploaded ");
         //count total numer of players
         $nbPlayers = count($players);
 

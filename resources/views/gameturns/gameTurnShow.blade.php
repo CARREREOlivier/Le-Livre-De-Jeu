@@ -10,7 +10,8 @@
                     <div class="evenboxinner-turn"> {{$gameSession->title}}</div>
                     <br/>
                     <h1 class="title">{{$gameTurn->title}}</h1>
-                    <a href="{{route('gamesession.show',$gameSession->slug)}}" role="button" class="btn btn-primary lined thin"><i class="fas fa-caret-square-left"></i>Retour</a>
+                    <a href="{{route('gamesession.show',$gameSession->slug)}}" role="button"
+                       class="btn btn-primary lined thin"><i class="fas fa-caret-square-left"></i>Retour</a>
                 </div>
             </div>
             <div class="col-lg-3  box-right">
@@ -61,26 +62,7 @@
                     <p>{!! $gameTurn->description !!}</p>
                     <table>
                         <tbody>
-                        @if($gamemaster_files != null)
-                            @foreach($gamemaster_files as $file)
-                                <tr>
-                                    <td>
-                                        <p>{!! $file->original_name !!}</p>
-                                    </td>
-                                    <td><a href="/uploads/{{$file->filename}}" download="{{$file->original_name}}">
-                                            <i class="fas fa-download"></i></a></td>
-
-                                    <td>@auth @if(Auth::User()->id == $gameSession->user_id) &nbsp;&nbsp;&nbsp; <a
-                                                class="delete-link"
-                                                href="{{route('upload.delete_file',$file->id)}}"
-                                                onclick="confirmDeletion()"> <i class="fas fa-trash-alt"></i></a></td>
-                                    @endif
-                                    @endauth
-                                </tr>
-                            @endforeach
-                        @else
-                            <p>pas de fichier associé</p>
-                        @endif
+                          @include('gameturns._partials.table_row_gamemaster_files')
                         </tbody>
                     </table>
                 </div>
@@ -91,24 +73,36 @@
                 <div class="vignette yellow-bg full-height">
                     <div class="evenboxinner-turn">Ordres Passés</div>
                     <br/>
-                    @if($orders != null)
-                        <table class="table-hover">
-                            <tbody>
-                            @foreach($orders as $order)
-                                @if($order->message != "" and $order->gameturn_id == $gameTurn->id)
-                                    <tr>
-                                        <td>
-                                            <p>{!! $order->updated_at !!} par {{$order->username}}</p>
-                                        </td>
-                                        <td>
-                                            <p>{!! $order->message !!}</p>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+
+                    <table class="table-hover" style="font-size: 75%">
+                        <tbody>
+
+                        @guest
+                            @include('gameturns._partials.table_row_gamemaster')
+                            @include('gameturns._partials.table_row_players')
+                        @endguest
+
+                        @auth
+                            @if($isLastTurn == false)
+                                @include('gameturns._partials.table_row_gamemaster')
+                                @include('gameturns._partials.table_row_players')
+                            @endif
+
+                            @if($isLastTurn == true and $isLocked == false)
+                                @include('gameturns._partials.table_row_gamemaster')
+                                @include('gameturns._partials.table_row_players')
+                            @endif
+
+                            @if($isLastTurn == true and $isLocked == true)
+                                @include('gameturns._partials.table_row_gamemaster_allowed')
+                                @include('gameturns._partials.table_row_players_allowed')
+                            @endif
+                        @endauth
+
+
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>

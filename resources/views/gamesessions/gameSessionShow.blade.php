@@ -7,7 +7,6 @@
 @endsection
 
 @section('content')
-
     @if(session('message'))
         <div class='alert alert-success'>
             {{ session('message') }}
@@ -110,7 +109,7 @@
         <!--short description & orders strip-->
         @if($gameTurns->last() != null)
             <div class="row strip white-bg">
-                <div class="col-md-6 box-left">
+                <div class="col-md-5 box-left">
                     <div class="evenboxinner-turn">Résumé du tour</div>
                     <div class="vignette green-bg full-height">@auth
                             @if( Auth::User()->id == $gameSession->user_id)
@@ -166,7 +165,7 @@
                                     <td>{!! Html::link("uploads/$file->filename", "", ['download'=> $file->original_name, 'class'=>'fas fa-download'] ) !!}
 
                                         @auth
-                                            &nbsp;&nbsp;&nbsp;@if(Auth::User()->id == $gameSession->user_id)
+                                            &nbsp;@if(Auth::User()->id == $gameSession->user_id)
                                                 @include('gamesessions._partials.delete_file')
                                             @endif
                                         @endauth
@@ -185,7 +184,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-6 box-right">
+                <div class="col-md-7 box-right">
                     <div class="evenboxinner-descriptive">Ordres</div>
                     <div class="vignette blue-bg full-height">
 
@@ -194,58 +193,68 @@
 
                                 @auth
                                     @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
-                                        @include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$gameSession->user_id])
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>@include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$gameSession->user_id])
+                                                </td>
+                                                <td> @include('gamesessions._partials.dz_form',['id'=>$orders->get($gameSession->user_id)->id, 'category'=>'turnorders', 'text'=>'Fichier'])
+                                                    {{--Dropzone Preview Template--}}
+                                                    @include('gamesessions._partials.dz_preview_template')
+                                                    {{--End of Dropzone Preview Template--}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     @endif
                                 @endauth
+
                             </div>
-                            <div class="col-7">
+                            <div class="col-9">
                                 @if($orders->get($gameSession->user_id)->updated_at != $orders->get($gameSession->user_id)->created_at)
                                     <p> @include('utils.date_french',['date'=>$orders->get($gameSession->user_id)->updated_at])</p>
                                 @endif
+
                                 <p> {!! $orders->get($gameSession->user_id)->message!!}</p>
+                                <table class="table-hover">
+                                    @include('gamesessions._partials.table_row_gamemaster')
+                                </table>
+
                             </div>
-                            <div class="col-2  slot-cell-right">
-                                @auth
 
-                                    @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
-
-                                        @include('gamesessions._partials.dz_form',['id'=>$orders->get($gameSession->user_id)->id, 'category'=>'turnorders', 'text'=>'Fichier'])
-                                        {{--Dropzone Preview Template--}}
-                                        @include('gamesessions._partials.dz_preview_template')
-                                        {{--End of Dropzone Preview Template--}}
-                                    @endif
-
-                                @endauth
-                            </div>
                         </div>
-
-
                         @foreach($players as $player)
-
 
                             <div class="row player-slot white-bg col-12">
                                 <div class="col-3 slot-cell-left">
                                     <p> {{$player->getusers->username}}</p>
                                     @auth
                                         @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false )
-                                            @include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$player->user_id])
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$player->user_id])
+                                                    </td>
+                                                    <td>  @include('gamesessions._partials.dz_form',['id'=>$orders->get($player->getusers->id)->id, 'category'=>'turnorders', 'text'=>'Fichier'])
+                                                        {{--Dropzone Preview Template--}}
+                                                        @include('gamesessions._partials.dz_preview_template')
+                                                        {{--End of Dropzone Preview Template--}}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         @endif
                                     @endauth
                                 </div>
-                                <div class="col-7">
-                                    @if($orders->get($player->user_id)->updated_at != $orders->get($player->user_id)->created_at)
-                                        <p> @include('utils.date_french',['date'=>$orders->get($player->user_id)->updated_at])</p>
-                                    @endif
-                                    <p>{!! $orders->get($player->getusers->id)->message!!}</p></div>
-                                <div class="col-2 slot-cell-right">
-                                    @auth
-                                        @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false)
-                                            @include('gamesessions._partials.dz_form',['id'=>$orders->get($player->getusers->id)->id, 'category'=>'turnorders', 'text'=>'Fichier'])
-                                            {{--Dropzone Preview Template--}}
-                                            @include('gamesessions._partials.dz_preview_template')
-                                            {{--End of Dropzone Preview Template--}}
-                                        @endif
-                                    @endauth
+                                <div class="col-9">
+                                    <p>{!! $orders->get($player->getusers->id)->message!!}</p>
+                                    <table class="table-hover">
+                                        <tbody>
+                                        @include('gamesessions._partials.table_row_players')
+                                        </tbody>
+
+                                    </table>
+
                                 </div>
                             </div>
                         @endforeach

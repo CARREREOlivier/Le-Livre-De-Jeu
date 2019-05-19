@@ -145,13 +145,13 @@ class GameSessionController extends Controller
         $gameTurns = GameTurn::where('gamesessions_id', $gameSessionId)->get();
 
         $lastTurn = $gameTurns->last();
+        error_log("last turn = $lastTurn");
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
             $gameMasterFiles = Upload::where('category', 'gameturns')
                 ->where('entity_id', $last)
                 ->where('user_id', $gameMaster->last()->getusers->id)
                 ->get();
-
 
         } else {
             $last = -1;//No turns. -1 is a non existing id that will never be found in the database.
@@ -170,6 +170,11 @@ class GameSessionController extends Controller
 
         $orderFileExists = $this->orderFileExists($orders);
 
+        if (isset($lastTurn->id)) {
+            $uploadedFiles = TurnOrder::where("gameturn_id", "=", $lastTurn->id)->join("uploads", "uploads.entity_id", "=", "turnorders.id")->get();
+        } else {
+            $uploadedFiles = null;
+        }
 
         return View('gamesessions.gameSessionShow')
             ->with('gameSession', $gameSession)
@@ -179,6 +184,7 @@ class GameSessionController extends Controller
             ->with('users', $users)
             ->with('lastTurnId', $last)
             ->with('orders', $orders)
+            ->with('uploadedFiles', $uploadedFiles)
             ->with('gameMasterFiles', $gameMasterFiles)
             ->with('orderFileExists', $orderFileExists);
     }
