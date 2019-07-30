@@ -30,7 +30,7 @@
 </div>
 @auth
     @if(Auth::user()->status == 'Admin')
-        @include('stories.strips.news_add_post')
+        @include('stories.strips.stories_manager')
     @endif
 @endauth
 @foreach($posts->reverse() as $post)
@@ -49,3 +49,11 @@
         </div>
     </div>
 @endforeach
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+</script>

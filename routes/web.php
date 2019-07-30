@@ -35,11 +35,13 @@ Route::post('gameturn/lock-{id}', 'GameTurnController@lock')->name('gameturn.loc
 Route::get('gameturn/create-turn-for/{slug}', 'GameTurnController@create')->name('gameturn.create-turn');
 Route::resource('gameturn', 'GameTurnController');
 Route::resource('gamerole', 'GameRoleController');
-Route::resource('story', 'StoryController');
+
 Route::resource('storyrole', 'StoryRoleController');
 Route::resource('gamesessioncomment', 'GameSessionCommentController');
 Route::resource('storycomment', 'StoryCommentController');
 
+
+/*NEWS*/
 Route::get('info/create', 'InfoController@create')->name('info.create');
 Route::get('info/{slug}', 'InfoController@show')->name('info.show');
 Route::get('info/{slug}/edit', 'InfoController@edit')->name('info.edit');
@@ -54,7 +56,7 @@ Route::resource('info', 'InfoController', ['except' => [
 
 
 Route::resource('infocomment', 'InfoCommentController');
-Route::resource('storypost', 'StoryPostController');
+
 Route::get('infopost/{slug}/create', 'InfoPostController@create')->name('news.add.post');
 
 
@@ -65,10 +67,16 @@ Route::resource('tutorialcomment', 'TutorialCommentController');
 Route::resource('turnorder', 'TurnOrderController');
 
 
+/*AARs*/
+Route::resource('story', 'StoryController');
+Route::resource('storypost', 'StoryPostController');
+Route::get('story/{slug}', 'StoryController@show')->name('story.show');
+Route::delete('story/delete/{slug}', 'StoryController@destroy')->name('story.delete');
+
+Route::get('storypost/create', 'StoryPostController@create')->name('stories.add.post');
+
 /**
  * upload and download routes
- *
- **/
 
 Route::get('/files-create', 'UploadController@create');
 Route::post('/files-save', 'UploadController@store');
