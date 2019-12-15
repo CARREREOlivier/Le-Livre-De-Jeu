@@ -16,6 +16,11 @@
             @case('story.show')
             @include('stories.content.show')
             @break;
+
+            @case('story.edit')
+            @include('stories.content.edit')
+            @break;
+
         @endswitch
 
     </div>
