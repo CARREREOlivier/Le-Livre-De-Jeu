@@ -110,7 +110,6 @@ class StoryController extends Controller
 
         Log::channel('single')->info("Updating Story/AAR " . $slug);
 
-
         $story = Story::where('slug', $slug)->firstOrFail();
         $story->title = $request->title;
         $story->description = $request->description;

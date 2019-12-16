@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\StoryFactory;
 use Illuminate\Http\Request;
 
 class StoryPostController extends Controller 
@@ -24,7 +25,9 @@ class StoryPostController extends Controller
    */
   public function create()
   {
-    
+
+      return View('stories.main');
+
   }
 
   /**
@@ -34,7 +37,12 @@ class StoryPostController extends Controller
    */
   public function store(Request $request)
   {
-    
+      $storyPost = StoryPostFactory::build($request);
+      $storyPost->save();
+
+      return redirect()->route('story.index');
+
+
   }
 
   /**

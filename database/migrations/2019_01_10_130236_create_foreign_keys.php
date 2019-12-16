@@ -38,16 +38,7 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
-		Schema::table('storiesrole', function(Blueprint $table) {
-			$table->foreign('user_id')->references('id')->on('users')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
-		Schema::table('storiesrole', function(Blueprint $table) {
-			$table->foreign('story_id')->references('id')->on('stories')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
+
 		Schema::table('gamesessions_comments', function(Blueprint $table) {
 			$table->foreign('user_id')->references('id')->on('users')
 						->onDelete('cascade')
@@ -175,12 +166,7 @@ class CreateForeignKeys extends Migration {
 		Schema::table('stories', function(Blueprint $table) {
 			$table->dropForeign('stories_user_id_foreign');
 		});
-		Schema::table('storiesrole', function(Blueprint $table) {
-			$table->dropForeign('storiesrole_user_id_foreign');
-		});
-		Schema::table('storiesrole', function(Blueprint $table) {
-			$table->dropForeign('storiesrole_story_id_foreign');
-		});
+
 		Schema::table('gamesessions_comments', function(Blueprint $table) {
 			$table->dropForeign('gamesessions_comments_user_id_foreign');
 		});

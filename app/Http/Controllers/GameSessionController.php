@@ -318,7 +318,7 @@ class GameSessionController extends Controller
     public function destroy($slug)
     {
         //deleting entry
-        GameSession::where('slug', $slug)->first()->delete();
+        GameSession::where('slug', $slug)->Route::put('story/create', 'StoryPostController@create')->name('stories.add.post');
 
         //returning view
         return redirect()->route('gamesession.index');
