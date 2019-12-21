@@ -21,7 +21,15 @@
             @include('stories.content.edit')
             @break;
 
+            @case('story.add.post')
+            @include('stories.content.create_post')
+            @break;
+
         @endswitch
 
     </div>
 @endsection
+
+
+
+

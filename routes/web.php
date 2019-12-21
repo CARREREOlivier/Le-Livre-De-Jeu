@@ -73,9 +73,9 @@ Route::resource('storypost', 'StoryPostController');
 Route::get('story/{slug}', 'StoryController@show')->name('story.show');
 Route::delete('story/delete/{slug}', 'StoryController@destroy')->name('story.delete');
 Route::put('story/{slug}/update', 'StoryController@update')->name('story.update');
+Route::get('story/{slug}/create_post', 'StoryPostController@create')->name('story.add.post');
+route::post('story/store_post','StoryPostController@store')->name('story.store.post');
 
-Route::get('storypost/create', 'StoryPostController@create')->name('stories.add.post');
-Route::put('story/create', 'StoryPostController@create')->name('stories.add.post');
 
 /**
  * upload and download routes

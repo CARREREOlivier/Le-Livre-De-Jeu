@@ -21,9 +21,11 @@ class StoryController extends Controller
     public function index()
     {
         $stories = Story::all();
+        $storyPosts= StoryPost::all();
 
         return View('stories.main')
-            ->with('stories', $stories);
+            ->with('stories', $stories)
+            ->with('storyPosts',$storyPosts);
     }
 
     /**
@@ -73,7 +75,8 @@ class StoryController extends Controller
         return View('stories.main')
             ->with('story', $story)
             ->with('author', $author)
-            ->with('posts', $posts);
+            ->with('posts', $posts)
+           ;
     }
 
     /**
@@ -116,7 +119,6 @@ class StoryController extends Controller
         $story->slug = str_slug($request->title);
         $story->save();
 
-        Log::channel('single')->info("plop");
         return redirect()->route('story.show', $story->slug);
 
     }

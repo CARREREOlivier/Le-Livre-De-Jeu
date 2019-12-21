@@ -13,6 +13,10 @@ html, body {
     background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
 }
 
+div {
+    word-wrap: break-word;
+}
+
 h2, h4, h5, .players, .navbar, .datetime, .statut, .card {
     font-family: "Patrick Hand SC";
     font-style: italic;
@@ -34,6 +38,30 @@ table td {
     color: #4e555b
 }
 
+button.see-stories-posts.collapsed:before
+{
+    content:'Voir les posts' ;
+    display:block;
+    width:15px;
+}
+button.see-stories-posts.collapsed:after
+{
+    content:'Refermer la liste' ;
+    display:block;
+    width:15px;
+}
+button.see-stories-posts:before
+ {
+     content:'Voir les posts' ;
+     display:block;
+     width:15px;
+ }
+button.see-stories-posts:after
+{
+    content:'Refermer la liste' ;
+    display:block;
+    width:15px;
+}
 label {
     margin: 5px;
     padding: 5px;

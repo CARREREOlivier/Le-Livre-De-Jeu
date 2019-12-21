@@ -25,13 +25,13 @@ class WelcomeController extends Controller
 
 
         if(is_null($lastTurn)){
+
             $lastTurn = new stdClass();
             $lastTurn->title = "";
             $lastTurn->created_at = "";
             $lastTurn->description = "";
             $gameSession = new GameSession();
             $gameSession->title = "Créez une session de jeu!";
-
 
         }else{
             $gameSession = GameSession::find($lastTurn->gamesessions_id);

@@ -6,7 +6,7 @@
                 <div class="blue-bg vignette full-height">
                     <div class="evenboxinner-turn">
 
-                    {!! $story->created_at !!}
+                        {!! $story->created_at !!}
 
                     </div>
                     <br/>
@@ -28,7 +28,37 @@
 
             <div class="col-md-8 box-right">
                 <div class="green-bg vignette full-height">
-                    {!! $story->description !!}
+                {!! $story->description !!}
+                <!--Collapse-->
+                    <p>
+                        <button id="see-stories-posts" class="btn btn-primary" type="button" data-toggle="collapse" data-toggle-secondary="Close"
+                                data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="changeStoryCollapsibleText()">
+                            Open
+                        </button>
+                    </p>
+
+                    <div class="collapse" id="collapseExample">
+                        @foreach($storyPosts as $storyPost)
+                            <div class="col-md-12 box-left">
+                                <div class="yellow-bg vignette word-wrap:break-word ">
+                                    @if($storyPost->story_id == $story->id)
+                                        <div class="evenboxinner-turn">{!! $storyPost->created_at !!}</div>
+                                        {!! $storyPost->author !!}
+                                        {!! $storyPost->co_author !!}
+                                        {!! $storyPost->visible_by !!}
+                                        {!! $storyPost->title!!}
+                                    @endif
+                                </div>
+                            </div>
+                    <br/>
+
+
+                        @endforeach
+
+                    </div>
+
+
+                    @include('stories._partials.btn_add_post')
                     @include('stories._partials.btn_read_story')
 
                 </div>

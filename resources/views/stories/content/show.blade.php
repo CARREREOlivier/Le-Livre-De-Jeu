@@ -15,6 +15,7 @@
 
         </div>
     </div>
+
     <div class="col-md-8 nopadding">
         <div id="card_container_auto">
             <div id="card">
@@ -22,6 +23,7 @@
                 <div class="shine"></div>
                 <div class="text-block gamesession-description">
                     <p>{!! $story->description !!}</p>
+
                 </div>
             </div>
 

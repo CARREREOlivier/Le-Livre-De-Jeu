@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Factories\StoryFactory;
+use App\Factories\StoryPostFactory;
+use App\Story;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 
 class StoryPostController extends Controller 
@@ -23,10 +26,13 @@ class StoryPostController extends Controller
    *
    * @return Response
    */
-  public function create()
+  public function create($slug)
   {
+      $story = Story::where('slug', $slug)->firstOrFail();
 
-      return View('stories.main');
+      error_log($story->id);
+      return View('stories.main')
+          ->with('story_id',$story->id);
 
   }
 

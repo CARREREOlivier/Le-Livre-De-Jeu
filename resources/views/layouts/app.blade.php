@@ -14,11 +14,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-
+    <script src="{{asset('js/collapsible-behavior.js')}}"></script>
     <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
 
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=65zbam7degsr85vzz2nh3i6bou6evi4sopf9en2j8n8ndm0y"></script>
-
     <script>tinymce.init({
             selector: 'textarea',
             resize: 'both',
@@ -81,6 +80,7 @@
         });
 
     </script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
