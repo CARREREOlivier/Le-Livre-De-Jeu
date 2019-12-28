@@ -38,30 +38,6 @@ table td {
     color: #4e555b
 }
 
-button.see-stories-posts.collapsed:before
-{
-    content:'Voir les posts' ;
-    display:block;
-    width:15px;
-}
-button.see-stories-posts.collapsed:after
-{
-    content:'Refermer la liste' ;
-    display:block;
-    width:15px;
-}
-button.see-stories-posts:before
- {
-     content:'Voir les posts' ;
-     display:block;
-     width:15px;
- }
-button.see-stories-posts:after
-{
-    content:'Refermer la liste' ;
-    display:block;
-    width:15px;
-}
 label {
     margin: 5px;
     padding: 5px;
@@ -818,7 +794,15 @@ button {
     width: 100%;
 
 }
+.story-posts-vignette {
+    border: 2px solid #1b1b1b;
+    padding-top: 25px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    border-radius: 4% 0% 6% 0%/0% 4% 0% 5%;
+    width: 100%;
 
+}
 .delete-link {
     color: #FF0000;
 }

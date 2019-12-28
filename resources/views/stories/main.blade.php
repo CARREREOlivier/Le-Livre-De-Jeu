@@ -25,6 +25,9 @@
             @include('stories.content.create_post')
             @break;
 
+            @case('story.show.post')
+            @include('stories.content.show_post')
+            @break;
         @endswitch
 
     </div>

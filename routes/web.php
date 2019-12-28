@@ -76,6 +76,8 @@ Route::put('story/{slug}/update', 'StoryController@update')->name('story.update'
 Route::get('story/{slug}/create_post', 'StoryPostController@create')->name('story.add.post');
 route::post('story/store_post','StoryPostController@store')->name('story.store.post');
 
+Route::get('story/post/{slug}', 'StoryPostController@show')->name('story.show.post');
+
 
 /**
  * upload and download routes

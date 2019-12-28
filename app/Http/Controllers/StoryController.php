@@ -8,6 +8,7 @@ use App\Story;
 use App\StoryPost;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class StoryController extends Controller
@@ -21,11 +22,18 @@ class StoryController extends Controller
     public function index()
     {
         $stories = Story::all();
-        $storyPosts= StoryPost::all();
 
+        //getting all story posts with author name fetched from user table
+        $storyPosts = DB::table('users')
+            ->join('story_posts', 'story_posts.author', '=', 'users.id')
+            ->select('users.id', 'users.username', 'users.status', 'story_posts.id', 'story_posts.created_at',
+                'story_posts.story_id', 'story_posts.title', 'story_posts.author', 'story_posts.co_author', 'story_posts.visible_by','story_posts.slug')
+            ->get();
+
+        error_log($storyPosts);
         return View('stories.main')
             ->with('stories', $stories)
-            ->with('storyPosts',$storyPosts);
+            ->with('storyPosts', $storyPosts);
     }
 
     /**
@@ -66,8 +74,7 @@ class StoryController extends Controller
     {
         $story = Story::where('slug', $slug)->firstOrFail();
 
-        $results = StoryPost::with(['getComments'])->where('story_id', $story->id);
-        $posts = $results->get();
+        $posts = StoryPost::where('story_id', $story->id)->get();
 
         $author = User::find($story->user_id);
         $author = $author->username;
@@ -75,8 +82,7 @@ class StoryController extends Controller
         return View('stories.main')
             ->with('story', $story)
             ->with('author', $author)
-            ->with('posts', $posts)
-           ;
+            ->with('posts', $posts);
     }
 
     /**

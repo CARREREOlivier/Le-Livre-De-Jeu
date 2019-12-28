@@ -15,7 +15,7 @@ class StoryPost extends Model
 
     public function getComments()
     {
-        return $this->hasMany('StoryComment', 'story_id');
+        return $this->hasMany(StoryComment::class, 'story_post_id');
     }
 
 }
