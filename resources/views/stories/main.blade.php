@@ -28,7 +28,13 @@
             @case('story.show.post')
             @include('stories.content.show_post')
             @break;
+
+            @case('story.edit.post')
+            @include('stories.content.edit_post')
+            @break;
+
         @endswitch
+
 
     </div>
 @endsection

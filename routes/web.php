@@ -78,7 +78,8 @@ route::post('story/store_post','StoryPostController@store')->name('story.store.p
 
 Route::get('story/post/{slug}', 'StoryPostController@show')->name('story.show.post');
 Route::delete('story/post/delete/{slug}', 'StoryPostController@destroy')->name('story_post.delete');
-
+Route::get('story/post/{slug}/edit', 'StoryPostController@edit')->name('story.edit.post');
+Route::put('story/post/{slug}/update', 'StoryPostController@update')->name('story.update.post');
 /**
  * upload and download routes
 

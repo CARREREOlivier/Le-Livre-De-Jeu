@@ -8,6 +8,7 @@ use App\Story;
 use App\StoryPost;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class StoryPostController extends Controller
 {
@@ -84,9 +85,12 @@ class StoryPostController extends Controller
      * @param int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
+        $story_post = StoryPost::where('slug', $slug)->firstOrFail();
 
+        return View('stories.main')
+            ->with('story_post',$story_post);
     }
 
     /**
@@ -95,10 +99,21 @@ class StoryPostController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $slug)
     {
 
-    }
+        Log::channel('single')->info("Updating AAR Post " . $slug);
+
+        $storyPost = StoryPost::where('slug', $slug)->firstOrFail();
+        error_log("storu post $storyPost->text");
+        $storyPost->title = $request->title;
+        $storyPost->text = $request->text;
+        $storyPost->slug = str_slug($request->title);
+        $storyPost->save();
+
+        return redirect()->route('story.show.post', $storyPost->slug);
+
+}
 
     /**
      * Remove the specified resource from storage.
