@@ -108,7 +108,7 @@ class StoryPostController extends Controller
      */
     public function destroy($slug)
     {
-        $story_post = StoryPost::where('slug', $slug)->get();
+        $story_post = StoryPost::where('slug', $slug)->firstOrFail();
         $story_post->delete();
 
         return redirect()->route('story.index');

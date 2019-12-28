@@ -77,7 +77,7 @@ Route::get('story/{slug}/create_post', 'StoryPostController@create')->name('stor
 route::post('story/store_post','StoryPostController@store')->name('story.store.post');
 
 Route::get('story/post/{slug}', 'StoryPostController@show')->name('story.show.post');
-
+Route::delete('story/post/delete/{slug}', 'StoryPostController@destroy')->name('story_post.delete');
 
 /**
  * upload and download routes
