@@ -968,3 +968,14 @@ mark:after {
 
 }
 
+
+/*vertical nav*/
+.vertical > ul {
+    list-style: none;
+}
+
+
+.vertical > ul li:before {
+    content: '-';
+}
+
