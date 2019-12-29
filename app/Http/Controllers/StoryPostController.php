@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Factories\StoryFactory;
+
 use App\Factories\StoryPostFactory;
 use App\Story;
 use App\StoryPost;
-use http\Client\Curl\User;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -71,11 +71,14 @@ class StoryPostController extends Controller
         $previousPost = StoryPost::find($currentPostId - 1);
         $nextPost = StoryPost::find($currentPostId + 1);
 
+        $author = User::find($story_post->author)->firstOrFail()->username;
+
         return View('stories.main')
             ->with('story_post', $story_post)
             ->with('allPosts', $allPosts)
             ->with('previousPost',$previousPost)
-            ->with('nextPost',$nextPost);
+            ->with('nextPost',$nextPost)
+            ->with('author',$author);
 
     }
 
