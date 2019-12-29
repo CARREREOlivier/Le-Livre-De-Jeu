@@ -26,7 +26,7 @@
                 <div class="shine"></div>
                 <div class="text-block">
                     <p><strong>Auteur :</strong>
-                        {{$story_post->author}}
+                        {{$author}}
                         <br/>
                         <strong>Co-Auteur(s):</strong>
                         {{$story_post->co_author}}
