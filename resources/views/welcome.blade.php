@@ -397,7 +397,7 @@
                                 @include('_partials.card_container',['type'=>'ready', 'color'=>'green','title'=>'News', 'route'=>'info.index', 'text'=>'l\'actu du site'])
                             </div>
                             <div class="col-lg-4">
-                                @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'orange','title'=>'AARs', 'route'=>'', 'text'=>'En construction'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'orange','title'=>'AARs', 'route'=>'story.index', 'text'=>'Consulter'])
                                 @include('_partials.card_container',['type'=>'ready', 'color'=>'blue','title'=>'Github', 'route'=>'github', 'text'=>'Voir le repo'])
                             </div>
                             <div class="col-lg-4">
