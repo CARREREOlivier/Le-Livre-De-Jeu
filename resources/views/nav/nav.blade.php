@@ -33,8 +33,21 @@
                     </li>
                 @endif
 
+                    @if(Route::currentRouteName()=='story.index')
+                        <li class="nav-item active ">
+                            <a class="nav-link" href="{{ route('story.index') }}">
+                                <mark>AARs</mark>
+                            </a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('story.index') }}">AARs</a>
+                        </li>
+                    @endif
 
-                <li class="nav-item">
+
+
+                    <li class="nav-item">
                     <a class="nav-link" href="https://github.com/Flefounet/Le-Livre-De-Jeu">GitHub</a>
                 </li>
 
