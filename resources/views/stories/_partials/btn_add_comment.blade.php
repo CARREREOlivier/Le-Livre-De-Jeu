@@ -1,0 +1,1 @@
+<a href="#" class="btn btn-secondary lined thin float-right" data-toggle="tooltip" data-placement="top" title="ajouter un commentaire"><i class="fas fa-pen-alt"></i></a>

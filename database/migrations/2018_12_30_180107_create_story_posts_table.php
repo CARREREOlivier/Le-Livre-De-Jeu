@@ -12,6 +12,10 @@ class CreateStoryPostsTable extends Migration {
 			$table->timestamps();
 			$table->integer('user_id')->unsigned();
 			$table->integer('story_id')->unsigned();
+            $table->string('title');
+			$table->integer('author')->unsigned();
+            $table->string('co_author');
+            $table->string('visible_by');
 			$table->longText('text');
 			$table->string('slug');
 		});

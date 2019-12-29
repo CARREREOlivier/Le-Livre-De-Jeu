@@ -29,12 +29,17 @@
     <!-- Styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/lldj-styles.css') }}" rel="stylesheet">
+
     <style>
         @import url(//fonts.googleapis.com/css?family=Patrick+Hand+SC|Bangers|Happy+Monkey);
         @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
 
         html, body {
-
 
             color: #404040;
             font-family: "Patrick Hand SC";
@@ -42,15 +47,13 @@
             height: 100vh;
             margin: 0;
 
-            background-image:
-                    radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
+            background-image: radial-gradient(ellipse farthest-corner, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 35%, #ffffff 30%, #ffffff 40%, rgba(0, 0, 0, 0) 90%),
             radial-gradient(ellipse farthest-corner at 0px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
             radial-gradient(ellipse farthest-corner at 8px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
             radial-gradient(ellipse farthest-corner at 0px 8px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 40%),
             radial-gradient(ellipse farthest-corner at 8px 0px, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 20%, #ffffff 15%, #ffffff 20%, rgba(0, 0, 0, 0) 50%),
             linear-gradient(40deg, #bd2d10 0, #f4502f 30%, #ff6e51 50%, #f4502f 70%, #bd2d10 100%);
             background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
-
 
         }
 
@@ -342,13 +345,31 @@
             color: rgb(255, 111, 193);
         }
 
-        .padding10pc{
+        .padding10pc {
             padding-left: 10%
         }
 
-        .brand-text{
+        .brand-text {
 
             font-family: Bangers;
+        }
+
+
+        /*bublles*/
+        blockquote.electric {
+            background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/electric.svg);
+            width: 25%;
+            font-size: 2.4vw;
+            font-style: italic;
+            padding: 4% 6% 12% 0%;
+        }
+        blockquote.electric span {
+            display: block;
+            font-size: 3vw;
+            font-weight: bold;
+        }
+        .carousel-inner{
+        height: 250px;
         }
 
 
@@ -357,126 +378,31 @@
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand brand-text padding10pc " href="#">Le Livre de Jeu</a>
-    @if (Route::has('login'))
 
-        <div class="top-right plop links">
-
-            @auth
-
-                <a href="{{ url('/home') }}">Lien inutile</a>
-
-                @else
-
-                    <a href="{{ route('login') }}">Login</a>
-
-
-
-                    @if (Route::has('register'))
-
-                        <a href="{{ route('register') }}">Register</a>
-
-                    @endif
-
-                    @endauth
-
-        </div>
-
-    @endif
-
-</nav>
+@include('nav.nav')
 
 <div class="flex-center position-ref full-height">
 
 
-
     <div class="content main panel">
-        <div class="container">
-            <div class="row row-title">
-                <div class="title m-b-md big">
-                    Le Livre De Jeu
-                </div>
 
-            </div>
+        <div class="container">
+            @include('_partials.carrousel')
             <div class="row row-buttons">
                 <div class="row">
                     <div class="col-lg-9 offset-1">
                         <div class="row">
                             <div class="col-lg-4">
-
-                                <div id="card_container">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title yellow">Parties
-                                            </h2>
-                                            <a href="{{route('gamesession.index')}}" class="btn btn-primary lined thin" role="button"><strong>Aller à l'Index</strong></a>
-                                            </div>
-                                    </div>
-                                </div>
-                                <div id="card_container">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title green">News
-                                            </h2>
-
-                                            <button>En construction</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'yellow','title'=>'Parties', 'route'=>'gamesession.index', 'text'=>'Aller à l\'Index'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'green','title'=>'News', 'route'=>'info.index', 'text'=>'l\'actu du site'])
                             </div>
                             <div class="col-lg-4">
-                                <div id="card_container">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title orange">AARs
-                                            </h2>
-                                            <button>En construction</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="card_container" data-offset="2">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title blue">Github
-                                                </h2>
-                                            <a href="https://github.com/Flefounet/Le-Livre-De-Jeu" class="btn btn-primary lined thin" role="button"><strong>Voir le repo</strong></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'orange','title'=>'AARs', 'route'=>'story.index', 'text'=>'Consulter'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'blue','title'=>'Github', 'route'=>'github', 'text'=>'Voir le repo'])
                             </div>
                             <div class="col-lg-4">
-                                <div id="card_container" data-offset="2">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title red">Tutoriels
-                                            </h2>
-
-                                            <button>En construction</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="card_container" data-offset="2">
-
-                                    <div id="card">
-                                        <div class="shine"></div>
-                                        <div class="text-block">
-                                            <h2 class="welcome-card-title violet">Contact
-                                            </h2>
-                                            <a href="{{route('contact')}}" class="btn btn-primary lined thin" role="button"><strong>Ecrire un mail</strong></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('_partials.card_container',['type'=>'not_done_yet', 'color'=>'red','title'=>'Tutos', 'route'=>'', 'text'=>'En construction'])
+                                @include('_partials.card_container',['type'=>'ready', 'color'=>'violet','title'=>'contact', 'route'=>'contact', 'text'=>'Ecrire un mail'])
                             </div>
                         </div>
                     </div>

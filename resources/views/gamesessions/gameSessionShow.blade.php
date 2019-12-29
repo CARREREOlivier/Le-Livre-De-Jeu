@@ -2,7 +2,7 @@
 
 @section('js')
     <!--<script src="{{ url('/js/jquery.js') }}"></script>-->
-    <script src="{{ url('/js/dropzone.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/dropzone.js"></script>
     <script src="{{ url('/js/dropzone-config.js') }}"></script>
 @endsection
 
@@ -71,7 +71,6 @@
         </div>
         <!--End top strip-->
         <!-- game master actions strip -->
-
         @auth
             @if(Auth::User()->id == $gameSession->user_id or Auth::User()->status == 'Admin' )
                 <div class="row strip">
@@ -79,7 +78,8 @@
 
                         <div class="evenboxinner-turn">Gestion de la partie</div>
                         <br/>
-                        <a href="{{route("gameturn.create-turn", $gameSession->slug)}}" role="button" class="btn btn-secondary lined thin"><i class="fas fa-pen-alt"></i>Ajouter un tour</a>
+                        <a href="{{route("gameturn.create-turn", $gameSession->slug)}}" role="button"
+                           class="btn btn-secondary lined thin"><i class="fas fa-pen-alt"></i>Ajouter un tour</a>
                         @include("gamesessions.modals.modalGameSessionEdit")
                         @include("gamesessions.modals.modalDeleteGameSession")
                         @if($lastTurnId>-1)
@@ -89,7 +89,6 @@
                 </div>
             @endif
         @endauth
-
     <!--end game master actions strip-->
 
         <!--title strip-->
@@ -98,9 +97,7 @@
                 <div class="col-lg-12 vignette red-bg turn-title-strip">
                     <div class="evenboxinner-turn">
                         Le @include('utils.date_french',['date'=> $gameTurns->last()->created_at])</div>
-
                     <br/>
-
                     <div>
                         <h3 class="last-turn-title orange">{!! $gameTurns->last()->title !!}</h3>
                     </div>
@@ -112,19 +109,16 @@
         <!--short description & orders strip-->
         @if($gameTurns->last() != null)
             <div class="row strip white-bg">
-                <div class="col-md-6 box-left">
+                <div class="col-md-5 box-left">
                     <div class="evenboxinner-turn">Résumé du tour</div>
                     <div class="vignette green-bg full-height">@auth
                             @if( Auth::User()->id == $gameSession->user_id)
                                 @include("gamesessions._partials.menuTurnActions")
                             @endif
                         @endauth
-                        @if($gameTurns->last()->locked == true)
-                            <p class="text-left statut">statut : <i class="fas fa-lock"></i></p>
-                        @elseif($gameTurns->last()->locked == false)
-                            <p class="text-left">statut : <i class="fas fa-lock-open"></i></p>
-                        @endif
-
+                        {{--Display Lock --}}
+                        @include('gamesessions._partials.lock',['lock'=>$gameTurns->last()->locked])
+                        {{--End Display Lock --}}
                         {!! $gameTurns->last()->description !!}
                         @foreach($gameTurns->reverse() as $gameTurn)
                             @if($loop->iteration > 1)
@@ -133,46 +127,31 @@
 
                             @auth
                                 @if(Auth::User()->id == $gameSession->user_id and $gameTurn->id == $lastTurnId and $gameTurn->locked == false)
-                                    <form method="post" action="{{ url('/files-save') }}"
-                                          enctype="multipart/form-data" class="dropzone" id="my-dropzone">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="category" value="gameturns">
-                                        <input type="hidden" name="entity_id" value={{$gameTurn->id}}>
-                                        <div class="dz-message">
-                                            <div class="col-xs-8">
-                                                <div class="message">
-                                                    <p>Déposer les fichiers ici ou cliquer pour uploader</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="fallback">
-                                            <input type="file" name="file" multiple>
-                                        </div>
-                                    </form>
 
+                                    {{--Dropzone Upload Form--}}
+                                    @include('gamesessions._partials.dz_form',['id'=>$gameTurn->id, 'category'=>'gameturns','text'=>'Déposer les fichiers ici ou cliquer ou uploader'])
+                                    {{--End Dropzone Upload Form--}}
 
                                     {{--Dropzone Preview Template--}}
-                                    <div id="preview" style="display: none;">
-
-                                        <div class="dz-preview dz-file-preview">
-                                            <div class="dz-image"><img data-dz-thumbnail/></div>
-
-                                            <div class="dz-details">
-                                                <div class="dz-size"><span data-dz-size></span></div>
-                                                <div class="dz-filename"><span data-dz-name></span></div>
-                                            </div>
-                                            <div class="dz-progress"><span class="dz-upload"
-                                                                           data-dz-uploadprogress></span></div>
-                                        </div>
-                                    </div>
+                                    @include('gamesessions._partials.dz_preview_template')
                                     {{--End of Dropzone Preview Template--}}
 
+                                    <br/>
+                                    <button class="btn btn-secondary lined thin" type="button" data-toggle="collapse"
+                                            data-target="#respudUpload" aria-expanded="false"
+                                            aria-controls="collapseExample">
+                                        Problème d'upload?
+                                    </button>
 
+                                    <div class="collapse" id="respudUpload">
+                                        <div class="card card-body">
+                                            @include('gamesessions._partials.respud_file_upload')
+                                        </div>
+                                    </div>
                                 @endif
 
-                                @if(Auth::User()->id == $gameSession->user_id and $gameTurn->locked == false)
+                                @if((Auth::User()->id == $gameSession->user_id or Auth::User()->status='Admin') and $gameTurn->locked == false)
                                     @include("gamesessions.modals.modalEditTurn")
-                                    @include("gamesessions.modals.modalDeleteTurn")
                                 @endif
                             @endauth
                         @endforeach
@@ -182,301 +161,125 @@
                             @foreach($gameMasterFiles as $file)
                                 <tr>
                                     <td><p>{{$file->original_name}}</p></td>
-                                    @auth
-                                        <td><a href="/images/{{$file->filename}}" download="{{$file->original_name}}">
-                                                <i
-                                                        class="fas fa-download"></i></a>
-                                            &nbsp;&nbsp;&nbsp;@if(Auth::User()->id == $gameSession->user_id) <a
-                                                    class="delete-link"
-                                                    href="{{route('upload.delete_file',$file->id)}}"
-                                                    onclick="confirmDeletion()"> <i
-                                                        class="fas fa-trash-alt"></i></a>
+
+                                    <td>{!! Html::link("uploads/$file->filename", "", ['download'=> $file->original_name, 'class'=>'fas fa-download'] ) !!}
+
+                                        @auth
+                                            &nbsp;@if(Auth::User()->id == $gameSession->user_id)
+                                                @include('gamesessions._partials.delete_file')
                                             @endif
-                                        </td>
-                                    @endauth
-                                </tr>
+                                        @endauth
+                                    </td>
+
+
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
+
                         <br/>
-                        <a href="{{route('gameturn.show', $gameTurns->last()->id)}}" role="button" class="btn btn-warning lined thin float-right">Fiche détaillée</a>
+                        <a href="{{route('gameturn.show', $gameTurns->last()->id)}}" role="button"
+                           class="btn btn-warning lined thin float-right">Fiche détaillée</a>
                         <br/>
+
                     </div>
                 </div>
-                <div class="col-md-6 box-right">
+                <div class="col-md-7 box-right">
                     <div class="evenboxinner-descriptive">Ordres</div>
                     <div class="vignette blue-bg full-height">
 
-                                    <div class="row player-slot white-bg col-12">
-                                        <div class="col-3  slot-cell-left"><p> {{$gamemaster->first()->getusers->username}}</p>
+                        <div class="row player-slot white-bg col-12">
+                            <div class="col-3  slot-cell-left"><p> {{$gamemaster->first()->getusers->username}}</p>
 
-                                            @auth
-                                                @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
-
-                                                    <button type="button" class="btn btn-primary lined thin"
-                                                            data-toggle="modal"
-                                                            data-target="#modalEditOrder{{$orders->get($gameSession->user_id)->id}}">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <!-- Edit Order Modal -->
-                                                    <div class="modal fade"
-                                                         id="modalEditOrder{{$orders->get($gameSession->user_id)->id}}"
-                                                         tabindex="-1" role="dialog"
-                                                         aria-labelledby="modalEditOrder{{$orders->get($gameSession->user_id)->id}}"
-                                                         aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            {!! Form::model($orders, array('route' => array('turnorder.update', $orders->get($gameSession->user_id)->id),'method' => 'PUT')) !!}
-                                                            {!! csrf_field() !!}
-                                                            {!! Form::hidden('gameturn_id',$gameTurns->last()->id) !!}
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="modaleditOrder{{$orders->get($gameSession->user_id)->id}}">
-                                                                        <i class="fas fa-signature"></i>Enregistrer
-                                                                        mes ordres</h5>
-                                                                    <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-
-                                                                </div>
-                                                                <div class="modal-body">
-
-                                                                    <table>
-                                                                        <tbody>
-                                                                        <tr>
-                                                                            <td> {!! Form::label('message', 'Message:') !!}</td>
-                                                                            <td> {!! Form::textarea('message', $orders->get($gameSession->user_id)->message) !!}</td>
-                                                                        </tr>
-                                                                        </tbody>
-                                                                    </table>
-
-
-                                                                </div>
-
-                                                                <div class="modal-footer">
-
-                                                                    <button type="button"
-                                                                            class="btn btn-primary lined thin"
-                                                                            data-dismiss="modal">Annuler
-                                                                    </button>
-                                                                    {!! Form::submit('Editer', array('class'=>'btn btn-secondary lined thin')) !!}
-                                                                </div>
-
-                                                            </div>
-                                                            {!! Form::close() !!}
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @endauth
-                                        </div>
-                                        <div class="col-7">
-                                            @if($orders->get($gameSession->user_id)->updated_at != $orders->get($gameSession->user_id)->created_at)
-                                                <p> @include('utils.date_french',['date'=>$orders->get($gameSession->user_id)->updated_at])</p>
-                                            @endif
-                                           <p> {!! $orders->get($gameSession->user_id)->message!!}</p>
-                                        </div>
-                                        <div class="col-2  slot-cell-right">
-                                            @auth
-
-                                                @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
-                                                    <form method="post" action="{{ url('/files-save') }}"
-                                                          enctype="multipart/form-data" class="dropzone"
-                                                          id="my-dropzone">
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="category" value="turnorders">
-                                                        <input type="hidden" name="entity_id"
-                                                               value={{$orders->get($gameSession->user_id)->id}}>
-                                                        <div class="dz-message">
-                                                            <div class="col-xs-8">
-                                                                <div class="message">
-                                                                    <p>Fichier</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="fallback">
-                                                            <input type="file" name="file" multiple>
-                                                        </div>
-                                                    </form>
+                                @auth
+                                    @if(Auth::User()->id == $gameSession->user_id and $gameTurns->last()->locked == false)
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>@include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$gameSession->user_id])
+                                                </td>
+                                                <td> @include('gamesessions._partials.dz_form',['id'=>$orders->get($gameSession->user_id)->id, 'category'=>'turnorders', 'text'=>'Fichier'])
                                                     {{--Dropzone Preview Template--}}
-                                                    <div id="preview" style="display: none;">
+                                                    @include('gamesessions._partials.dz_preview_template')
+                                                    {{--End of Dropzone Preview Template--}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                @endauth
 
-                                                        <div class="dz-preview dz-file-preview">
-                                                            <div class="dz-image"><img data-dz-thumbnail/></div>
-
-                                                            <div class="dz-details">
-                                                                <div class="dz-size"><span data-dz-size></span></div>
-                                                                <div class="dz-filename"><span data-dz-name></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="dz-progress"><span class="dz-upload"
-                                                                                           data-dz-uploadprogress></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {{--End of Dropzone Preview Template--}}
-                                                @endif
-
-                                            @endauth
-                                        </div>
-
-                                    </div>
-
-
-                                    @foreach($players as $player)
-
-
-                                                    <div class="row player-slot white-bg col-12">
-                                                        <div class="col-3 slot-cell-left">
-                                                            <p> {{$player->getusers->username}}</p>
-                                                            @auth
-                                                                @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false)
-                                                                    <button type="button" class="btn btn-primary lined thin"
-                                                                            data-toggle="modal"
-                                                                            data-target="#modalEditOrder{{$orders->get($player->user_id)->id}}">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </button>
-                                                                    <!-- Edit Order Modal -->
-                                                                    <div class="modal fade"
-                                                                         id="modalEditOrder{{$orders->get($player->user_id)->id}}"
-                                                                         tabindex="-1" role="dialog"
-                                                                         aria-labelledby="modalEditOrder{{$orders->get($player->user_id)->id}}"
-                                                                         aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            {!! Form::model($orders, array('route' => array('turnorder.update', $orders->get($player->user_id)->id),'method' => 'PUT')) !!}
-                                                                            {!! csrf_field() !!}
-                                                                            {!! Form::hidden('gameturn_id',$gameTurns->last()->id) !!}
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title"
-                                                                                        id="modaleditOrder{{$orders->get($player->user_id)->id}}">
-                                                                                        <i class="fas fa-signature"></i>Enregistrer
-                                                                                        mes ordres</h5>
-                                                                                    <button type="button" class="close"
-                                                                                            data-dismiss="modal" aria-label="Close">
-                                                                                        <span aria-hidden="true">&times;</span>
-                                                                                    </button>
-
-                                                                                </div>
-                                                                                <div class="modal-body">
-
-                                                                                    <table>
-                                                                                        <tbody>
-                                                                                        <tr>
-                                                                                            <td> {!! Form::label('message', 'Message:') !!}</td>
-                                                                                            <td> {!! Form::textarea('message', $orders->get($player->user_id)->message) !!}</td>
-                                                                                        </tr>
-                                                                                        </tbody>
-                                                                                    </table>
-
-
-                                                                                </div>
-
-                                                                                <div class="modal-footer">
-
-                                                                                    <button type="button"
-                                                                                            class="btn btn-primary lined thin"
-                                                                                            data-dismiss="modal">Annuler
-                                                                                    </button>
-                                                                                    {!! Form::submit('Editer', array('class'=>'btn btn-secondary lined thin')) !!}
-                                                                                </div>
-
-                                                                            </div>
-                                                                            {!! Form::close() !!}
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-                                                            @endauth
-                                                        </div>
-                                                        <div class="col-7">{!! $orders->get($player->getusers->id)->message!!}</div>
-                                                        <div class="col-2 slot-cell-right">
-                                                            @auth
-                                                                @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false)
-                                                                    <form method="post"
-                                                                          action="{{ url('/files-save') }}"
-                                                                          enctype="multipart/form-data" class="dropzone"
-                                                                          id="my-dropzone">
-                                                                        {{ csrf_field() }}
-                                                                        <input type="hidden" name="category"
-                                                                               value="turnorders">
-                                                                        <input type="hidden" name="entity_id"
-                                                                               value={{$orders->get($player->getusers->id)->id}}>
-                                                                        <div class="dz-message">
-                                                                            <div class="col-xs-8">
-                                                                                <div class="message">
-                                                                                    <p>Fichier</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="fallback">
-                                                                            <input type="file" name="file" multiple>
-                                                                        </div>
-                                                                    </form>
-                                                                @endif
-                                                            @endauth
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                            </div>
                             </div>
-                    </div>
-                @endif
-                <!--End short description & players slots strip-->
-                    <!--previous turns strip-->
-                    <div class="row strip white-bg">
+                            <div class="col-9">
+                                @if($orders->get($gameSession->user_id)->updated_at != $orders->get($gameSession->user_id)->created_at)
+                                    <p> @include('utils.date_french',['date'=>$orders->get($gameSession->user_id)->updated_at])</p>
+                                @endif
 
-                        @foreach($gameTurns->reverse() as $gameTurn)
-                            @if(!$loop->first)
-                                @if($loop->index%3 == 0)
-                                    <div class="col-md-4 archive-right">
-                                        <div class="evenboxinner-descriptive ">
-                                            Tour {{$gameTurns->count()-$loop->index}}
-                                        </div>
-                                        <div class="vignette orange-bg  full-height">
-                                            <p>{{$gameTurn->title}}</p>
-                                            <a href="{{route('gameturn.show', $gameTurn->id)}}" role="button" class="btn btn-warning lined thin">Lire</a>
-                                        </div>
-                                    </div>
-                    </div>
-                    <div class="row strip white-bg">
+                                <p> {!! $orders->get($gameSession->user_id)->message!!}</p>
+                                <table class="table-hover">
+                                    @include('gamesessions._partials.table_row_gamemaster')
+                                </table>
 
-                        @elseif($loop->index%3 == 1)
-                            <div class="col-md-4 archive-left">
-                                <div class="evenboxinner-turn">
-                                    Tour {{$gameTurns->count()-$loop->index}}
+                            </div>
+
+                        </div>
+                        @foreach($players as $player)
+
+                            <div class="row player-slot white-bg col-12">
+                                <div class="col-3 slot-cell-left">
+                                    <p> {{$player->getusers->username}}</p>
+                                    @auth
+                                        @if(Auth::User()->id == $player->user_id and $gameTurns->last()->locked == false )
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @include('gamesessions._partials.btn_edit_player_slot',['turn'=>$gameTurns->last()->id ,'user_id'=>$player->user_id])
+                                                    </td>
+                                                    <td>  @include('gamesessions._partials.dz_form',['id'=>$orders->get($player->getusers->id)->id, 'category'=>'turnorders', 'text'=>'Fichier'])
+                                                        {{--Dropzone Preview Template--}}
+                                                        @include('gamesessions._partials.dz_preview_template')
+                                                        {{--End of Dropzone Preview Template--}}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        @endif
+                                    @endauth
                                 </div>
-                                <div class="vignette blue-bg  full-height">
-                                    <p>{{$gameTurn->title}}</p>
-                                    <a href="{{route('gameturn.show',$gameTurn->id)}}" role="button" class="btn btn-warning lined thin">Lire</a>
+                                <div class="col-9">
+                                    <p>{!! $orders->get($player->getusers->id)->message!!}</p>
+                                    <table class="table-hover">
+                                        <tbody>
+                                        @include('gamesessions._partials.table_row_players')
+                                        </tbody>
+
+                                    </table>
+
                                 </div>
                             </div>
-                        @elseif($loop->index%3 == 2)
-                            <div class="col-md-4 archive-center">
-                                <div class="evenboxinner-descriptive">
-                                    Tour {{$gameTurns->count()-$loop->index}}
-                                </div>
-                                <div class="vignette green-bg  full-height">
-                                    <p>{{$gameTurn->title}}</p>
-                                    <a href="{{route('gameturn.show', $gameTurn->id)}}" role="button" class="btn btn-warning lined thin">Lire</a>
-                                </div>
-                            </div>
-                        @endif
-                        @endif
                         @endforeach
-
                     </div>
-
-                    <!--end previous turns strip-->
                 </div>
-                <script type="text/javascript">
-                    $(function () {
-                        $('[data-toggle="tooltip"]').tooltip()
-                    })
+            </div>
+    @endif
+    <!--End short description & players slots strip-->
+        <!--previous turns strip-->
+        <div class="row strip white-bg">
+            @foreach($gameTurns->reverse() as $gameTurn)
+                @include('gamesessions._partials.archives_vignettes',['index'=>$loop->index,
+                'nbTurn'=>$gameTurns->count(),
+                'title'=>$gameTurn->title,
+                'id'=>$gameTurn->id])
+            @endforeach
+        </div>
 
-                    function confirmDeletion() {
-                        confirm("Souhaitez-vous effacer ce fichier?");
-                    }
+        <!--end previous turns strip-->
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
-                </script>
+
+    </script>
 @endsection

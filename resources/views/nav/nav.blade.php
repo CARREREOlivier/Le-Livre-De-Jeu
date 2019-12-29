@@ -9,9 +9,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">Accueil</a>
-                </li>
+                @if(Route::currentRouteName()=='welcome')
+                    <li class="nav-item active ">
+                        <a class="nav-link" href="{{ url('/') }}">
+                            <mark>Accueil</mark>
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">Accueil</a>
+                    </li>
+                @endif
 
                 @if(Route::currentRouteName()=='gamesession.index')
                     <li class="nav-item active ">
@@ -25,8 +33,21 @@
                     </li>
                 @endif
 
+                    @if(Route::currentRouteName()=='story.index')
+                        <li class="nav-item active ">
+                            <a class="nav-link" href="{{ route('story.index') }}">
+                                <mark>AARs</mark>
+                            </a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('story.index') }}">AARs</a>
+                        </li>
+                    @endif
 
-                <li class="nav-item">
+
+
+                    <li class="nav-item">
                     <a class="nav-link" href="https://github.com/Flefounet/Le-Livre-De-Jeu">GitHub</a>
                 </li>
 
@@ -42,6 +63,16 @@
                     </li>
                 @endif
 
+                @auth
+                    @if(Auth::user()->status=="Admin")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route(('admin.main'))}}">Admin</a>
+                        </li>
+                    @endif
+                @endauth
+                <li class="nav-item">
+                    <a class="nav-link" href="https://fr.tipeee.com/le-livre-de-jeu">Me soutenir</a>
+                </li>
 
             </ul>
 
@@ -65,6 +96,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{route('profile', Auth::User()->username)}}">Profil</a>
+
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -16,6 +16,7 @@ use App\Utils\DataFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -115,6 +116,7 @@ class GameSessionController extends Controller
     public function show($slug)
     {
 
+        Log::channel('single')->info("gamesession show " . $slug);
         //1-Finding gameSession
         $gameSession = GameSession::where('slug', $slug)->first();
 
@@ -143,13 +145,13 @@ class GameSessionController extends Controller
         $gameTurns = GameTurn::where('gamesessions_id', $gameSessionId)->get();
 
         $lastTurn = $gameTurns->last();
+        error_log("last turn = $lastTurn");
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
             $gameMasterFiles = Upload::where('category', 'gameturns')
                 ->where('entity_id', $last)
                 ->where('user_id', $gameMaster->last()->getusers->id)
                 ->get();
-
 
         } else {
             $last = -1;//No turns. -1 is a non existing id that will never be found in the database.
@@ -168,6 +170,11 @@ class GameSessionController extends Controller
 
         $orderFileExists = $this->orderFileExists($orders);
 
+        if (isset($lastTurn->id)) {
+            $uploadedFiles = TurnOrder::where("gameturn_id", "=", $lastTurn->id)->join("uploads", "uploads.entity_id", "=", "turnorders.id")->get();
+        } else {
+            $uploadedFiles = null;
+        }
 
         return View('gamesessions.gameSessionShow')
             ->with('gameSession', $gameSession)
@@ -177,6 +184,7 @@ class GameSessionController extends Controller
             ->with('users', $users)
             ->with('lastTurnId', $last)
             ->with('orders', $orders)
+            ->with('uploadedFiles', $uploadedFiles)
             ->with('gameMasterFiles', $gameMasterFiles)
             ->with('orderFileExists', $orderFileExists);
     }
@@ -189,9 +197,11 @@ class GameSessionController extends Controller
 
     public function edit($slug)
     {
+
         //getting concerned gamesession for sending its data back to user
         $gameSession = GameSession::where('slug', $slug)->first();
         if (Gate::allows('gamesession.edit', $gameSession)) {
+            Log::channel('single')->info("Edit page accessed for gamesession " . $slug);
             $gameSessionId = $gameSession->id;
 
             $users = $this->getPotentialPlayers();
@@ -229,7 +239,7 @@ class GameSessionController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        Log::channel('single')->info("Updating gamesession " . $id);
         $gamesession = GameSession::findOrFail($id);//findorfail avoids to write a bit of code to launch a 404page if query fails.
         if (Gate::allows('gamesession.update', $gamesession)) {
             // The current user can update the gamesession...
@@ -273,7 +283,6 @@ class GameSessionController extends Controller
             if ($gameTurns->count() > 0) {
 
                 $lastTurn = $gameTurns->last()->id;
-                error_log("last turn id : $lastTurn");
                 $turnOrders = TurnOrder::where('gameturn_id', $lastTurn)->get();
 
                 foreach ($players as $player) {
@@ -287,18 +296,15 @@ class GameSessionController extends Controller
 
                     if ($hasOrder == false) {
 
-                        error_log("player id : $player->user_id");
                         $order = TurnOrderFactory::build($lastTurn, $player->user_id);
-                        error_log("order player id: $order->user_id");
                         $order->save();
                     }
                 }
 
             }
 
-            error_log("yeah!");
             //return to view to visually check the update
-            return $this->show($gamesession->slug);
+            return redirect()->route('gamesession.show', $gamesession->slug);
         } else  return view('home');
     }
 
@@ -312,7 +318,7 @@ class GameSessionController extends Controller
     public function destroy($slug)
     {
         //deleting entry
-        GameSession::where('slug', $slug)->first()->delete();
+        GameSession::where('slug', $slug)->Route::put('story/create', 'StoryPostController@create')->name('stories.add.post');
 
         //returning view
         return redirect()->route('gamesession.index');
@@ -424,36 +430,11 @@ class GameSessionController extends Controller
                 $player_name = $player->getusers->username;
 
                 //instantiating mailable object
-                $email = new \stdClass();
-                $email->message = $gameTurn->description;
-                $email->from = $player_mail;
-                $email->recipient = $player_name;
-                $email->sender = "$user_name : $user_email";
-                $email->attachment = $user_email;
-                $email->receiver = $player_name;
-                $email->subject = $subject;
-                $email->turn_title = $gameTurn->title;
-                $email->link = $link;
+                $email = $this->createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $link);
 
 
                 //Send Mail to player
-                Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
-
-
-                    $m->from('le.pire.ottoman@gmail.com', config('name'));
-                    $m->to($email->from, $email->recipient)
-                        ->subject($email->subject);
-
-                    foreach ($files as $file) {
-                        $filename = $file->filename;
-                        $path = public_path('/images');
-                        $path_to_file = $path . "/" . $filename;
-                        $original_name = $filename = $file->original_name;
-                        $m->attach($path_to_file, ['as' => $original_name]);
-                    }
-
-
-                });
+                $this->sendMail($email, $files);
 
 
                 //cleaning memory-php should do it anyway but who knows?
@@ -472,51 +453,24 @@ class GameSessionController extends Controller
 
 
             //instantiating mailable object
-            $email = new \stdClass();
-            $email->message = $gameTurn->description;
-            $email->from = $player_mail;
-            $email->recipient = $player_name;
-            $email->expeditor = $player_name;
-            $email->sender = "$user_name : $user_email";
-            $email->attachment = $user_email;
-            $email->receiver = $player_name;
-            $email->subject = $subject;
-            $email->turn_title = $gameTurn->title;
-            $email->link = $link;
+            $email = $this->createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $link);
 
 
             //sending notification to gamemaster as feedback.
-            Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
-
-
-                $m->from('le.pire.ottoman@gmail.com', config('name'));
-                $m->to($email->from, $email->recipient)
-                    ->subject($email->subject);
-
-                foreach ($files as $file) {
-                    $filename = $file->filename;
-                    $path = public_path('/images');
-                    $path_to_file = $path . "/" . $filename;
-
-                    $original_name = $filename = $file->original_name;
-                    $m->attach($path_to_file, ['as' => $original_name]);
-                }
-
-
-            });
+            $this->sendMail($email, $files);
 
 
             //cleaning memory-php should do it anyway but who knows?
             unset($email);
 
             //redirect back with message
+
             return redirect()->back()->with('message', "la notification a été envoyé aux joueurs! ");
         } else {
             return redirect()->back()->with('message', "Merci d'ajouter un joueur");
         }
 
     }
-
 
     /**
      *
@@ -541,8 +495,8 @@ class GameSessionController extends Controller
         foreach ($gameTurns as $gameTurn) {
 
             //we are looking for the fist turn that is the same as the one in parameters.
-            if ($gameTurn->id = $currentTurn->id) {
-
+            if ($gameTurn->id == $currentTurn->id) {
+                error_log($counter);
                 //that's good so get out of this loop, NOW!
                 break;
             } else {// Well.. let's see if the next one is the good one.
@@ -551,7 +505,6 @@ class GameSessionController extends Controller
             }
 
         }
-
         //return the loop counter value as turn position.
         return $counter;
     }
@@ -570,6 +523,62 @@ class GameSessionController extends Controller
             }
         }
         return $boolean;
+    }
+
+    /**
+     * @param $gameTurn
+     * @param $player_mail
+     * @param $player_name
+     * @param $user_name
+     * @param $user_email
+     * @param $subject
+     * @param $link
+     * @return \stdClass
+     */
+    public function createEmail($gameTurn, $player_mail, $player_name, $user_name, $user_email, $subject, $link): \stdClass
+    {
+        $email = new \stdClass();
+        $email->message = $gameTurn->description;
+        $email->from = $player_mail;
+        $email->recipient = $player_name;
+        $email->sender = "$user_name : $user_email";
+        $email->attachment = $user_email;
+        $email->receiver = $player_name;
+        $email->subject = $subject;
+        $email->turn_title = $gameTurn->title;
+        $email->link = $link;
+        return $email;
+    }
+
+    /**
+     * @param $email
+     * @param $files
+     */
+    public function sendMail($email, $files): void
+    {
+
+        Log::channel('single')->info("sending mail from " . $email->from);
+        Log::channel('single')->info("sending mail to " . $email->recipient);
+        Log::channel('single')->info("subject " . $email->subject);
+        Log::channel('single')->info("subject " . $email->message);
+
+        Mail::send('gamesessions.mails.notification', ['email' => $email], function ($m) use ($email, $files) {
+
+
+            $m->from('lebossdulelivredejeu@gmail.com', 'Le livre De Jeu');
+            $m->to($email->from, $email->recipient)
+                ->subject($email->subject);
+
+            foreach ($files as $file) {
+                $filename = $file->filename;
+                $path = public_path('/uploads');
+                $path_to_file = $path . "/" . $filename;
+                $original_name = $filename = $file->original_name;
+                $m->attach($path_to_file, ['as' => $original_name]);
+            }
+
+
+        });
     }
 
 }

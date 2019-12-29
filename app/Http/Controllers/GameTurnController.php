@@ -42,7 +42,7 @@ class GameTurnController extends Controller
     {
 
 
-        $gameSession=GameSession::where('slug',$slug)->firstOrFail();
+        $gameSession = GameSession::where('slug', $slug)->firstOrFail();
 
         return View("gameturns.gameTurnNew")->with('gameSessionId', $gameSession->id);
     }
@@ -113,7 +113,7 @@ class GameTurnController extends Controller
         if ($gamemaster_files->count() < 1) {
             $gamemaster_files = null;
         }
-
+        $players = $this->dataFinder->getPeople('GameParticipant', $gameSession->id);
 
         $orders = GameTurn::where('gamesessions_id', $gameSession->id)
             ->join('turnorders', 'turnorders.gameturn_id', '=', 'gameturns.id')
@@ -126,12 +126,21 @@ class GameTurnController extends Controller
             $orders = null;
         }
 
+        $uploadedFiles = TurnOrder::where("gameturn_id", "=", $id)->join("uploads", "uploads.entity_id", "=", "turnorders.id")->get();
+
+        $isLastTurn = $this->isLastTurn($id);
+        $isLocked = $this->isLock($id);
+
         return view("gameturns.gameTurnShow")
             ->with('gameTurn', $gameTurn)
             ->with('gamemaster_files', $gamemaster_files)
             ->with('orders', $orders)
             ->with('gameSession', $gameSession)
-            ->with('gamemaster', $gamemaster);
+            ->with('gamemaster', $gamemaster)
+            ->with('players', $players)
+            ->with('uploadedFiles', $uploadedFiles)
+            ->with('isLastTurn', $isLastTurn)
+            ->with('isLocked', $isLocked);
 
     }
 
@@ -185,13 +194,12 @@ class GameTurnController extends Controller
 
         $gameTurn->delete();
 
-        return redirect()->route('gamesession.show',$gameSession->slug);
+        return redirect()->route('gamesession.show', $gameSession->slug);
 
     }
 
     public function lock($id)
     {
-
 
         $gameTurn = GameTurn::findOrFail($id);
         if ($gameTurn->locked == false) {
@@ -203,6 +211,37 @@ class GameTurnController extends Controller
         $gameTurn->save();
 
         return redirect()->back();
+
+    }
+
+    function isLastTurn($id)
+    {
+
+        $isLastTurn = false;
+        $gameTurn = GameTurn::find($id);
+        $gameSessionId = $gameTurn->gamesessions_id;
+
+        $lastTurn = GameTurn::where('gamesessions_id', '=', $gameSessionId)->get()->last();
+        $lastTurnId = $lastTurn->id;
+
+        if ($lastTurn->id == $lastTurnId) {
+            $isLastTurn = true;
+        }
+
+        return $isLastTurn;
+
+    }
+
+    function isLock($id)
+    {
+        $gameTurn = GameTurn::find($id);
+        $isLock = false;
+
+        if ($gameTurn->locked == 1) {
+            $isLock = true;
+        }
+
+        return $isLock;
 
     }
 

@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
         $this->command->confirm('Creating first entry as Admin?');
 
         DB::table('users')->insert([
-            'name' => 'Admin',
+            'username' => 'Admin',
             'email' => 'admin@gmail.com',
             'status' => 'Admin',
             'email_verified_at' => now(),

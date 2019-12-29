@@ -13,6 +13,10 @@ html, body {
     background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
 }
 
+div {
+    word-wrap: break-word;
+}
+
 h2, h4, h5, .players, .navbar, .datetime, .statut, .card {
     font-family: "Patrick Hand SC";
     font-style: italic;
@@ -665,11 +669,69 @@ button {
 
 /*modals*/
 
-.modal-title {
+.modal-title, .carrousel-title {
     font-family: Bangers;
-
 }
 
+.carousel-inner{
+    height: 250px;
+}
+.carrousel-title {
+    text-shadow: -1px -1px black, 1px 1px black, 2px 2px black;
+}
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+
+
+    width: 65px;
+    height: 65px;
+    left: 30px;
+    top: 55%;
+    text-align: center;
+    font-weight: lighter;
+    font-size: 25px;
+    padding: 0 7px 5px 0;
+    background-size: 150%;
+
+}
+.carousel-control-next-icon{
+    background-image:url(https://cdn2.iconfinder.com/data/icons/100-hand-drawn-comic-cartoon-signs/57/arrow_cursor_pointer_cartoon_comic_right-128.png);
+
+
+}
+.carousel-control-prev-icon {
+    background-image:url(https://cdn2.iconfinder.com/data/icons/100-hand-drawn-comic-cartoon-signs/57/arrow_cursor_pointer_cartoon_comic_right-128.png);
+    transform: rotate(180deg);
+}
+.carousel-control-next-icon:after
+{
+       color: #1b1b1b;
+}
+
+.carousel-control-prev-icon:after
+{
+
+    color: #1b1b1b;
+}
+.carousel-control-next-icon:hover,.carousel-control-prev-icon:hover{
+
+    width: 85px;
+    height: 85px;
+}
+
+.carousel-indicators li {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: rgba(27, 27, 27, 0.67);
+}
+.carousel-indicators .active{
+
+    background-color: #5878ff;
+
+}
 .modal-content {
 
     border-width: 2px 3px 3px 5px;
@@ -732,7 +794,15 @@ button {
     width: 100%;
 
 }
+.story-posts-vignette {
+    border: 2px solid #1b1b1b;
+    padding-top: 25px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    border-radius: 4% 0% 6% 0%/0% 4% 0% 5%;
+    width: 100%;
 
+}
 .delete-link {
     color: #FF0000;
 }
@@ -794,6 +864,7 @@ p, a {
     font-family: "Patrick Hand SC";
 
 }
+
 
 .text-orders {
     float: left;
@@ -865,13 +936,13 @@ p, a {
     padding: 0 0px 0 5px;
 }
 
-
 /*NAVIGATION*/
 /*https://codepen.io/victorknust/pen/GwIsA*/
 mark {
     position: relative;
     background-color: #fff;
 }
+
 mark:after {
     border: .15em solid red;
     border-top: none;
@@ -885,3 +956,26 @@ mark:after {
 }
 
 /*https://codepen.io/victorknust/pen/GwIsA*/
+
+/*ADMIN PAGE*/
+
+.custom-control-label {
+    margin: 5px;
+    padding-left: 25px;
+    background: #ffffff;
+    border: 1px solid #222;
+    box-shadow: 3px 3px 0 #222;
+
+}
+
+
+/*vertical nav*/
+.vertical > ul {
+    list-style: none;
+}
+
+
+.vertical > ul li:before {
+    content: '-';
+}
+

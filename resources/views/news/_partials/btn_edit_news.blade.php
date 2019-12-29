@@ -1,0 +1,1 @@
+<a href="{{route('info.edit', $n->slug)}}" class="btn btn-warning lined thin" role="button"><i class="fas fa-edit"></i></a>

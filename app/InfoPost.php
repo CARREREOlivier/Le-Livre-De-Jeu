@@ -16,7 +16,7 @@ class InfoPost extends Model
 
     public function getComments()
     {
-        return $this->hasMany('InfoComment', 'info_post_id');
+        return $this->hasMany(InfoComment::class, 'info_post_id');
     }
 
 }

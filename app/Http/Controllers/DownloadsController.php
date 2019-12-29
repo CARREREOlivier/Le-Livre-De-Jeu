@@ -17,7 +17,7 @@ class DownloadsController extends Controller
 
         $document = Upload::where('filename', $filename)->first();
 
-        $file_path = public_path('images/' . $filename);
+        $file_path = public_path('uploads/' . $filename);
         $name = $document->original_name;
 
 
@@ -34,7 +34,7 @@ class DownloadsController extends Controller
         $orders = TurnOrder::where("gameturn_id", $gameTurnId)->get();
 
 
-        $zipname = $gameSession->title . "-" . $gameTurn->title;
+        $zipname = str_slug($gameSession->title . "-" . $gameTurn->title);
 
         $downloadFolder = "downloads/";
         if (File::exists(public_path("$downloadFolder" . "$zipname.zip"))) {
@@ -43,14 +43,21 @@ class DownloadsController extends Controller
 
 
         Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->close();
+
+
         $category = "turnorders";
 
 
         foreach ($orders as $order) {
 
-            $document = Upload::where("category", $category)->where("entity_id", "=", $order->id)->first();
+            $document = Upload::where("category", $category)
+                ->where("entity_id", $order->id)
+                ->get();
+
             if ($document != null) {
-                Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("images/" . $document->filename, $document->original_name)->close();
+                foreach ($document as $doc) {
+                    Zipper::make(public_path("$downloadFolder" . "$zipname.zip"))->add("uploads/" . $doc->filename, $doc->original_name)->close();
+                }
             } else {
                 $message = "il n'y a pas de fichier à télécharger";
                 return redirect()->back()->with('message', $message);

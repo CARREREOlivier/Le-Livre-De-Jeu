@@ -14,4 +14,16 @@ class InfoComment extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $with = ['user'];
+
+    public function post()
+    {
+        return $this->belongsTo(InfoPost::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
