@@ -73,12 +73,15 @@ class StoryPostController extends Controller
 
         $author = User::find($story_post->author)->firstOrFail()->username;
 
+        $users = User::where('status',"user")->select('email','id','username')->get();
+
         return View('stories.main')
             ->with('story_post', $story_post)
             ->with('allPosts', $allPosts)
             ->with('previousPost',$previousPost)
             ->with('nextPost',$nextPost)
-            ->with('author',$author);
+            ->with('author',$author)
+            ->with('users',$users);
 
     }
 
@@ -132,6 +135,14 @@ class StoryPostController extends Controller
         return redirect()->route('story.index');
 
     }
+
+    public function updateCoAuthorsPost(Request $request)
+    {
+
+
+    }
+
+
 
 }
 
