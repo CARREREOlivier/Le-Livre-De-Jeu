@@ -125,11 +125,9 @@ class StoryPostController extends Controller
 
         $users = User::where('status', 'User')->select('id', 'username', 'email')->get();//the owner of the post (author) is removed at a later stage in the view logic.
         $arrayCoAuthors = explode(";", $story_post->co_author, -1);
-
-
         /*
-     * assigning true value to coauthors in users array
-     */
+         * assigning true value to coauthors in users array
+         */
         $users = self::assignCheckedStatus($arrayCoAuthors, $users);
 
         return View('stories.main')
