@@ -99,13 +99,7 @@ class StoryPostController extends Controller
         /*
          * assigning true value to coauthors in users array
          */
-        foreach ($arrayCoAuthors as $coAuthor) {
-            foreach ($users as $user) {
-                if($user->id == $coAuthor){
-                    $user->checked = 'true';
-                }
-            }
-        }
+        $users = $this->assignCheckedStatus($arrayCoAuthors, $users);
 
 
         return View('stories.main')
@@ -132,17 +126,15 @@ class StoryPostController extends Controller
         $users = User::where('status', 'User')->select('id', 'username', 'email')->get();//the owner of the post (author) is removed at a later stage in the view logic.
         $arrayCoAuthors = explode(";", $story_post->co_author, -1);
 
-        foreach ($arrayCoAuthors as $coAuthor) {
-            foreach ($users as $user) {
-                if($user->id == $coAuthor){
-                    $user->checked = 'true';
-                }
-            }
-        }
+
+        /*
+     * assigning true value to coauthors in users array
+     */
+        $users = self::assignCheckedStatus($arrayCoAuthors, $users);
 
         return View('stories.main')
             ->with('story_post', $story_post)
-            ->with('users',$users);
+            ->with('users', $users);
     }
 
     /**
@@ -198,6 +190,26 @@ class StoryPostController extends Controller
         return back()->withInput();
     }
 
+    /**
+     * for maintenance purpose as the block is used several times
+     * @param $arrayCoAuthors
+     * @param $users
+     * @return mixed
+     */
+    function assignCheckedStatus($arrayCoAuthors, $users)
+    {
+        foreach ($arrayCoAuthors as $coAuthor) {
+            foreach ($users as $user) {
+                if ($user->id == $coAuthor) {
+                    $user->checked = 'true';
+                }
+            }
+        }
+
+       return $users;
+
+    }
 }
+
 
 ?>
