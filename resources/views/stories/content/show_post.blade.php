@@ -29,7 +29,7 @@
                         {{$author}}
                         <br/>
                         <strong>Co-Auteur(s):</strong>
-                        {{$story_post->co_author}}
+                        {{$co_authors}}
                         <br/>
                         <strong>Visible Par:</strong>
                         {{$story_post->visible_by}}

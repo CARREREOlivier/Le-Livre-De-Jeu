@@ -29,7 +29,11 @@
                     @foreach($users as$user)
                         @if($user->username <> $author)
                         <tr>
-                            <td id="selection">{{Form::checkbox("checkBox[]", $user->id, null, ['class'=>'ckbox'])}}</td>
+                            @if($user->checked == true)
+                            <td id="selection">{{Form::checkbox("checkBox[]", $user->id, true, ['class'=>'ckbox'])}}</td>
+                            @else
+                            <td id="selection">{{Form::checkbox("checkBox[]", $user->id, false, ['class'=>'ckbox'])}}</td>
+                            @endif
                             <td>{{$user->username}}</td>
                             <td>{{$user->email}}</td>
                         </tr>

@@ -72,16 +72,50 @@ class StoryPostController extends Controller
         $nextPost = StoryPost::find($currentPostId + 1);
 
         $author = User::find($story_post->author)->firstOrFail()->username;
+        $users = User::where('status', "User")->select('email', 'id', 'username')->get();
+        $arrayCoAuthors = explode(";", $story_post->co_author, -1);
 
-        $users = User::where('status',"user")->select('email','id','username')->get();
+        /*
+         * creating the string to be displayed in the coauthor div in the view
+         */
+        $coAuthorsList = null;
+
+        $counter = 1; //used to detect last iteration
+
+        foreach ($arrayCoAuthors as $coAuthor) {
+            $p = User::find($coAuthor);
+            error_log($counter);
+            if ($counter <> count($arrayCoAuthors)) {
+                $coAuthorsList .= $p->username . "-";
+            }
+            if ($counter == count($arrayCoAuthors)) {
+                $coAuthorsList .= $p->username;
+
+            }
+            $counter += 1;
+
+        }
+
+        /*
+         * assigning true value to coauthors in users array
+         */
+        foreach ($arrayCoAuthors as $coAuthor) {
+            foreach ($users as $user) {
+                if($user->id == $coAuthor){
+                    $user->checked = 'true';
+                }
+            }
+        }
+
 
         return View('stories.main')
             ->with('story_post', $story_post)
             ->with('allPosts', $allPosts)
-            ->with('previousPost',$previousPost)
-            ->with('nextPost',$nextPost)
-            ->with('author',$author)
-            ->with('users',$users);
+            ->with('previousPost', $previousPost)
+            ->with('nextPost', $nextPost)
+            ->with('author', $author)
+            ->with('users', $users)
+            ->with('co_authors', $coAuthorsList);
 
     }
 
@@ -95,8 +129,20 @@ class StoryPostController extends Controller
     {
         $story_post = StoryPost::where('slug', $slug)->firstOrFail();
 
+        $users = User::where('status', 'User')->select('id', 'username', 'email')->get();//the owner of the post (author) is removed at a later stage in the view logic.
+        $arrayCoAuthors = explode(";", $story_post->co_author, -1);
+
+        foreach ($arrayCoAuthors as $coAuthor) {
+            foreach ($users as $user) {
+                if($user->id == $coAuthor){
+                    $user->checked = 'true';
+                }
+            }
+        }
+
         return View('stories.main')
-            ->with('story_post',$story_post);
+            ->with('story_post', $story_post)
+            ->with('users',$users);
     }
 
     /**
@@ -118,7 +164,7 @@ class StoryPostController extends Controller
 
         return redirect()->route('story.show.post', $storyPost->slug);
 
-}
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -137,11 +183,20 @@ class StoryPostController extends Controller
 
     public function updateCoAuthorsPost(Request $request, $slug)
     {
+        $users = $request['checkBox'];
+        $userList = null;
+        foreach ($users as $user) {
+            $userList .= $user . ";";
+
+        }
+
+        $story_post = StoryPost::where('slug', $slug)->firstOrFail();
+        $story_post->co_author = $userList;
+        $story_post->save();
+
 
         return back()->withInput();
     }
-
-
 
 }
 
