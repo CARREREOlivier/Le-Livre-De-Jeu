@@ -6,12 +6,15 @@
 <div class="modal fade" id="modalAddPlayers" tabindex="-1" role="dialog" aria-labelledby="modalAddPlayers" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+            {{ Form::open(array('route' => ['story.update.coauthors.post',$story_post->slug], 'method' => 'POST')) }}
+            {!! csrf_field() !!}
             <div class="modal-header">
                 <h5 class="modal-title" id="modalAddPlayersLabel"><i class="fas fa-address-card"></i> Joueurs</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
                 <input class="form-control" id="searchBar" type="text" placeholder="Cherchage de gens..."/>
                 <table>
@@ -36,9 +39,12 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary lined thin" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-danger lined thin" data-dismiss="modal">Annuler</button>
 
+                <button type="button" class="btn btn-secondary lined thin" data-dismiss="modal">Action</button>
+                {{ Form::submit('Click Me!') }}
             </div>
+            {{ Form::close() }}
         </div>
     </div>
 </div>

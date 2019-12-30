@@ -111,7 +111,6 @@ class StoryPostController extends Controller
         Log::channel('single')->info("Updating AAR Post " . $slug);
 
         $storyPost = StoryPost::where('slug', $slug)->firstOrFail();
-        error_log("storu post $storyPost->text");
         $storyPost->title = $request->title;
         $storyPost->text = $request->text;
         $storyPost->slug = str_slug($request->title);
@@ -136,10 +135,10 @@ class StoryPostController extends Controller
 
     }
 
-    public function updateCoAuthorsPost(Request $request)
+    public function updateCoAuthorsPost(Request $request, $slug)
     {
 
-
+        return back()->withInput();
     }
 
 
