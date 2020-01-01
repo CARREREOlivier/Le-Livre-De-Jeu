@@ -18,8 +18,19 @@
             </div>
 
             <div class="modal-body">
+                <!-- Rounded switch -->
+                <div style="float:left">
+                    <label class="switch">
+                        <input type="checkbox" onclick="toggleSwitchActions()" name="toggleVisibility" id="toggleVisibility" value="all"
+                               checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div style="float:left" id="switchLabel"><p>Visible par tous</p></div>
+
                 <input class="form-control" id="searchBar" type="text" placeholder="Cherchage de gens..."/>
                 <table>
+
 
                     <thead>
                     <th scope="col">Selectionner</th>
@@ -27,24 +38,14 @@
                     <th scope="col">Email</th>
                     </thead>
                     <tbody id="usersLists">
-                            <tr> <td id="selection">{{Form::checkbox("checkBox[]", "all", false, ['class'=>'ckbox'])}}</td>
-                                <td>Tous</td>
-                                <td>''</td>
-
-                            </tr>
-                            <tr> <td id="selection">{{Form::checkbox("checkBox[]", "none", false, ['class'=>'ckbox'])}}</td>
-                                <td>Aucun</td>
-                                <td>''</td>
-
-                            </tr>
                     @foreach($users as$user)
                         @if($user->username <> $author)
                             <tr>
 
                                 @if($user->checked == true)
-                                    <td id="selection">{{Form::checkbox("checkBox[]", $user->id, true, ['class'=>'ckbox'])}}</td>
+                                    <td id="selection">{{Form::checkbox("cbCanSee[]", $user->id, true, ['class'=>'ckbox'])}}</td>
                                 @else
-                                    <td id="selection">{{Form::checkbox("checkBox[]", $user->id, false, ['class'=>'ckbox'])}}</td>
+                                    <td id="selection">{{Form::checkbox("cbCanSee[]", $user->id, false, ['class'=>'ckbox'])}}</td>
                                 @endif
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->email}}</td>
@@ -73,4 +74,20 @@
             });
         });
     });
+</script>
+
+<script>
+    function toggleSwitchActions() {
+
+        var x = document.getElementById("toggleVisibility");
+        var y = document.getElementById("switchLabel");
+
+        if (x.value === "all") {
+            x.value = "none";
+            y.innerHTML = "Visible pour les auteur/co-auteurs/personnes sélectionnées";
+        } else {
+            x.value = "all";
+            y.innerHTML = "Visible par tous";
+        }
+    }
 </script>

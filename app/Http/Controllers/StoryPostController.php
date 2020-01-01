@@ -102,6 +102,12 @@ class StoryPostController extends Controller
         $users = $this->assignCheckedStatus($arrayCoAuthors, $users);
 
 
+        /*
+         * Visibility status
+         */
+
+
+
         return View('stories.main')
             ->with('story_post', $story_post)
             ->with('allPosts', $allPosts)
@@ -183,6 +189,23 @@ class StoryPostController extends Controller
         $story_post = StoryPost::where('slug', $slug)->firstOrFail();
         $story_post->co_author = $userList;
         $story_post->save();
+
+
+        return back()->withInput();
+    }
+
+    public function updateVisibilityPost(Request $request, $slug){
+
+
+        dd($request);
+        /*
+         * if all is ticked
+         */
+
+        /*
+         * if none is ticked
+         */
+
 
 
         return back()->withInput();
