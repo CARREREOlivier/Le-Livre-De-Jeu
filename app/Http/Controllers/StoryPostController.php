@@ -102,6 +102,11 @@ class StoryPostController extends Controller
         $users = $this->assignCheckedStatus($arrayCoAuthors, $users);
 
 
+        /*
+         * Visibility status
+         */
+
+
         return View('stories.main')
             ->with('story_post', $story_post)
             ->with('allPosts', $allPosts)
@@ -125,11 +130,9 @@ class StoryPostController extends Controller
 
         $users = User::where('status', 'User')->select('id', 'username', 'email')->get();//the owner of the post (author) is removed at a later stage in the view logic.
         $arrayCoAuthors = explode(";", $story_post->co_author, -1);
-
-
         /*
-     * assigning true value to coauthors in users array
-     */
+         * assigning true value to coauthors in users array
+         */
         $users = self::assignCheckedStatus($arrayCoAuthors, $users);
 
         return View('stories.main')
@@ -190,6 +193,31 @@ class StoryPostController extends Controller
         return back()->withInput();
     }
 
+    public function updateVisibilityPost(Request $request, $slug)
+    {
+        $storyPost = StoryPost::where('slug', $slug)->firstOrFail();
+        if ($request->get('toggleVisibility') === "all") {
+            $storyPost->visible_by = "all";
+            $storyPost->save();
+
+            return back()->withInput();
+        }
+
+        if ($request->get('toggleVisibility') === null) {
+
+            $users = $request['cbCanSee'];
+            $userList = null;
+            foreach ($users as $user) {
+                $userList .= $user . ";";
+
+            }
+            $storyPost->visible_by =  $userList;
+            $storyPost->save();
+
+        }
+        return back()->withInput();
+    }
+
     /**
      * for maintenance purpose as the block is used several times
      * @param $arrayCoAuthors
@@ -206,7 +234,7 @@ class StoryPostController extends Controller
             }
         }
 
-       return $users;
+        return $users;
 
     }
 }
