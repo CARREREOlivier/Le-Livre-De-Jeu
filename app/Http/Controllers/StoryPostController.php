@@ -107,7 +107,6 @@ class StoryPostController extends Controller
          */
 
 
-
         return View('stories.main')
             ->with('story_post', $story_post)
             ->with('allPosts', $allPosts)
@@ -194,20 +193,28 @@ class StoryPostController extends Controller
         return back()->withInput();
     }
 
-    public function updateVisibilityPost(Request $request, $slug){
+    public function updateVisibilityPost(Request $request, $slug)
+    {
+        $storyPost = StoryPost::where('slug', $slug)->firstOrFail();
+        if ($request->get('toggleVisibility') === "all") {
+            $storyPost->visible_by = "all";
+            $storyPost->save();
 
+            return back()->withInput();
+        }
 
-        dd($request);
-        /*
-         * if all is ticked
-         */
+        if ($request->get('toggleVisibility') === null) {
 
-        /*
-         * if none is ticked
-         */
+            $users = $request['cbCanSee'];
+            $userList = null;
+            foreach ($users as $user) {
+                $userList .= $user . ";";
 
+            }
+            $storyPost->visible_by =  $userList;
+            $storyPost->save();
 
-
+        }
         return back()->withInput();
     }
 
@@ -227,7 +234,7 @@ class StoryPostController extends Controller
             }
         }
 
-       return $users;
+        return $users;
 
     }
 }

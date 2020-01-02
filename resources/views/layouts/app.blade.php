@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
     <script src="{{asset('js/collapsible-behavior.js')}}"></script>
+    <script src="{{asset('js/lldj.js')}}"></script>
     <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
 
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=65zbam7degsr85vzz2nh3i6bou6evi4sopf9en2j8n8ndm0y"></script>

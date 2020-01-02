@@ -3,6 +3,7 @@
     <i class="fas fa-eye"></i>
 </button>
 
+
 <!-- Modal -->
 <div class="modal fade" id="modalVisibility" tabindex="-1" role="dialog" aria-labelledby="modalVisibility"
      aria-hidden="true">
@@ -38,8 +39,8 @@
                     <th scope="col">Email</th>
                     </thead>
                     <tbody id="usersLists">
-                    @foreach($users as$user)
-                        @if($user->username <> $author)
+                    @foreach($users as $user)
+                        @if($user->username !== $author && $user->checked !== 'true' )
                             <tr>
 
                                 @if($user->checked == true)
@@ -76,18 +77,3 @@
     });
 </script>
 
-<script>
-    function toggleSwitchActions() {
-
-        var x = document.getElementById("toggleVisibility");
-        var y = document.getElementById("switchLabel");
-
-        if (x.value === "all") {
-            x.value = "none";
-            y.innerHTML = "Visible pour les auteur/co-auteurs/personnes sélectionnées";
-        } else {
-            x.value = "all";
-            y.innerHTML = "Visible par tous";
-        }
-    }
-</script>
