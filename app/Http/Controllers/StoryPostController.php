@@ -8,6 +8,7 @@ use App\Story;
 use App\StoryPost;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class StoryPostController extends Controller
@@ -101,11 +102,18 @@ class StoryPostController extends Controller
          */
         $users = $this->assignCheckedStatus($arrayCoAuthors, $users);
 
+        /*
+         * Permissions status
+         */
+        $userId = Auth()->user()->id;
+
+        $isAuthor = $this->isAuthor($userId, $story_post);
+        $isCoAuthor = $this->isCoAuthor($userId, $story_post);
+        $canRead = $this->canRead($userId, $story_post);
 
         /*
-         * Visibility status
+         * Send to view
          */
-
 
         return View('stories.main')
             ->with('story_post', $story_post)
@@ -114,7 +122,10 @@ class StoryPostController extends Controller
             ->with('nextPost', $nextPost)
             ->with('author', $author)
             ->with('users', $users)
-            ->with('co_authors', $coAuthorsList);
+            ->with('co_authors', $coAuthorsList)
+            ->with('isAuthor', $isAuthor)
+            ->with('isCoAuthor', $isCoAuthor)
+            ->with('canRead', $canRead);
 
     }
 
@@ -211,7 +222,7 @@ class StoryPostController extends Controller
                 $userList .= $user . ";";
 
             }
-            $storyPost->visible_by =  $userList;
+            $storyPost->visible_by = $userList;
             $storyPost->save();
 
         }
@@ -237,6 +248,56 @@ class StoryPostController extends Controller
         return $users;
 
     }
+
+    function isAuthor($userId, $story_post)
+    {
+
+        $boolean = false;
+
+        if ($story_post->author === $userId) {
+            $boolean = true;
+        }
+
+
+        return $boolean;
+    }
+
+    function isCoAuthor($userId, $story_post)
+    {
+
+        $boolean = false;
+        $arrayCoAuthors = explode(';', $story_post->co_author, -1);
+
+        foreach ($arrayCoAuthors as $coAuthor) {
+
+            if ($userId === $coAuthor) {
+                $boolean = true;
+            }
+
+        }
+
+
+        return $boolean;
+    }
+
+    function canRead($userId, $story_post)
+    {
+
+        $boolean = false;
+        $arrayCanRead = explode(';', $story_post->visible_by, -1);
+
+        foreach ($arrayCanRead as $reader) {
+            if ($userId === $reader) {
+                $boolean = true;
+            }
+
+        }
+
+        return $boolean;
+
+    }
+
+
 }
 
 
