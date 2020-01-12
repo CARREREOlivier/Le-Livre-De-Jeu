@@ -28,8 +28,9 @@
                         {{$co_authors}}
                         <br/>
                         <strong>Visible Par:</strong>
-                        {{$story_post->visible_by}}
+                       @include('stories._partials.story_visibility')
                     </p>
+
                 </div>
             </div>
 

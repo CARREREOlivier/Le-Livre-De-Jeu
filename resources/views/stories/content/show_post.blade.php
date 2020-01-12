@@ -32,7 +32,7 @@
 
 @endif
 
-@if($canRead === false and $isAuthor===false and $isCoAuthor === false)
+@if($canRead === false and $isAuthor===false and $isCoAuthor === false && $allCanRead===false)
     @include('stories.strips.non_authorized')
 @endif
 
