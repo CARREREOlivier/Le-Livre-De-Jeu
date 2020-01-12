@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Factories\storyCommentFactory;
+use App\StoryComment;
 use Illuminate\Http\Request;
 
 class StoryCommentController extends Controller 
@@ -34,7 +36,12 @@ class StoryCommentController extends Controller
    */
   public function store(Request $request)
   {
-    
+
+      $storyComment=storyCommentFactory::build($request);
+      $storyComment->save();
+
+      return back()->withInput();
+
   }
 
   /**

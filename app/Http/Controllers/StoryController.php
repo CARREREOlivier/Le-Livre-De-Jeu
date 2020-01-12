@@ -24,13 +24,11 @@ class StoryController extends Controller
         $stories = Story::all();
 
         //getting all story posts with author name fetched from user table
-        $storyPosts = DB::table('users')
-            ->join('story_posts', 'story_posts.author', '=', 'users.id')
-            ->select('users.id', 'users.username', 'users.status', 'story_posts.id', 'story_posts.created_at',
-                'story_posts.story_id', 'story_posts.title', 'story_posts.author', 'story_posts.co_author', 'story_posts.visible_by','story_posts.slug')
-            ->get();
+        $storyPosts = $this->getStoryPosts();
 
-        error_log($storyPosts);
+        //fetching Coauthors usernames in database
+        $this->fetchCoAuthors($storyPosts);
+
         return View('stories.main')
             ->with('stories', $stories)
             ->with('storyPosts', $storyPosts);
@@ -78,6 +76,8 @@ class StoryController extends Controller
 
         $author = User::find($story->user_id);
         $author = $author->username;
+
+
 
         return View('stories.main')
             ->with('story', $story)
@@ -141,6 +141,52 @@ class StoryController extends Controller
         $story->delete();
 
         return redirect()->route('story.index');
+    }
+
+    /**
+     * @param \Illuminate\Support\Collection $storyPosts
+     */
+    private function fetchCoAuthors(\Illuminate\Support\Collection $storyPosts): void
+    {
+        foreach ($storyPosts as $storyPost) {
+
+            $arrayCoAuthors = explode(";", $storyPost->co_author, -1);
+
+            /*
+             * creating the string to be displayed in the coauthor div in the view
+             */
+            $coAuthorsList = null;
+
+            $counter = 1; //used to detect last iteration
+
+            foreach ($arrayCoAuthors as $coAuthor) {
+                $p = User::find($coAuthor);
+                error_log($counter);
+                if ($counter <> count($arrayCoAuthors)) {
+                    $coAuthorsList .= $p->username . "-";
+                }
+                if ($counter === count($arrayCoAuthors)) {
+                    $coAuthorsList .= $p->username;
+
+                }
+                $counter += 1;
+                $storyPost->co_author = $coAuthorsList;
+            }
+
+        }
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    private function getStoryPosts(): \Illuminate\Support\Collection
+    {
+        $storyPosts = DB::table('users')
+            ->join('story_posts', 'story_posts.author', '=', 'users.id')
+            ->select('users.id', 'users.username', 'users.status', 'story_posts.id', 'story_posts.created_at',
+                'story_posts.story_id', 'story_posts.title', 'story_posts.author', 'story_posts.co_author', 'story_posts.visible_by', 'story_posts.slug')
+            ->get();
+        return $storyPosts;
     }
 
 }

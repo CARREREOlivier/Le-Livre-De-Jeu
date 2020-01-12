@@ -1,4 +1,4 @@
-@if($isAuthor===true)
+@if($isAuthor === true)
     <!--top row-->
     @include('stories.strips.show_post_top_row')
 
@@ -11,7 +11,7 @@
 @endif
 
 
-@if($isCoAuthor===true)
+@if($isCoAuthor === true)
     <!--top row-->
     @include('stories.strips.show_post_top_row')
 
@@ -23,7 +23,7 @@
 
 @endif
 
-@if($canRead===true)
+@if($canRead===true && $isAuthor === false && $isCoAuthor === false)
     <!--top row-->
     @include('stories.strips.show_post_top_row')
 
@@ -32,6 +32,15 @@
 
 @endif
 
-@if($canRead === false and $isAuthor===false and $isCoAuthor === false)
-@include('stories..strips.stories.strips.non_authorized')
+@if($canRead === false and $isAuthor===false and $isCoAuthor === false && $allCanRead===false)
+    @include('stories.strips.non_authorized')
+@endif
+
+@if($allCanRead===true && $isAuthor === false && $isCoAuthor === false)
+    <!--top row-->
+    @include('stories.strips.show_post_top_row')
+
+    <!--post section-->
+    @include('stories.strips.show_post_post_section')
+
 @endif

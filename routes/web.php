@@ -82,6 +82,11 @@ Route::get('story/post/{slug}/edit', 'StoryPostController@edit')->name('story.ed
 Route::put('story/post/{slug}/update', 'StoryPostController@update')->name('story.update.post');
 Route::post('story/post/{slug}/updateCoAuthorsPost', 'StoryPostController@updateCoAuthorsPost')->name('story.update.coauthors.post');
 Route::post('story/post/{slug}/updateVisibilityPost', 'StoryPostController@updateVisibilityPost')->name('story.update.visibility.post');
+
+
+Route::post('story/add_comment', 'StoryCommentController@store')->name('story_post.add.comment');
+
+
 /**
  * upload and download routes
 
