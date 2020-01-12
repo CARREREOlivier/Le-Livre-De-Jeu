@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StoryComment extends Model 
 {
@@ -13,5 +12,6 @@ class StoryComment extends Model
 
 
     protected $dates = ['deleted_at'];
+
 
 }
