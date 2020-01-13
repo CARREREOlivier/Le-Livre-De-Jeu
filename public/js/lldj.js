@@ -1,4 +1,4 @@
-function toggleSwitchActions() {
+function toggleSwitchActions(buttonID) {
 
     var x = document.getElementById("toggleVisibility");
     var y = document.getElementById("switchLabel");

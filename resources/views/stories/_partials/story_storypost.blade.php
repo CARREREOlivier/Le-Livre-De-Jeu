@@ -2,7 +2,7 @@
 {!! $story->description !!}
 <!--Collapse-->
     @include('stories._partials.btn_story_storypost_list')
-    <div class="collapse" id="collapseExample">
+    <div class="collapse" id="collapse{{$story->id}}">
         @foreach($storyPosts as $storyPost)
             <div class="col-md-12 box-left">
                 <div class="yellow-bg story-posts-vignette word-wrap:break-word ">

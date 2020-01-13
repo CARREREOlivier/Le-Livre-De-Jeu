@@ -5,7 +5,6 @@
 
                 <div class="shine"></div>
                 <div class="text-block gamesession-description">
-
                     <h3 class="last-turn-title yellow">{{$story->title}}
                     </h3>
                     <p>Créée le:@include('utils.date_french',['date'=>$story->created_at])</p>
@@ -23,7 +22,6 @@
                 <div class="shine"></div>
                 <div class="text-block gamesession-description">
                     <p>{!! $story->description !!}</p>
-
                 </div>
             </div>
 
