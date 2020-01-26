@@ -1,7 +1,12 @@
 <div class="green-bg vignette full-height">
 {!! $story->description !!}
+
 <!--Collapse-->
-    @include('stories._partials.btn_story_storypost_list')
+    @if(isset($story->hasPost))
+        @include('stories._partials.btn_story_storypost_list')
+    @else
+        <p>Aucun post n'a été créé pour le moment!</p>
+    @endif
     <div class="collapse" id="collapse{{$story->id}}">
         @foreach($storyPosts as $storyPost)
             <div class="col-md-12 box-left">
@@ -17,6 +22,7 @@
     </div>
 
 
-   <!-- @include('stories._partials.btn_read_story')-->
+<!-- @include('stories._partials.btn_read_story')-->
 
 </div>
+

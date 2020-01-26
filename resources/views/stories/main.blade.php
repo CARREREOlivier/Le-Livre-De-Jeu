@@ -21,6 +21,10 @@
             @include('stories.content.edit')
             @break;
 
+            @case('story.permissions')
+            @include('stories.content.permissions')
+            @break;
+
             @case('story.add.post')
             @include('stories.content.create_post')
             @break;
@@ -32,6 +36,8 @@
             @case('story.edit.post')
             @include('stories.content.edit_post')
             @break;
+
+
 
         @endswitch
 
