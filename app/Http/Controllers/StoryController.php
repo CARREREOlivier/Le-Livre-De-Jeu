@@ -6,7 +6,9 @@ use App\Factories\StoryFactory;
 use App\GameSession;
 use App\Story;
 use App\StoryPost;
+use App\StoryRole;
 use App\User;
+use App\Utils\DataFinder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,17 +23,18 @@ class StoryController extends Controller
      */
     public function index()
     {
-        $stories = Story::all();
+        $fields=['users.username',
+            'stories.*'];
 
-        //getting all story posts with author name fetched from user table
-        $storyPosts = $this->getStoryPosts();
+        $stories= DB::table('users')
+            ->join('stories','stories.user_id','=','users.id',"inner")
+            ->select($fields)
+            ->get();
 
-        //fetching Coauthors usernames in database
-        $this->fetchCoAuthors($storyPosts);
+
 
         return View('stories.main')
-            ->with('stories', $stories)
-            ->with('storyPosts', $storyPosts);
+            ->with('stories', $stories);
     }
 
     /**
@@ -76,7 +79,6 @@ class StoryController extends Controller
 
         $author = User::find($story->user_id);
         $author = $author->username;
-
 
 
         return View('stories.main')
@@ -174,6 +176,27 @@ class StoryController extends Controller
             }
 
         }
+    }
+
+    public function editPermissions($slug){
+
+        $storyId=Story::where('slug','=',$slug)->get();
+        $users=User::where('status','<>','Admin')->get();
+
+        $storyRoles = StoryRole::where('story_id','=',$storyId)->get();
+        $roles = DataFinder::getEnumValues('story_role','role');
+
+        return View('stories.main')
+            ->with('users',$users)
+            ->with('roles',$roles);
+    }
+
+    public function updatePermissions(Request $request, $slug){
+
+
+
+
+
     }
 
     /**

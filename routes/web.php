@@ -87,6 +87,9 @@ Route::post('story/post/{slug}/updateVisibilityPost', 'StoryPostController@updat
 Route::post('story/add_comment', 'StoryCommentController@store')->name('story_post.add.comment');
 
 
+Route::get('story/manage_permissions/{slug}', 'StoryController@editPermissions')->name('story.permissions');
+
+
 /**
  * upload and download routes
 

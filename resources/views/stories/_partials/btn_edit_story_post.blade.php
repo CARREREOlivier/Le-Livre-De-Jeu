@@ -1,4 +1,4 @@
-<a href="{{route('story.edit.post',$story_post->slug)}}"
+<a href="{{route('story.edit.post',$slug)}}"
    title="Modifier le post"
    role="button"
    class="btn btn-secondary lined thin" >

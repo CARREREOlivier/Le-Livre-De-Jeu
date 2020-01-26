@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class StoryRole extends Model 
 {
 
-    protected $table = 'storiesrole';
+    protected $table = 'story_role';
     public $timestamps = true;
 
 
