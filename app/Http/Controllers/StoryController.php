@@ -23,14 +23,13 @@ class StoryController extends Controller
      */
     public function index()
     {
-        $fields=['users.username',
+        $fields = ['users.username',
             'stories.*'];
 
-        $stories= DB::table('users')
-            ->join('stories','stories.user_id','=','users.id',"inner")
+        $stories = DB::table('users')
+            ->join('stories', 'stories.user_id', '=', 'users.id', "inner")
             ->select($fields)
             ->get();
-
 
 
         return View('stories.main')
@@ -178,40 +177,40 @@ class StoryController extends Controller
         }
     }
 
-    public function editPermissions($slug){
+    public function editPermissions($slug)
+    {
 
-        $storyId=Story::where('slug','=',$slug)->get();
-        $users=User::where('status','<>','Admin')->get();
+        $story = Story::where('slug', '=', $slug)->firstOrFail();
+        $storyId = $story->id;
 
-        $storyRoles = StoryRole::where('story_id','=',$storyId)->get();
-        $roles = DataFinder::getEnumValues('story_role','role');
+        $users = User::where('status', '<>', 'Admin')->get();
+        $storyRoles = StoryRole::with('getUserNames')->where('story_id', '=', $storyId)->get();
 
         return View('stories.main')
-            ->with('users',$users)
-            ->with('roles',$roles);
+            ->with('users', $users)
+            ->with('storyRoles', $storyRoles)
+            ->with('slug', $slug);
     }
 
-    public function updatePermissions(Request $request, $slug){
-
-
-
-
-
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    private function getStoryPosts(): \Illuminate\Support\Collection
+    public function updatePermissions(Request $request, $slug)
     {
-        $storyPosts = DB::table('users')
-            ->join('story_posts', 'story_posts.author', '=', 'users.id')
-            ->select('users.id', 'users.username', 'users.status', 'story_posts.id', 'story_posts.created_at',
-                'story_posts.story_id', 'story_posts.title', 'story_posts.author', 'story_posts.co_author', 'story_posts.visible_by', 'story_posts.slug')
-            ->get();
-        return $storyPosts;
+         dd($request->input());
     }
 
+
+}
+
+
+function object_to_array($data)
+{
+    if (is_array($data) || is_object($data)) {
+        $result = array();
+        foreach ($data as $key => $value) {
+            $result[$key] = object_to_array($value);
+        }
+        return $result;
+    }
+    return $data;
 }
 
 ?>
