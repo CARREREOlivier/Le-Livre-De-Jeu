@@ -127,6 +127,7 @@
 <div class="row strip white-bg">
     <div class='vignette green-bg full-height'>
         <h3>Gestion des permissions</h3>
+        <input class="form-control" id="searchBar" type="text" placeholder="Filtrage des personnes..."/>
         {{Form::open(array('route' => array('story.update.permissions',$slug),'method' => 'POST'))}}
 
         {!! csrf_field() !!}
@@ -137,7 +138,7 @@
                 <td>role</td>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="usersList">
 
             @foreach($users as $user)
 
@@ -182,4 +183,15 @@
 
         $('[tooltip="yes"]').tooltip()
     })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBar").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#usersList tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
 </script>
