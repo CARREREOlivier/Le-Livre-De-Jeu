@@ -14,4 +14,11 @@ class StoryRole extends Model
 
     protected $dates = ['deleted_at'];
 
+    public function getUserNames(){
+
+        return $this->hasOne(User::class, "id")->select('id','username');
+
+    }
+
+
 }

@@ -4,7 +4,7 @@
             <td><h1 class='title'>Permissions pour l'AAR</h1></td>
             <td>
                 &nbsp;&nbsp;&nbsp;<button class="btn btn-secondary lined thin" type="button" title="aide"
-                                          data-toggle="modal" data-target="#helpModal">
+                                          data-toggle="modal" data-target="#helpModal" tooltip="yes">
                     <i class="fas fa-question fa-xs fa-pulse"></i></button>
             </td>
         </tr>
@@ -21,34 +21,61 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table-primary table-bordered">
-                        <caption style="caption-side: top; color:blue;">Les Editeurs</caption>
-                        <thead class="thead-dark">
-                        <td style="font-weight:bold;">peuvent</td>
-                        <td style="font-weight:bold;">ne peuvent pas</td>
+                    <p>Les droits définissent les permissions diverses accordées aux utilisateurs.
+                        Les utilisateurs loggués ou non peuvent toujours consulter un AAR et ses posts sauf dispositions
+                        contraires au niveau de la visibilité dans les posts</p>
+                    <p> Les éditeurs ont tout les droits à part celui d'effacer intégralement l'AAR (réservé au créateur
+                        de l'AAR)</p>
+                    <p> Les Auteurs peuvent mettre en ligne des posts</p>
+
+                    <table class="table-bordered">
+                        <caption style="caption-side: top; color:blue;">Droits en fonction du role</caption>
+                        <thead class="thead">
+                        <td style="font-weight:bold;">Droit</td>
+                        <td style="font-weight:bold;">Editeurs</td>
+                        <td style="font-weight:bold;">Auteurs</td>
                         </thead>
                         <tbody>
                         <tr>
                             <td>modifier l'introduction</td>
-                            <td>Effacer l'intégralité de l'AAR avec tout ses posts</td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                            <td><i class="fas fa-times" style="color:darkred"></i></td>
                         </tr>
                         <tr>
                             <td>créer un post</td>
-                            <td></td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
                         </tr>
                         <tr>
                             <td>modifier un post</td>
-                            <td></td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
                         </tr>
                         <tr>
                             <td>effacer un post</td>
-                            <td></td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                        </tr>
+                        <tr>
+                            <td>modifier n'importe quel post</td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                            <td><i class="fas fa-times" style="color:darkred"></i></td>
+                        </tr>
+                        <tr>
+                            <td>effacer n'importe quel post</td>
+                            <td><i class="fas fa-check" style="color:seagreen;"></i></td>
+                            <td><i class="fas fa-times" style="color:darkred"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: normal;
+                                word-wrap: break-word; max-width: 150px ">Effacer l'intégralité de l'AAR avec tout ses
+                                posts
+                            <td><i class="fas fa-times" style="color:darkred"></i></td>
+                            <td><i class="fas fa-times" style="color:darkred"></i></td>
                         </tr>
                         </tbody>
                     </table>
 
-                    <p>Auteurs: peuvent créer des posts et les modifiers</p>
-                    <p>Interdits: ne peuvent pas accéder à l'AAR (même pas lire l'introduction)</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary lined thin" data-dismiss="modal">Fermer</button>
@@ -60,51 +87,99 @@
 
 <!--current users roles strip-->
 <div class="row strip white-bg">
-    <div class="col-md-4  archive-left">
+    <div class="col-md-6  archive-left ">
         <div class="evenboxinner-turn">
             Editeurs
+
         </div>
-        <div class='vignette blue-bg'>Editeurs</div>
+        <div class='vignette blue-bg full-height'>
+
+            @foreach($storyRoles as $storyRole)
+                @if($storyRole->role === 'Editor')
+                    {{$storyRole->getUserNames->username}}
+                @endif
+            @endforeach
+
+        </div>
     </div>
-    <div class="col-md-4 archive-center">
+    <div class="col-md-6 archive-right">
         <div class="evenboxinner-descriptive">
             Auteurs
         </div>
-        <div class='vignette yellow-bg'>Auteurs</div>
-    </div>
+        <div class='vignette yellow-bg full-height'>
 
-    <div class="col-md-4 archive-right">
-        <div class="evenboxinner-descriptive">
-            Interdits
+            @foreach($storyRoles as $storyRole)
+
+                @if($storyRole->role === 'Author')
+                    {{$storyRole->getUserNames->username}}
+                @endif
+
+            @endforeach
+
         </div>
-        <div class='vignette red-bg'>Interdits</div>
     </div>
-
 
 </div>
 <!--search bar-->
 <p>include: Search bar module</p>
 
-<!--ajouter nouveaux utilisateurs-->
-<p>gérer utilisateurs</p>
-<table class="table-hover">
-    <thead>
-    <tr>
-        <td>Pseudo</td>
-        <td>role</td>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($users as $user)
 
-        <tr>
-            <td>{{$user->username}}</td>
-            <td><select>
-                    @foreach($roles as $role)
-                        <option value="role">{{$role}}</option>
-                    @endforeach </select></td>
-        </tr>
+<div class="row strip white-bg">
+    <div class='vignette green-bg full-height'>
+        <h3>Gestion des permissions</h3>
+        {{Form::open(array('route' => array('story.update.permissions',$slug),'method' => 'POST'))}}
 
-    @endforeach
-    </tbody>
-</table>
+        {!! csrf_field() !!}
+        <table class="table-hover">
+            <thead>
+            <tr>
+                <td>Pseudo</td>
+                <td>role</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach($users as $user)
+
+                <tr>
+                    <td>{{$user->username}}</td>
+                    <td>
+                        @foreach($storyRoles as $storyRole)
+                            @if($storyRole->user_id === $user->id)
+                                @switch($storyRole->role)
+                                    @case('Editor')
+                                    {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Editor')}}
+                                    @break;
+
+                                    @case('Author')
+                                    {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Author')}}
+                                    @break;
+
+                                @endswitch
+
+                            @else
+                                {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'None')}}
+                            @endif
+                        @endforeach
+
+
+                    </td>
+                </tr>
+
+            @endforeach
+
+            </tbody>
+
+        </table>
+
+
+        {{Form::submit('Mettre à jour',['class'=>'btn btn-secondary lined thin float-right'])}}
+        {{Form::close()}}
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        $('[tooltip="yes"]').tooltip()
+    })
+</script>
