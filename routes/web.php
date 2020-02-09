@@ -88,7 +88,7 @@ Route::post('story/add_comment', 'StoryCommentController@store')->name('story_po
 
 
 Route::get('story/manage_permissions/{slug}', 'StoryController@editPermissions')->name('story.permissions');
-
+Route::post('story/update_permissions/{slug}', 'StoryController@updatePermissions')->name('story.update.permissions');
 
 /**
  * upload and download routes
