@@ -8,10 +8,4 @@
 @include('stories.strips.show_table_of_contents')
 
 
-<script type="text/javascript">
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-
-
-</script>
+@include('utils.tooltip_script')
