@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Factories\StoryFactory;
+use App\Factories\StoryRoleFactory;
 use App\GameSession;
 use App\Story;
 use App\StoryPost;
 use App\StoryRole;
 use App\User;
 use App\Utils\DataFinder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -194,23 +196,78 @@ class StoryController extends Controller
 
     public function updatePermissions(Request $request, $slug)
     {
-         dd($request->input());
-    }
+        $story = Story::where('slug', '=', $slug)->firstOrFail();
+
+       // $storyRoles = StoryRole::where('story_id', '=', $story->id)->get();
+
+        $filtered = $this->removeToken($request);
+
+        foreach ($filtered as $key => $value) {
+            $userId = $this->remove_string('entry_', $key);
+            if ($value === 'None') {
+                StoryRole::where('story_id', '=', $story->id)
+                    ->where('user_id', '=', $userId)->delete();
+            }
+            if ($value !== 'None') {
+                try {
+
+                    $storyRole = StoryRole::where('user_id', '=', $userId)->firstOrFail();
+
+                    if ($storyRole->role !== $value) {
+
+                        $storyRole->role = $value;
+                        $storyRole->save();
+
+                    }
+                } catch (ModelNotFoundException $e) {
 
 
-}
+                    $storyRole = StoryRoleFactory::build($userId, $value, $story->id);
+                    $storyRole->save();
+                }
 
+            }
 
-function object_to_array($data)
-{
-    if (is_array($data) || is_object($data)) {
-        $result = array();
-        foreach ($data as $key => $value) {
-            $result[$key] = object_to_array($value);
         }
-        return $result;
+
+        return back()->withInput();
+
     }
-    return $data;
+
+
+    function object_to_array($data)
+    {
+        if (is_array($data) || is_object($data)) {
+            $result = array();
+            foreach ($data as $key => $value) {
+                $result[$key] = object_to_array($value);
+            }
+            return $result;
+        }
+        return $data;
+    }
+
+    function remove_string($stringToRemove, $stringToCleanse)
+    {
+
+
+        $str = preg_replace('/^' . $stringToRemove . '/', '', $stringToCleanse);
+
+
+        return $str;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function removeToken(Request $request): array
+    {
+        $filtered = $request->toArray();
+        $token = array_shift($filtered);
+        return $filtered;
+    }
+
 }
 
 ?>
