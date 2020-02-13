@@ -120,9 +120,6 @@
     </div>
 
 </div>
-<!--search bar-->
-<p>include: Search bar module</p>
-
 
 <div class="row strip white-bg">
     <div class='vignette green-bg full-height'>
@@ -149,17 +146,17 @@
                             @if($storyRole->user_id === $user->id)
                                 @switch($storyRole->role)
                                     @case('Editor')
-                                    {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Editor')}}
+                                    {{Form::select("entry_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Editor')}}
                                     @break;
 
                                     @case('Author')
-                                    {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Author')}}
+                                    {{Form::select("entry_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Author')}}
                                     @break;
 
                                 @endswitch
 
                             @else
-                                {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'None')}}
+                                {{Form::select("entry_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'None')}}
                             @endif
                         @endforeach
 
