@@ -185,12 +185,25 @@ class StoryController extends Controller
         $story = Story::where('slug', '=', $slug)->firstOrFail();
         $storyId = $story->id;
 
-        $users = User::where('status', '<>', 'Admin')->get();
-        $storyRoles = StoryRole::with('getUserNames')->where('story_id', '=', $storyId)->get();
+        $users = User::where('status', '<>', 'Admin')
+            ->where('id','<>',$story->user_id)
+            ->select('id','username')
+            ->get();
+
+        $storyRoles = StoryRole::where('user_id','<>',$story->user_id)
+            ->with('getUserNames')
+            ->where('story_id', '=', $storyId)
+            ->get();
+
+
+        $editors = $this->getRolesWithUserNames("Editor");
+        $authors = $this->getRolesWithUserNames("Author");
 
         return View('stories.main')
             ->with('users', $users)
             ->with('storyRoles', $storyRoles)
+            ->with('editors',$editors)
+            ->with('authors',$authors)
             ->with('slug', $slug);
     }
 
@@ -198,9 +211,7 @@ class StoryController extends Controller
     {
         $story = Story::where('slug', '=', $slug)->firstOrFail();
 
-       // $storyRoles = StoryRole::where('story_id', '=', $story->id)->get();
-
-        $filtered = $this->removeToken($request);
+        $filtered = $this->removeToken($request);//CSRF token remove from request for the sake of clarity when processing the object. Token does not matter at this point unless I'm mistaken.
 
         foreach ($filtered as $key => $value) {
             $userId = $this->remove_string('entry_', $key);
@@ -266,6 +277,18 @@ class StoryController extends Controller
         $filtered = $request->toArray();
         $token = array_shift($filtered);
         return $filtered;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getRolesWithUserNames($role)
+    {
+        $storyUsers= StoryRole::where('role', '=', $role)->get();
+        foreach ($storyUsers as $storyUser) {
+            $storyUser->username = User::where('id', '=', $storyUser->user_id)->firstOrfail()->username;
+        }
+        return $storyUsers;
     }
 
 }
