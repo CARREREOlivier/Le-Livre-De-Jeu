@@ -49,6 +49,7 @@ class StoryPostController extends Controller
     public function store(Request $request)
     {
         $storyPost = StoryPostFactory::build($request);
+        $this->addImgAutoResize($storyPost);
         $storyPost->save();
 
         return redirect()->route('story.index');
@@ -66,8 +67,10 @@ class StoryPostController extends Controller
     {
 
         $story_post = StoryPost::where('slug', $slug)->firstOrFail();
-
         $allPosts = StoryPost::where('story_id', $story_post->story_id)->get();
+
+        $story = Story::where('id', '=', $story_post->story_id)->firstOrFail();
+        $story_slug = $story->slug;
 
         $currentPostId = $story_post->id;
 
@@ -106,13 +109,17 @@ class StoryPostController extends Controller
             $allCanRead = true;
 
         } else {
-            $allCanRead = false;}
+            $allCanRead = false;
+        }
 
 
         $array = ['text',
             'username',
             'stories_comments.created_at'];
-        $story_comments = User::join('stories_comments', 'users.id', '=', 'stories_comments.user_id')->select($array)->get();
+        $story_comments = User::join('stories_comments', 'users.id', '=', 'stories_comments.user_id')
+            ->select($array)
+            ->where('story_post_id', '=', $story_post->id)
+            ->get();
 
         /*
          * Send to view
@@ -130,7 +137,8 @@ class StoryPostController extends Controller
             ->with('isCoAuthor', $isCoAuthor)
             ->with('canRead', $canRead)
             ->with('story_comments', $story_comments)
-            ->with('allCanRead',$allCanRead);
+            ->with('allCanRead', $allCanRead)
+            ->with('story_slug', $story_slug);
 
     }
 
@@ -168,6 +176,7 @@ class StoryPostController extends Controller
         Log::channel('single')->info("Updating AAR Post " . $slug);
 
         $storyPost = $this->updateStoryPost($request, $slug);
+
 
         return redirect()->route('story.show.post', $storyPost->slug);
 
@@ -352,9 +361,18 @@ class StoryPostController extends Controller
         $storyPost = StoryPost::where('slug', $slug)->firstOrFail();
         $storyPost->title = $request->title;
         $storyPost->text = $request->text;
+        $this->addImgAutoResize($storyPost);//if there is an img tag, the method add a class"img-fluid" for an autoresize into the div
         $storyPost->slug = str_slug($request->title);
         $storyPost->save();
         return $storyPost;
+    }
+
+    /**
+     * @param StoryPost $storyPost
+     */
+    private function addImgAutoResize(StoryPost $storyPost): void
+    {
+        $storyPost->text = str_replace("<img src=", "<img class=\"img-fluid\" src=", "$storyPost->text");
     }
 
 
