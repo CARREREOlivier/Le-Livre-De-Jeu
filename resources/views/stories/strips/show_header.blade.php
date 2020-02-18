@@ -5,10 +5,20 @@
 
                 <div class="shine"></div>
                 <div class="text-block gamesession-description">
-                    <h3 class="last-turn-title yellow">{{$story->title}}
-                    </h3>
-                    <p>Créée le:@include('utils.date_french',['date'=>$story->created_at])</p>
-                    <p>par {!! $author !!}</p>
+                    <h1 class="last-turn-title yellow">{{$story->title}}
+                    </h1>
+                    <div style="line-height: 10px"><p>Créée le:@include('utils.date_french',['date'=>$story->created_at])</p>
+                        <p>par {!! $author !!}</p>
+                        <p> Editeur(s):
+                            @foreach($editors as $editor)
+                                {{$editor->username}}&nbsp;
+                            @endforeach</p>
+                        <p>Auteur(s):
+                            @foreach($authors as $author)
+                                {{$author->username}}&nbsp;
+                            @endforeach
+                        </p>
+                    </div>
                 </div>
             </div>
 

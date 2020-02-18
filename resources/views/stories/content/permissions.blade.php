@@ -92,12 +92,12 @@
             Editeurs
 
         </div>
-        <div class='vignette blue-bg full-height'>
+        <div class='vignette blue-bg full-height' style="font-family: 'Patrick Hand SC'; font-style: italic;">
 
-            @foreach($storyRoles as $storyRole)
-                @if($storyRole->role === 'Editor')
-                    {{$storyRole->getUserNames->username}}
-                @endif
+            @foreach($editors as $editor)
+
+                {{$editor->username}}
+
             @endforeach
 
         </div>
@@ -106,13 +106,11 @@
         <div class="evenboxinner-descriptive">
             Auteurs
         </div>
-        <div class='vignette yellow-bg full-height'>
+        <div class='vignette yellow-bg full-height' style="font-family: 'Patrick Hand SC'; font-style: italic;">
 
-            @foreach($storyRoles as $storyRole)
+            @foreach($authors as $author)
 
-                @if($storyRole->role === 'Author')
-                    {{$storyRole->getUserNames->username}}
-                @endif
+                {{$author->username}}
 
             @endforeach
 
@@ -120,48 +118,43 @@
     </div>
 
 </div>
-<!--search bar-->
-<p>include: Search bar module</p>
-
 
 <div class="row strip white-bg">
     <div class='vignette green-bg full-height'>
-        <h3>Gestion des permissions</h3>
+        <h3 style="font-family: 'Patrick Hand SC'; font-style: italic;">Gestion des permissions</h3>
+        <input class="form-control" id="searchBar" type="text" placeholder="Qui cherchez-vous?"/>
         {{Form::open(array('route' => array('story.update.permissions',$slug),'method' => 'POST'))}}
 
         {!! csrf_field() !!}
-        <table class="table-hover">
+        <table class="table-hover" style="font-family: 'Patrick Hand SC'; font-style: italic;">
             <thead>
             <tr>
                 <td>Pseudo</td>
                 <td>role</td>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="usersList">
 
             @foreach($users as $user)
 
                 <tr>
                     <td>{{$user->username}}</td>
                     <td>
-                        @foreach($storyRoles as $storyRole)
-                            @if($storyRole->user_id === $user->id)
-                                @switch($storyRole->role)
-                                    @case('Editor')
-                                    {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Editor')}}
-                                    @break;
+                        @if($storyRoles->contains('user_id',$user->id))
 
-                                    @case('Author')
-                                    {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'Author')}}
-                                    @break;
+                            @foreach($storyRoles as $storyRole)
+                                @if($user->id === $storyRole->user_id)
+                                    {{Form::select("entry_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), $storyRole->role)}}
+                                @endif
+                            @endforeach
+                        @else
 
-                                @endswitch
+                            {{Form::select("entry_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'None')}}
 
-                            @else
-                                {{Form::select("size_$user->id", array('Editor' => 'Editeur', 'Author' => 'Auteur','None'=>'Aucun'), 'None')}}
-                            @endif
-                        @endforeach
+                        @endif
 
+                    </td>
+                    <td>
 
                     </td>
                 </tr>
@@ -182,4 +175,15 @@
 
         $('[tooltip="yes"]').tooltip()
     })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchBar").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#usersList tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
 </script>

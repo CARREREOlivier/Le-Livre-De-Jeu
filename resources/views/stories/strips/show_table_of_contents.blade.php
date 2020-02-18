@@ -11,23 +11,13 @@
 
                 @foreach($posts as $post)
                     <tr>
-                        <td> @include('stories._partials.btn_read_story_post')</td>
-                        @auth
-                            @if(Auth::User()->status=='Admin' or Auth::user()->id === $story->user_id  )
-                                <td>@include('stories._partials.btn_edit_story_post',['slug'=>$post->slug])</td>
-                                <td>@include('stories._partials.btn_delete_story_post',['slug'=>$post->slug])</td>
-                            @endif
-                        @endauth
-
+                        @include('stories._partials.table_of_content_actions')
 
                         <td>  {!! $post->title !!} par {{$post->author}}</td>
                         @if($post->co_author !== 'none')
                             <td> et {{$post->co_author}}</td>
                         @endif
                     </tr>
-
-
-
                 @endforeach
 
             @endif

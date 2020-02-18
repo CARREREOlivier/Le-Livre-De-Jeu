@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Factories\StoryFactory;
-use App\GameSession;
+use App\Factories\StoryRoleFactory;
 use App\Story;
 use App\StoryPost;
 use App\StoryRole;
 use App\User;
-use App\Utils\DataFinder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,9 +18,7 @@ class StoryController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -67,8 +66,8 @@ class StoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     * @return Response
+     * @param $slug
+     * @return mixed
      */
     public function show($slug)
     {
@@ -80,10 +79,15 @@ class StoryController extends Controller
         $author = $author->username;
 
 
+        list($editors, $authors, $currentUserRole) = $this->getRolesList($story);
+
         return View('stories.main')
             ->with('story', $story)
             ->with('author', $author)
-            ->with('posts', $posts);
+            ->with('posts', $posts)
+            ->with('editors', $editors)
+            ->with('authors', $authors)->with('user_role', $currentUserRole);
+
     }
 
     /**
@@ -111,8 +115,6 @@ class StoryController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param int $id
      * @return Response
      */
     public function update(Request $request, $slug)
@@ -133,7 +135,6 @@ class StoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
      * @return Response
      */
     public function destroy($slug)
@@ -144,38 +145,6 @@ class StoryController extends Controller
         return redirect()->route('story.index');
     }
 
-    /**
-     * @param \Illuminate\Support\Collection $storyPosts
-     */
-    private function fetchCoAuthors(\Illuminate\Support\Collection $storyPosts): void
-    {
-        foreach ($storyPosts as $storyPost) {
-
-            $arrayCoAuthors = explode(";", $storyPost->co_author, -1);
-
-            /*
-             * creating the string to be displayed in the coauthor div in the view
-             */
-            $coAuthorsList = null;
-
-            $counter = 1; //used to detect last iteration
-
-            foreach ($arrayCoAuthors as $coAuthor) {
-                $p = User::find($coAuthor);
-                error_log($counter);
-                if ($counter <> count($arrayCoAuthors)) {
-                    $coAuthorsList .= $p->username . "-";
-                }
-                if ($counter === count($arrayCoAuthors)) {
-                    $coAuthorsList .= $p->username;
-
-                }
-                $counter += 1;
-                $storyPost->co_author = $coAuthorsList;
-            }
-
-        }
-    }
 
     public function editPermissions($slug)
     {
@@ -183,34 +152,140 @@ class StoryController extends Controller
         $story = Story::where('slug', '=', $slug)->firstOrFail();
         $storyId = $story->id;
 
-        $users = User::where('status', '<>', 'Admin')->get();
-        $storyRoles = StoryRole::with('getUserNames')->where('story_id', '=', $storyId)->get();
+        $users = User::where('status', '<>', 'Admin')
+            ->where('id', '<>', $story->user_id)
+            ->select('id', 'username')
+            ->get();
+
+        $storyRoles = StoryRole::where('user_id', '<>', $story->user_id)
+            ->with('getUserNames')
+            ->where('story_id', '=', $storyId)
+            ->get();
+
+
+        $editors = $this->getRolesWithUserNames("Editor");
+        $authors = $this->getRolesWithUserNames("Author");
 
         return View('stories.main')
             ->with('users', $users)
             ->with('storyRoles', $storyRoles)
+            ->with('editors', $editors)
+            ->with('authors', $authors)
             ->with('slug', $slug);
     }
 
     public function updatePermissions(Request $request, $slug)
     {
-         dd($request->input());
-    }
+        $story = Story::where('slug', '=', $slug)->firstOrFail();
+
+        $filtered = $this->removeToken($request);//CSRF token remove from request for the sake of clarity when processing the object. Token does not matter at this point unless I'm mistaken.
+
+        foreach ($filtered as $key => $value) {
+            $userId = $this->remove_string('entry_', $key);
+            if ($value === 'None') {
+                StoryRole::where('story_id', '=', $story->id)
+                    ->where('user_id', '=', $userId)->delete();
+            }
+            if ($value !== 'None') {
+                try {
+
+                    $storyRole = StoryRole::where('user_id', '=', $userId)->firstOrFail();
+
+                    if ($storyRole->role !== $value) {
+
+                        $storyRole->role = $value;
+                        $storyRole->save();
+
+                    }
+                } catch (ModelNotFoundException $e) {
 
 
-}
+                    $storyRole = StoryRoleFactory::build($userId, $value, $story->id);
+                    $storyRole->save();
+                }
 
+            }
 
-function object_to_array($data)
-{
-    if (is_array($data) || is_object($data)) {
-        $result = array();
-        foreach ($data as $key => $value) {
-            $result[$key] = object_to_array($value);
         }
-        return $result;
-    }
-    return $data;
-}
 
-?>
+        return back()->withInput();
+
+    }
+
+    function remove_string($stringToRemove, $stringToCleanse)
+    {
+
+
+        $str = preg_replace('/^' . $stringToRemove . '/', '', $stringToCleanse);
+
+
+        return $str;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function removeToken(Request $request): array
+    {
+        $filtered = $request->toArray();
+        array_shift($filtered);//token= ... removal of token
+        return $filtered;
+    }
+
+    /**
+     * @param $role
+     * @return mixed
+     */
+    private function getRolesWithUserNames($role)
+    {
+        $storyUsers = StoryRole::where('role', '=', $role)->get();
+        foreach ($storyUsers as $storyUser) {
+            $storyUser->username = User::where('id', '=', $storyUser->user_id)->firstOrfail()->username;
+        }
+        return $storyUsers;
+    }
+
+    /**
+     * @param $story
+     * @param $editors
+     * @param $authors
+     * @return string|null
+     */
+    private function getCurrentUserRole($story, $editors, $authors)
+    {
+        $currentUserRole = null;
+
+        if (Auth::guest()) {
+            $currentUserRole = "guest";
+        } else {
+            if (Auth::user()->id === $story->user_id) {
+                $currentUserRole = "owner";
+            }
+            if ($editors->contains(Auth::user()->id)) {
+                $currentUserRole = "Editor";
+            }
+            if ($authors->contains(Auth::user()->id)) {
+                $currentUserRole = "Editor";
+            }
+            if(Auth::user()->status==='Admin'){
+                $currentUserRole = "Admin";
+            }
+        }
+        return $currentUserRole;
+    }
+
+    /**
+     * @param $story
+     * @return array
+     */
+    private function getRolesList($story): array
+    {
+        $editors = $this->getRolesWithUserNames("Editor");
+        $authors = $this->getRolesWithUserNames("Author");
+
+        $currentUserRole = $this->getCurrentUserRole($story, $editors, $authors);
+        return array($editors, $authors, $currentUserRole);
+    }
+
+}
