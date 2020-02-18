@@ -135,3 +135,5 @@ Route::put('/admin-store-update-gamesession-{id}', 'AdminController@updateGameSe
 Route::get('/admin-update-gameturn-{id}', 'AdminController@editGameTurn')->name('admin.update_gameturn')->middleware('auth');
 Route::put('/admin-store-update-gameturn-{id}', 'AdminController@updateGameTurn')->name('admin.store_update_gameturn')->middleware('auth');
 
+/* credits page */
+Route::get('/credits','CreditsController@show')->name('credits');

@@ -33,21 +33,20 @@
                     </li>
                 @endif
 
-                    @if(Route::currentRouteName()=='story.index')
-                        <li class="nav-item active ">
-                            <a class="nav-link" href="{{ route('story.index') }}">
-                                <mark>AARs</mark>
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('story.index') }}">AARs</a>
-                        </li>
-                    @endif
-
-
-
+                @if(Route::currentRouteName()=='story.index')
+                    <li class="nav-item active ">
+                        <a class="nav-link" href="{{ route('story.index') }}">
+                            <mark>AARs</mark>
+                        </a>
+                    </li>
+                @else
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('story.index') }}">AARs</a>
+                    </li>
+                @endif
+
+
+                <li class="nav-item">
                     <a class="nav-link" href="https://github.com/Flefounet/Le-Livre-De-Jeu">GitHub</a>
                 </li>
 
@@ -60,6 +59,18 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contact') }}"> Contact</a>
+                    </li>
+                @endif
+
+                @if(Route::currentRouteName()=='credits')
+                    <li class="nav-item active ">
+                        <a class="nav-link" href="{{ route('credits') }}">
+                            <mark>Merci!</mark>
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('credits') }}">Merci!</a>
                     </li>
                 @endif
 
@@ -88,29 +99,29 @@
                             <a class="nav-link" href="{{ route('register') }}">S'enregistrer</a>
                         </li>
                     @endif
-                    @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->username }} <span class="caret"></span>
+                @else
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->username }} <span class="caret"></span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{route('profile', Auth::User()->username)}}">Profil</a>
+
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                Déconnexion
                             </a>
 
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{route('profile', Auth::User()->username)}}">Profil</a>
-
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    Déconnexion
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                        @endguest
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                  style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endguest
             </ul>
         </div>
     </div>
