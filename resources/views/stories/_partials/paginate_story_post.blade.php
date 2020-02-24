@@ -1,6 +1,6 @@
 <div class="row strip white-bg">
     <div class="col-md-1 nopadding">
-        @if(count($previousPost)==0)
+        @if(count((array)$previousPost)==0)
             <span style="text-align:left;">
             <button type="button"  class="btn btn-info lined thin" disabled><i class="fas fa-chevron-left"></i></button></span>
         @else
@@ -24,11 +24,9 @@
            title="Lire l'ensemble des posts">
             <i class="fas fa-list-ol"></i> Table des matières
         </a>
-
-
     </div>
     <div class="col-md-1 nopadding">
-        @if(count($nextPost)==0)
+        @if(count((array)$nextPost)==0)
             <span style="float:right;">  <button type="button" class="btn btn-info lined thin"
                                                  disabled> <i class="fas fa-chevron-right"></i></button></span>
         @else

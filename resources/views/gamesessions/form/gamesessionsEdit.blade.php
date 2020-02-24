@@ -1,11 +1,11 @@
 <ul>
 
     <li>
-        {!! Form::label('title', 'Title:') !!}
+        {!! Form::label('title', 'Titre:') !!}
         {!! Form::text('title', $gameSession->title) !!}
     </li>
     <li>
-        {!! Form::label('game', 'Game:') !!}
+        {!! Form::label('game', 'Jeu:') !!}
         {!! Form::text('game',  $gameSession->game) !!}
     </li>
     <li>
@@ -15,7 +15,7 @@
 
 </ul>
 <p>Joueurs actuels</p>
-<table>
+<table class="table-bordered">
     <thead>
     <tr>
         <th scope="col">Pseudo</th>
@@ -25,10 +25,8 @@
     <tbody>
     <tr>
         @foreach($gamemaster as $gm)
-
-            <td>{{$gm->getusers->name}}</td>
+            <td>{{$gm->getusers->username}}</td>
             <td>Maitre de jeu</td>
-
         @endforeach
     </tr>
     @foreach($players as $player)
@@ -57,7 +55,7 @@
             <tr>
                 <th>Sélectionner</th>
                 <th scope="col">pseudo</th>
-                <th scope="col">email</th>
+
             </tr>
             </thead>
             <tbody id="usersLists">
@@ -69,8 +67,8 @@
                     @else
                         <td id="selection">{{Form::checkbox("checkBox[]", $user->id, false, ['class'=>'ckbox'])}}</td>
                     @endif
-                    <td>{{$user->username}}</td>
-                    <td>{{$user->email}}</td>
+                    <td><p>{{$user->username}}</p></td>
+
                 </tr>
             @endforeach
             </tbody>
