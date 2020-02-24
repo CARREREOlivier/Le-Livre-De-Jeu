@@ -74,12 +74,19 @@ class StoryPostController extends Controller
 
         $currentPostId = $story_post->id;
 
-        $previousPost = StoryPost::find($currentPostId - 1);
-        $nextPost = StoryPost::find($currentPostId + 1);
+        //fetching previous and next post
+
+        $previousPostId = StoryPost::where('story_id','=',$story->id)->where('id', '<', $currentPostId)->max('id');
+        $nextPostId = StoryPost::where('story_id','=',$story->id)->where('id', '>', $currentPostId)->min('id');
+
+        $previousPost =  StoryPost::find($previousPostId);
+        $nextPost =  StoryPost::find($nextPostId);
 
         $author = User::find($story_post->author)->firstOrFail()->username;
         $users = User::where('status', "User")->select('email', 'id', 'username')->get();
 
+
+        //fetching coauthors usernames.
         list($arrayCoAuthors, $coAuthorsList) = $this->fetchCoAuthorsUserNames($story_post);
 
         /*
