@@ -18,9 +18,13 @@
 <div class="row strip pencil">
     <div class="vignette green-bg">
         {{Form::label('text','Texte : ')}}
-        {{Form::textarea('text',$story_post->text,['required'=>'required','class'=>'gameSessionTitleInput'])}}
+        {{Form::textarea('text',$story_post->text,['required'=>'required','class'=>'gameSessionTitleInput','id'=>'editStoryPostDescription'])}}
         <br/>
         {{Form::submit('Mettre à jour',['class'=>'btn btn-secondary lined thin float-right'])}}
     </div>
 </div>
 {{Form::close()}}
+
+<script>
+    CKEDITOR.replace( 'editStoryPostDescription' );
+</script>

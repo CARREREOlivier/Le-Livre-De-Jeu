@@ -22,7 +22,7 @@
 
                     <tr>
                         <td> {!! Form::label('message', 'Message:') !!}</td>
-                        <td> {!! Form::textarea('message', $order->message) !!}</td>
+                        <td> {!! Form::textarea('message', $order->message,['id'=>'modalEditOrderMessage']) !!}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -41,3 +41,7 @@
         {!! Form::close() !!}
     </div>
 </div>
+
+<script>
+    CKEDITOR.replace( 'modalEditOrderMessage' );
+</script>

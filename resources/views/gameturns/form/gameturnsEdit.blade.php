@@ -16,7 +16,7 @@
         <br/>
         {!! Form::label('description', 'Résumé:') !!}{!! Form::textarea('description') !!}
 
-        {!! Form::label('long_description', 'Description:') !!}{!! Form::textarea('longdescription') !!}
+        {!! Form::label('long_description', 'Description:') !!}{!! Form::textarea('longdescription','',['id'=>'gameTurnEditLongDescription']) !!}
 
     </div>
     <div class="modal-footer">
@@ -25,4 +25,9 @@
 
     </div>
     {!! Form::close() !!}
+
 </div>
+
+<script>
+    CKEDITOR.replace( 'gameTurnEditLongDescription' );
+</script>

@@ -21,11 +21,14 @@
         </div>
         <div class="row strip">
             <div class="vignette blue-bg  pencil">
-                {!! Form::label('description', 'Résumé:') !!}{!! Form::textarea('description') !!}</div>
+                {!! Form::label('description', 'Résumé:') !!}
+                {!! Form::textarea('description',$gameTurn->description,['id'=>'gameTurnsEditDescription']) !!}</div>
+
+
         </div>
         <div class="row strip">
             <div class="vignette green-bg pencil">
-                {!! Form::label('long_description', 'Description détaillée:') !!}{!! Form::textarea('long_description') !!}
+                {!! Form::label('long_description', 'Description détaillée:') !!}{!! Form::textarea('long_description',$gameTurn->long_description,['id'=>'gameTurnsEditLongDescription']) !!}
                 <br/>
                 {!! Form::submit('Mettre à jour', array('class'=>'btn btn-secondary lined thin float-right')) !!}
             </div>
@@ -35,4 +38,10 @@
         {!! Form::close() !!}
 
     </div>
+    <script>
+        CKEDITOR.replace( 'gameTurnsEditDescription' );
+        CKEDITOR.replace( 'gameTurnsEditLongDescription' );
+    </script>
 @endsection
+
+

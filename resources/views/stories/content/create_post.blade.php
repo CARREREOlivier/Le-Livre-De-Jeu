@@ -20,9 +20,14 @@
 <div class="row strip pencil">
     <div class="vignette green-bg">
         {{Form::label('text','Texte : ')}}
-        {{Form::textarea('text')}}
+        {{Form::textarea('text','',['id'=>'createStoryPostText'])}}
         <br/>
         {{Form::submit('Créer l\'entrée',['class'=>'btn btn-secondary lined thin float-right'])}}
     </div>
 </div>
 {{Form::close()}}
+
+
+<script>
+    CKEDITOR.replace( 'createStoryPostText' );
+</script>

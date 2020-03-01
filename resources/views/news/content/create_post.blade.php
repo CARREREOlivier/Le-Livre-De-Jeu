@@ -5,7 +5,11 @@
 {!! csrf_field() !!}
 {{Form::hidden('info_id', $info_id)}}
 {{Form::label('text', 'Message :')}}
-{{Form::textarea('text')}}
+{{Form::textarea('text','',['id'=>'createNewsPostText'])}}
 
 {{Form::submit('Publier',['class'=>'btn btn-secondary lined thin'])}}
 {{Form::close()}}
+
+<script>
+    CKEDITOR.replace( 'createNewsPostText' );
+</script>

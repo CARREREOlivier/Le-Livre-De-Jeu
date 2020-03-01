@@ -34,7 +34,7 @@
             <tbody>
             <tr>
                 <td> {!! Form::label('message', 'Message:') !!}</td>
-                <td> {!! Form::textarea('message', $orders->get($user_id)->message) !!}</td>
+                <td> {!! Form::textarea('message', $orders->get($user_id)->message, array('id'=>'slotTextArea'))!!}</td>
             </tr>
             </tbody>
         </table>
@@ -55,4 +55,7 @@
 {!! Form::close() !!}
 
 </div>
+    <script>
+        CKEDITOR.replace( 'slotTextArea' );
+    </script>
 </div>

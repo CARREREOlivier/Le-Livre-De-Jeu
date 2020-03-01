@@ -4,7 +4,7 @@
     <div class="vignette red-bg">
         <div class="row">
             {{Form::label('text','Texte : ')}}
-            {{Form::textarea('text',$post->title,['required'=>'required'])}}
+            {{Form::textarea('text',$post->title,['required'=>'required','id'=>'editNewsPostText'])}}
             <br/>
             {{Form::submit('Mettre à jour',['class'=>'btn btn-secondary lined thin float-right'])}}
         </div>
@@ -12,3 +12,6 @@
 </div>
 {{Form::close()}}
 
+<script>
+    CKEDITOR.replace( 'editNewsPostText' );
+</script>

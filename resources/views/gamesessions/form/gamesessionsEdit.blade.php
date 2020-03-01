@@ -10,7 +10,7 @@
     </li>
     <li>
         {!! Form::label('description', 'Description:') !!}
-        {!! Form::textarea('description',  $gameSession->description) !!}
+        {!! Form::textarea('description',  $gameSession->description,['id'=>'gamessessionEditDescription']) !!}
     </li>
 
 </ul>
@@ -76,3 +76,7 @@
     </div>
 </div>
 
+
+<script>
+    CKEDITOR.replace( 'gamessessionEditDescription' );
+</script>

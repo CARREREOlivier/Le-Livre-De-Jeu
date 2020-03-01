@@ -15,10 +15,13 @@
 <div class="row strip pencil">
     <div class="vignette green-bg">
         {{Form::label('summary','Résumé : ')}}
-        {{Form::textarea('summary', $news->summary)}}
+        {{Form::textarea('summary', $news->summary,['id'=>'editNewsSummary'])}}
         <br/>
         {{Form::submit('Mettre à jour',['class'=>'btn btn-secondary lined thin float-right'])}}
     </div>
 </div>
 {{Form::close()}}
 
+<script>
+    CKEDITOR.replace( 'editNewsSummary' );
+</script>
