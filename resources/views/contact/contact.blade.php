@@ -36,12 +36,18 @@
                 <div class="form-group">
                     {!! Form::label('message', 'Votre Message (obligatoire):',['id'=>'message-label']) !!}
                     {!! Form::textarea('message',"Bonjour, ", array('required'=>'required', 'id'=>'contactTextarea')) !!}
+
                 </div>
 
                 <div class="form-group">
                     {!! Form::submit('Envoyer le mail', array('class'=>'btn btn-warning lined thin')) !!}
                 </div>
                 {!! Form::close() !!}
+
+
+                <script>
+                    CKEDITOR.replace( 'contactTextarea' );
+                </script>
             </div>
         </div> <!-- /container -->
 

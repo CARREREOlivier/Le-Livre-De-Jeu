@@ -27,14 +27,14 @@
         <div class="row strip ">
             <div class="vignette blue-bg full-height pencil">
                 {!! Form::label('description', 'Résumé:') !!}
-                {!! Form::textarea('description') !!}
+                {!! Form::textarea('description','',array('id'=>'addTurnDescription')) !!}
             </div>
         </div>
 
         <div class="row strip">
             <div class="vignette blue-bg full-height pencil">
                 {!! Form::label('long_description', 'Description détaillée:') !!}
-                {!! Form::textarea('long_description') !!}
+                {!! Form::textarea('long_description','',array('id'=>'addTurnLongDescription')) !!}
                 <br/>
                 {!! Form::submit('Ajouter', array('class'=>'btn btn-secondary lined thin float-right')) !!}
             </div>
@@ -43,5 +43,8 @@
         {!! Form::close() !!}
     </div>
 
-
+    <script>
+        CKEDITOR.replace( 'addTurnDescription' );
+        CKEDITOR.replace( 'addTurnLongDescription' );
+    </script>
 @endsection

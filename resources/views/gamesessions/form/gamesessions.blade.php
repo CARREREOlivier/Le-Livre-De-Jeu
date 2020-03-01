@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="col-lg-9">
-                    {!! Form::text('title','', array('required'=>'required', 'class'=>'gameSessionTitleInput')) !!}
+                    {!! Form::text('title','', array('required'=>'required', 'class'=>'gameSessionTitleInput','id'=>'gameSessionTitleInput')) !!}
                 </div>
 
             </div>
@@ -41,7 +41,7 @@
     <div class="row strip">
         <div class="vignette orange-bg">
             <div class="col-lg">{!! Form::label('description', 'Description (optionnel):',["id"=>"description-label"]) !!}
-                {!! Form::textarea('description') !!}</div>
+                {!! Form::textarea('description','',array('id'=>'gameSessionDescriptionInput')) !!}</div>
         </div>
     </div>
 
@@ -54,4 +54,8 @@
 </div>
 
 {!! Form::close() !!}
+
+<script>
+    CKEDITOR.replace( 'gameSessionDescriptionInput' );
+</script>
 
