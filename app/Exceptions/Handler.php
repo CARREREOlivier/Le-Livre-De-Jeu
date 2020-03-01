@@ -53,6 +53,7 @@ class Handler extends ExceptionHandler
             //response('File too large!', 422);
         }
 
+
         return parent::render($request, $exception);
     }
 }

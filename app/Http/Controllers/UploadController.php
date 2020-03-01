@@ -316,7 +316,7 @@ class UploadController extends Controller
 
     public function storeViaTinyMCE(Request $request)
     {
-
+        dd($request);
         log::channel('single')->info('file is entering validation');
         //request validation
         try {

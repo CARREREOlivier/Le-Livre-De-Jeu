@@ -78,15 +78,19 @@ class StoryController extends Controller
         $author = User::find($story->user_id);
         $author = $author->username;
 
-
         list($editors, $authors, $currentUserRole) = $this->getRolesList($story);
+
+        $this->fetchCoAuthorsNames($posts);//finds coauthors names and creates a new line into the object $posts that concatenates the
+
+        $this->checkIfPostsAreVisibleForUser($posts, $story, $editors, $authors);
 
         return View('stories.main')
             ->with('story', $story)
             ->with('author', $author)
             ->with('posts', $posts)
             ->with('editors', $editors)
-            ->with('authors', $authors)->with('user_role', $currentUserRole);
+            ->with('authors', $authors)
+            ->with('user_role', $currentUserRole);
 
     }
 
@@ -259,16 +263,19 @@ class StoryController extends Controller
         if (Auth::guest()) {
             $currentUserRole = "guest";
         } else {
+            if ($user = Auth::user()) {
+                $currentUserRole = "reader";
+            }
             if (Auth::user()->id === $story->user_id) {
                 $currentUserRole = "owner";
             }
             if ($editors->contains(Auth::user()->id)) {
-                $currentUserRole = "Editor";
+                $currentUserRole = "editor";
             }
             if ($authors->contains(Auth::user()->id)) {
-                $currentUserRole = "Editor";
+                $currentUserRole = "author";
             }
-            if(Auth::user()->status==='Admin'){
+            if (Auth::user()->status === 'Admin') {
                 $currentUserRole = "Admin";
             }
         }
@@ -286,6 +293,105 @@ class StoryController extends Controller
 
         $currentUserRole = $this->getCurrentUserRole($story, $editors, $authors);
         return array($editors, $authors, $currentUserRole);
+    }
+
+    /**
+     * @param $posts
+     */
+    private function fetchCoAuthorsNames($posts): void
+    {
+        foreach ($posts as $post) {
+            $postAuthor = User::find($post->author);
+            $post->authorName = $postAuthor->username;
+
+            if ($post->co_author !== 'none') {
+
+                $arr = explode(";", $post->co_author);
+
+                $arr = array_filter($arr);
+                $nbRows = count($arr);
+                $rowNumber = 1;
+                foreach ($arr as $row) {
+
+                    $id = intval($row);
+                    $person = User::find($id);
+                    $username = $person['username'];
+                    if ($rowNumber !== $nbRows) {
+                        $post->co_authorsNames .= $username . ", ";
+                    } else {
+                        $post->co_authorsNames .= $username;
+                    }
+                    $rowNumber++;
+
+                }
+
+            }
+        }
+    }
+
+    /**
+     * @param $posts
+     * @param $story
+     * @param $storyEditors
+     * @param $storyAuthors
+     */
+    private function checkIfPostsAreVisibleForUser($posts, $story, $storyEditors, $storyAuthors): void
+    {
+
+
+        foreach ($posts as $post) {
+            $userCanSeePost = 0;
+            if ($user = Auth::user()) {
+                if (Auth::user()->status === "Admin") {
+                    $userCanSeePost += 1;
+                }
+
+                if ($story->user_id === Auth::user()->id) {
+                    $userCanSeePost += 1;
+
+                }
+
+                foreach ($storyEditors as $storyEditor) {
+                    if ($storyEditor->user_id === Auth::user()->id) {
+                        $userCanSeePost += 1;
+                        break;
+                    }
+                }
+
+                foreach ($storyAuthors as $storyAuthor) {
+                    if ($storyAuthor->user_id === Auth::user()->id) {
+                        $userCanSeePost += 1;
+                        break;
+                    }
+                }
+
+
+                if ($post->author === Auth::user()->id) {
+                    $userCanSeePost += 1;
+                }
+
+
+                if ($post->co_author !== 'none') {
+                    $arr = explode(";", $post->co_author);
+                    if (in_array(Auth::user()->id, $arr)) {
+                        $userCanSeePost += 1;
+                    }
+                }
+            }
+
+            if ($post->visible_by === "all") {
+                $userCanSeePost += 1;
+            }
+
+            //dd($test);
+            if ($userCanSeePost > 0) {
+                $post->isVisible = true;
+            } else {
+                $post->isVisible = false;
+            }
+
+
+        }
     }
 
 }

@@ -34,8 +34,6 @@ class StoryPostController extends Controller
     public function create($slug)
     {
         $story = Story::where('slug', $slug)->firstOrFail();
-
-        error_log($story->id);
         return View('stories.main')
             ->with('story_id', $story->id);
 
@@ -51,9 +49,7 @@ class StoryPostController extends Controller
         $storyPost = StoryPostFactory::build($request);
         $this->addImgAutoResize($storyPost);
         $storyPost->save();
-
-        return redirect()->route('story.index');
-
+        return redirect()->route('story.show.post', $storyPost->slug);
 
     }
 
@@ -65,7 +61,6 @@ class StoryPostController extends Controller
      */
     public function show($slug)
     {
-
         $story_post = StoryPost::where('slug', $slug)->firstOrFail();
         $allPosts = StoryPost::where('story_id', $story_post->story_id)->get();
 
@@ -76,11 +71,11 @@ class StoryPostController extends Controller
 
         //fetching previous and next post
 
-        $previousPostId = StoryPost::where('story_id','=',$story->id)->where('id', '<', $currentPostId)->max('id');
-        $nextPostId = StoryPost::where('story_id','=',$story->id)->where('id', '>', $currentPostId)->min('id');
+        $previousPostId = StoryPost::where('story_id', '=', $story->id)->where('id', '<', $currentPostId)->max('id');
+        $nextPostId = StoryPost::where('story_id', '=', $story->id)->where('id', '>', $currentPostId)->min('id');
 
-        $previousPost =  StoryPost::find($previousPostId);
-        $nextPost =  StoryPost::find($nextPostId);
+        $previousPost = StoryPost::find($previousPostId);
+        $nextPost = StoryPost::find($nextPostId);
 
         $author = User::find($story_post->author)->firstOrFail()->username;
         $users = User::where('status', "User")->select('email', 'id', 'username')->get();
@@ -103,18 +98,16 @@ class StoryPostController extends Controller
             $isAuthor = $this->isAuthor($userId, $story_post);
             $isCoAuthor = $this->isCoAuthor($userId, $story_post);
             $canRead = $this->canRead($userId, $story_post);
+
         } else {
             $userId = null;
-
             $isAuthor = false;
             $isCoAuthor = false;
             $canRead = false;
         }
 
         if ($story_post->visible_by === "all") {
-
             $allCanRead = true;
-
         } else {
             $allCanRead = false;
         }
@@ -235,10 +228,16 @@ class StoryPostController extends Controller
 
             $users = $request['cbCanSee'];
             $userList = null;
-            foreach ($users as $user) {
-                $userList .= $user . ";";
 
+            if (isset($users)) {
+                foreach ($users as $user) {
+                    $userList .= $user . ";";
+
+                }
+            } else {
+                $userList = 'none';
             }
+
             $storyPost->visible_by = $userList;
             $storyPost->save();
 
@@ -293,14 +292,11 @@ class StoryPostController extends Controller
 
         }
 
-
         return $boolean;
     }
 
     function canRead($userId, $story_post)
     {
-
-
         $boolean = false;
 
         if (isset($story_post->visible_by) === false) {
@@ -321,8 +317,6 @@ class StoryPostController extends Controller
 
             }
         }
-
-
         return $boolean;
 
     }

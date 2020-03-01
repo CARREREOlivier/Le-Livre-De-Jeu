@@ -10,7 +10,7 @@
                                                                                                   fa-download"></i>{{$uploadFile->original_name}}
                         </a></td>
                     <td>
-                        @if(Auth::User()->id == $player->user_id)
+                        @if(Auth::User()->id == $gamemaster->first()->getusers->id)
                             @include('gamesessions._partials.delete_upload', ['file_id'=>$uploadFile->id])</td>
                         @endif
                 @else

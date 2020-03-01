@@ -26,6 +26,10 @@
     @endif
     @break
 
+    @case('reader')
+    <td> @include('stories._partials.btn_read_story_post')</td>
+    @break
+
     @case('guest')
     <td> @include('stories._partials.btn_read_story_post')</td>
     @break
