@@ -18,10 +18,13 @@
 <div class="row strip pencil">
     <div class="vignette green-bg">
         {{Form::label('description','Description : ')}}
-        {{Form::textarea('description')}}
+        {{Form::textarea('description','',['id'=>'createStoryDescription'])}}
         <br/>
         {{Form::submit('Créer l\'AAR',['class'=>'btn btn-secondary lined thin float-right'])}}
     </div>
 </div>
 {{Form::close()}}
 
+<script>
+    CKEDITOR.replace( 'createStoryDescription' );
+</script>
