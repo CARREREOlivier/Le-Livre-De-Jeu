@@ -89,15 +89,16 @@ Route::post('story/add_comment', 'StoryCommentController@store')->name('story_po
 
 Route::get('story/manage_permissions/{slug}', 'StoryController@editPermissions')->name('story.permissions');
 Route::post('story/update_permissions/{slug}', 'StoryController@updatePermissions')->name('story.update.permissions');
+Route::get('/delete-turn-file/{id}','UploadController@deleteFile')->name('upload.delete_file');// does not use request to delete
 
-/**
- * upload and download routes
+
+/**upload and download routes**/
 
 Route::get('/files-create', 'UploadController@create');
 Route::post('/files-save', 'UploadController@store');
 Route::post('/files-saveTinyMCE', 'UploadController@storeViaTinyMCE');
 Route::post('/files-delete', 'UploadController@destroy');//uses request to delete
-Route::get('/delete-turn-file/{id}','UploadController@deleteFile')->name('upload.delete_file');// does not use request to delete
+
 Route::get('/files-show', 'UploadController@index');
 Route::get('/download/{file}', 'DownloadsController@download');
 Route::get('/downloadZip/{id}', 'DownloadsController@zipMultipleFiles');

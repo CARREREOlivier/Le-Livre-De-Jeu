@@ -125,7 +125,6 @@ class GameSessionController extends Controller
         $players = $this->dataFinder->getPeople('GameParticipant', $gameSessionId);
         $gameMaster = $this->dataFinder->getPeople('GameMaster', $gameSessionId);
 
-
         //If current user is Admin or gamemaster
         //we need to send the list of current players to the players list.
 
@@ -145,7 +144,7 @@ class GameSessionController extends Controller
         $gameTurns = GameTurn::where('gamesessions_id', $gameSessionId)->get();
 
         $lastTurn = $gameTurns->last();
-        error_log("last turn = $lastTurn");
+
         if (isset($lastTurn)) {
             $last = $lastTurn->id;
             $gameMasterFiles = Upload::where('category', 'gameturns')
@@ -318,7 +317,7 @@ class GameSessionController extends Controller
     public function destroy($slug)
     {
         //deleting entry
-        GameSession::where('slug', $slug)->Route::put('story/create', 'StoryPostController@create')->name('stories.add.post');
+        GameSession::where('slug', $slug)->delete();
 
         //returning view
         return redirect()->route('gamesession.index');
