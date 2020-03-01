@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Le livre de jeu') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -18,87 +18,11 @@
 
     <script src="{{asset('js/collapsible-behavior.js')}}"></script>
     <script src="{{asset('js/lldj.js')}}"></script>
-    <script src="https://tympanus.net/Development/AnimatedBooks/js/modernizr.custom.js"></script>
+    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/adapters/jquery.js')}}"></script>
+    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+
 
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=65zbam7degsr85vzz2nh3i6bou6evi4sopf9en2j8n8ndm0y"></script>
-    <script>
-
-
-        tinymce.init({
-            selector: 'textarea',
-            resize: 'both',
-            plugins: [
-                " advlist autolink lists link charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste imagetools textcolor"
-            ],
-            toolbar: "undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify " +
-                "| bullist numlist outdent indent | image imagetools",
-
-            file_picker_types: 'image file',
-            // without images_upload_url set, Upload tab won't show up
-
-
-            images_upload_handler: function (blobInfo, success, failure) {
-
-                var xhr, formData;
-                xhr = new XMLHttpRequest();
-                xhr.withCredentials = false;
-                xhr.open('POST', '/files-saveTinyMCE');
-                //var token = document.getElementById("_token").value;
-                xhr.setRequestHeader("X-CSRF-Token", "{{ csrf_token() }}");
-                xhr.onload = function () {
-                    var json;
-                    if (xhr.status != 200) {
-                        failure('HTTP Error: ' + xhr.status);
-                        return;
-                    }
-                    json = JSON.parse(xhr.responseText);
-
-                    if (!json || typeof json.location != 'string') {
-                        failure('Invalid JSON: ' + xhr.responseText);
-                        return;
-                    }
-                    success(json.location);
-                };
-                formData = new FormData();
-                formData.append('file', blobInfo.blob(), blobInfo.filename());
-                xhr.send(formData);
-            },
-
-            file_picker_callback: function(cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-                input.onchange = function () {
-                    var file = this.files[0];
-
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        /*
-                          Note: Now we need to register the blob in TinyMCEs image blob
-                          registry. In the next release this part hopefully won't be
-                          necessary, as we are looking to handle it internally.
-                        */
-                        var id = 'blobid' + (new Date()).getTime();
-                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                        var base64 = reader.result.split(',')[1];
-                        var blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
-
-                        /* call the callback and populate the Title field with the file name */
-                        cb(blobInfo.blobUri(), { title: file.name });
-                    };
-                    reader.readAsDataURL(file);
-                };
-
-                input.click();
-            }
-
-        });
-
-
-    </script>
 
 
     <!-- Fonts -->
@@ -136,5 +60,9 @@
     </main>
 </div>
 @yield('js')
+<script src="{{asset('vendor/unisharp/laravel-ckeditor/ckeditor.js')}}"></script>
+<script>
+    CKEDITOR.replace( 'summary-ckeditor' );
+</script>
 </body>
 </html>
