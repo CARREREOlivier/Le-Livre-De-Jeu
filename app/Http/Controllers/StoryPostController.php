@@ -71,11 +71,11 @@ class StoryPostController extends Controller
 
         //fetching previous and next post
 
-        $previousPostId = StoryPost::where('story_id','=',$story->id)->where('id', '<', $currentPostId)->max('id');
-        $nextPostId = StoryPost::where('story_id','=',$story->id)->where('id', '>', $currentPostId)->min('id');
+        $previousPostId = StoryPost::where('story_id', '=', $story->id)->where('id', '<', $currentPostId)->max('id');
+        $nextPostId = StoryPost::where('story_id', '=', $story->id)->where('id', '>', $currentPostId)->min('id');
 
-        $previousPost =  StoryPost::find($previousPostId);
-        $nextPost =  StoryPost::find($nextPostId);
+        $previousPost = StoryPost::find($previousPostId);
+        $nextPost = StoryPost::find($nextPostId);
 
         $author = User::find($story_post->author)->firstOrFail()->username;
         $users = User::where('status', "User")->select('email', 'id', 'username')->get();
@@ -228,10 +228,16 @@ class StoryPostController extends Controller
 
             $users = $request['cbCanSee'];
             $userList = null;
-            foreach ($users as $user) {
-                $userList .= $user . ";";
 
+            if (isset($users)) {
+                foreach ($users as $user) {
+                    $userList .= $user . ";";
+
+                }
+            } else {
+                $userList = 'none';
             }
+
             $storyPost->visible_by = $userList;
             $storyPost->save();
 
@@ -286,14 +292,11 @@ class StoryPostController extends Controller
 
         }
 
-
         return $boolean;
     }
 
     function canRead($userId, $story_post)
     {
-
-
         $boolean = false;
 
         if (isset($story_post->visible_by) === false) {
@@ -314,8 +317,6 @@ class StoryPostController extends Controller
 
             }
         }
-
-
         return $boolean;
 
     }
