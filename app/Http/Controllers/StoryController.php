@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class StoryController extends Controller
 {
@@ -57,6 +58,7 @@ class StoryController extends Controller
         // storage
 
         $story = StoryFactory::build($request);
+        $this->addImgAutoResize($story);
         $story->save();
 
         return redirect()->route('story.index');
@@ -124,11 +126,25 @@ class StoryController extends Controller
     public function update(Request $request, $slug)
     {
 
-        Log::channel('single')->info("Updating Story/AAR " . $slug);
 
+        Log::channel('single')->info("Updating Story/AAR " . $slug);
         $story = Story::where('slug', $slug)->firstOrFail();
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:50',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
         $story->title = $request->title;
         $story->description = $request->description;
+        $this->addImgAutoResize($story);
         $story->slug = str_slug($request->title);
         $story->save();
 
@@ -392,6 +408,11 @@ class StoryController extends Controller
 
 
         }
+    }
+
+    private function addImgAutoResize(Story $story): void
+    {
+        $story->description = str_replace("<img alt=", "<img class=\"img-fluid auto-height\" alt=", "$story->description");
     }
 
 }

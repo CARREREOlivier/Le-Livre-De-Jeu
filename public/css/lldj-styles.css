@@ -1039,3 +1039,9 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+
+img.auto-height {
+    max-width: 100% !important;
+    height:auto !important;
+}

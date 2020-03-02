@@ -373,7 +373,8 @@ class StoryPostController extends Controller
      */
     private function addImgAutoResize(StoryPost $storyPost): void
     {
-        $storyPost->text = str_replace("<img src=", "<img class=\"img-fluid\" src=", "$storyPost->text");
+        $storyPost->text = str_replace("<img alt=", "<img class=\"img-fluid auto-height\" alt=","$storyPost->text");
+
     }
 
 

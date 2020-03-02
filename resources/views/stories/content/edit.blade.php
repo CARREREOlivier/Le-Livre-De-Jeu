@@ -1,5 +1,6 @@
 
 <div class="row row-title"><h1 class="big title">MAJ Titre/Introduction</h1></div>
+
 {!! Form::model($story, array('route' => array('story.update', $story->slug),'method' => 'PUT')) !!}
 {!! csrf_field() !!}
 
@@ -18,7 +19,7 @@
 <div class="row strip pencil">
     <div class="vignette green-bg">
         {{Form::label('description','Introduction : ')}}
-        {{Form::textarea('description','',['id'=>'editStoryDescription'])}}
+        {{Form::textarea('description',$story->description,['required'=>'required', 'id'=>'editStoryDescription'])}}
         <br/>
         {{Form::submit('Mettre à jour',['class'=>'btn btn-secondary lined thin float-right'])}}
     </div>
